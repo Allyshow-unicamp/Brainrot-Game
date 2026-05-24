@@ -20,6 +20,10 @@ public class GameplayScreen extends GameScreen {
 
     @Override
     protected void drawScreen(float delta) {
+
+        for(Enemy enemy : levelManager.getEnemies()){
+            enemy.update(delta);
+        }
         
         Texture background = levelManager.getMapBackground();
 
@@ -31,7 +35,10 @@ public class GameplayScreen extends GameScreen {
 
         batch.draw(background, 0, 0);
 
+        for(Enemy enemy : levelManager.getEnemies()){
+            enemy.draw(batch);
+        }
+
         batch.end();
-        
     }
 }
