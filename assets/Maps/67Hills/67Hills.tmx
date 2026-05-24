@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="1920" height="1080" tilewidth="1" tileheight="1" infinite="0" nextlayerid="5" nextobjectid="34">
  <imagelayer id="2" name="map">
-  <image source="map1.png" width="1920" height="1080"/>
+  <image source="67Hills.png" width="1920" height="1080"/>
  </imagelayer>
- <objectgroup id="3" name="route" visible="0" locked="1">
+ <objectgroup id="3" name="path
+ " visible="0" locked="1">
   <object id="11" x="0" y="377.333">
    <polyline points="0,0 930.667,-14.6667 924,-310.667 456,-304 480,505.333 145.333,516 136,268 1288.67,268 1299.33,-125.333 1723.33,-126.667 1707.33,702"/>
   </object>
