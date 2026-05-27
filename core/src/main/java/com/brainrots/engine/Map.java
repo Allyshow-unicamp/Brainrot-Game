@@ -1,4 +1,4 @@
-package com.brainrots;
+package com.brainrots.engine;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
@@ -8,9 +8,9 @@ import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.brainrots.core.GameResourceManager;
 
 public class Map {
-
     private Array<Vector2> enemyPath;
     private Array<Rectangle> obstacleBounds;
 
@@ -20,11 +20,11 @@ public class Map {
     public Map(String mapName){
 
         enemyPath = new Array<>();
-        
+
         switch (mapName) {
             case "67Hills":
                     tiledMap = new TmxMapLoader().load("Maps/67Hills/67Hills.tmx");
-                    mapBackground = new Texture("Maps/67Hills/67Hills.png");
+                    mapBackground = GameResourceManager.getTexture("Maps/67Hills/67Hills.png");
                 break;
             default:
                 // fazer excecao;
@@ -34,7 +34,7 @@ public class Map {
         Object pathObject = tiledMap.getLayers().get("path").getObjects().get(0);
 
         if(pathObject instanceof PolylineMapObject) {
-            
+
             Polyline polyline = ((PolylineMapObject) pathObject).getPolyline();
 
             float[] vertices = polyline.getTransformedVertices();
@@ -49,8 +49,6 @@ public class Map {
         } else {
             // throws exception
         }
-
-
     }
 
     public Texture getBackground(){
@@ -60,6 +58,4 @@ public class Map {
     public Array<Vector2> getPath(){
         return enemyPath;
     }
-
-    
 }

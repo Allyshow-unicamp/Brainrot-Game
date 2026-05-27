@@ -1,5 +1,5 @@
-package com.brainrots;
+package com.brainrots.screen;
 
 public class LevelSelectionScreen {
-    
+
 }

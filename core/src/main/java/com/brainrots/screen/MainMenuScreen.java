@@ -1,7 +1,8 @@
-package com.brainrots;
+package com.brainrots.screen;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.brainrots.ScreenManager.ScreenType;
+import com.brainrots.core.GameResourceManager;
+import com.brainrots.screen.ScreenManager.ScreenType;
 
 public class MainMenuScreen extends GameScreen {
 
@@ -12,6 +13,6 @@ public class MainMenuScreen extends GameScreen {
     @Override
     protected void drawScreen(float delta) {
         screenManager.SwitchScreen(ScreenType.GAMEPLAY);
-        
+
     }
 }

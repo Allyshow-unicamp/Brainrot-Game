@@ -1,9 +1,12 @@
-package com.brainrots;
+package com.brainrots.screen;
 
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.brainrots.core.GameResourceManager;
+import com.brainrots.enemy.Enemy;
+import com.brainrots.engine.LevelManager;
 
 public class GameplayScreen extends GameScreen {
 
@@ -24,7 +27,7 @@ public class GameplayScreen extends GameScreen {
         for(Enemy enemy : levelManager.getEnemies()){
             enemy.update(delta);
         }
-        
+
         Texture background = levelManager.getMapBackground();
 
         camera.update();
