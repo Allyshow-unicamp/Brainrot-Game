@@ -17,14 +17,14 @@ public class Map {
     private TiledMap tiledMap;
     private Texture mapBackground;
 
-    public Map(String mapName){
+    public Map(String mapName, GameResourceManager resourceManager){
 
         enemyPath = new Array<>();
 
         switch (mapName) {
             case "67Hills":
                     tiledMap = new TmxMapLoader().load("Maps/67Hills/67Hills.tmx");
-                    mapBackground = GameResourceManager.getTexture("Maps/67Hills/67Hills.png");
+                    mapBackground = resourceManager.getTexture("Maps/67Hills/67Hills.png");
                 break;
             default:
                 // fazer excecao;

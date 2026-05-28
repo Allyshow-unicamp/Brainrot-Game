@@ -18,7 +18,7 @@ public class GameplayScreen extends GameScreen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
-        levelManager = new LevelManager();
+        levelManager = new LevelManager(resourceManager);
     }
 
     @Override

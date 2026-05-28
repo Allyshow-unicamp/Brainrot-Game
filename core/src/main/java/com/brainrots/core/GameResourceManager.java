@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class GameResourceManager {
 
-    private static AssetManager assetManager;
+    private AssetManager assetManager;
 
     public GameResourceManager(){
         assetManager = new AssetManager();
@@ -18,7 +18,7 @@ public class GameResourceManager {
         assetManager.finishLoading();
     }
 
-    public static Texture getTexture(String name) {
+    public Texture getTexture(String name) {
         if (assetManager.isLoaded(name, Texture.class))
             return assetManager.get(name, Texture.class);
         return null;

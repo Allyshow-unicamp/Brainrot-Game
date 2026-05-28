@@ -12,12 +12,12 @@ public class LevelManager {
     private Map map;
     private Array<Enemy> activeEnemies;
 
-    public LevelManager(){
-        map = new Map("67Hills");
+    public LevelManager(GameResourceManager resourceManager){
+        map = new Map("67Hills", resourceManager);
 
         activeEnemies = new Array<>();
 
-        activeEnemies.add(new ConcreteEnemy(map.getPath(), GameResourceManager.getTexture("temp.png")));
+        activeEnemies.add(new ConcreteEnemy(map.getPath(), resourceManager.getTexture("temp.png")));
     }
 
     public Texture getMapBackground(){

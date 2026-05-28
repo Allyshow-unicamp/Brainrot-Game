@@ -13,6 +13,5 @@ public class MainMenuScreen extends GameScreen {
     @Override
     protected void drawScreen(float delta) {
         screenManager.SwitchScreen(ScreenType.GAMEPLAY);
-
     }
 }
