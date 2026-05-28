@@ -1,6 +1,7 @@
 package com.brainrots.core;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.brainrots.screen.GameplayScreen;
 import com.brainrots.screen.MainMenuScreen;
@@ -15,12 +16,17 @@ public class BrainRotGame extends Game implements ScreenManager {
     public void create() {
         batch = new SpriteBatch();
         resourceManager = new GameResourceManager();
-        resourceManager.loadTextures();
+        resourceManager.loadAssets();
 
-        this.setScreen(new MainMenuScreen(batch, resourceManager, this));
+        Music backgroundMusic = resourceManager.getSound("Soundtracks/game_song.mp3");
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.5f);
+        backgroundMusic.play();
+
+        switchScreen(ScreenType.MAIN_MENU);
     }
 
-    public void SwitchScreen(ScreenType type){
+    public void switchScreen(ScreenType type){
         switch (type) {
             case MAIN_MENU:
                 this.setScreen(new MainMenuScreen(batch, resourceManager, this));
@@ -32,4 +38,8 @@ public class BrainRotGame extends Game implements ScreenManager {
         }
     }
 
+    @Override
+    public void dispose() {
+        batch.dispose();
+    }
 }

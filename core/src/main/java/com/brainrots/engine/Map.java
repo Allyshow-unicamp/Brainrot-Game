@@ -44,7 +44,7 @@ public class Map {
                 float y = vertices [i + 1];
 
                 enemyPath.add(new Vector2(x, y));
-                System.out.println(new Vector2(x, y));
+                // System.out.println(new Vector2(x, y));
             }
         } else {
             // throws exception

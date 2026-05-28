@@ -6,5 +6,5 @@ public interface ScreenManager {
         GAMEPLAY
     }
 
-    void SwitchScreen(ScreenType type);
+    void switchScreen(ScreenType type);
 }
