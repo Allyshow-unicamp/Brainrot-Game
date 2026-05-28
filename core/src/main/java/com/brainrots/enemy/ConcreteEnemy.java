@@ -7,6 +7,6 @@ import com.badlogic.gdx.utils.Array;
 public class ConcreteEnemy extends Enemy {
 
     public ConcreteEnemy(Array<Vector2> path, Texture texture) {
-        super(path, texture);
+        super(path, texture, 500);
     }
 }

@@ -16,4 +16,8 @@ public abstract class GameObject {
 
         batch.draw(textureRegion, x, y);
     }
+
+    public Vector2 getPosition() {
+        return position;
+    }
 }

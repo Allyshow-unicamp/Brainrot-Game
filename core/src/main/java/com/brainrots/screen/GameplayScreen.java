@@ -18,30 +18,15 @@ public class GameplayScreen extends GameScreen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
-        levelManager = new LevelManager(resourceManager);
+        levelManager = new LevelManager(resourceManager, "67Hills");
     }
 
     @Override
     protected void drawScreen(float delta) {
-
-        for(Enemy enemy : levelManager.getEnemies()){
-            enemy.update(delta);
-        }
-
-        Texture background = levelManager.getMapBackground();
-
         camera.update();
-
         batch.setProjectionMatrix(camera.combined);
 
-        batch.begin();
-
-        batch.draw(background, 0, 0);
-
-        for(Enemy enemy : levelManager.getEnemies()){
-            enemy.draw(batch);
-        }
-
-        batch.end();
+        levelManager.update(delta);
+        levelManager.draw(batch);
     }
 }
