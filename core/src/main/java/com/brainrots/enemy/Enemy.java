@@ -35,7 +35,7 @@ public abstract class Enemy extends GameObject implements Collidable {
 
         Vector2 direction = vecDist.nor();
 
-        System.out.println("going to:" + direction.y + "distance: " + vecDist.len2());
+        // System.out.println("going to:" + direction.y + "distance: " + vecDist.len2());
 
         position.x += direction.x * speed * delta;
         position.y += direction.y * speed * delta;
