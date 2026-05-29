@@ -52,6 +52,11 @@ public abstract class Enemy extends GameObject implements Collidable {
         return Intersector.overlaps(this.getBounds(), other.getBounds());
     }
 
+    public boolean takeDamage(int damage) {
+        hp -= damage;
+        return hp <= 0;
+    }
+
     public int getHp() {
         return hp;
     }
