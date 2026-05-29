@@ -13,8 +13,9 @@ public class Base {
         this.position = initialPosition;
     }
 
-    public void takeDamage(int damage) {
+    public boolean takeDamage(int damage) {
         health -= health - damage >= 0 ? damage : health;
+        return health != 0;
     }
 
     public int calculateStars() {
@@ -25,5 +26,9 @@ public class Base {
 
     public Vector2 getPosition() {
         return position;
+    }
+
+    public int getHealth() {
+        return health;
     }
 }

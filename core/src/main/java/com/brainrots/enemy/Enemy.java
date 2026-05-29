@@ -16,10 +16,11 @@ public abstract class Enemy extends GameObject implements Collidable {
     private Array<Vector2> path;
     private int currentWaypointIndex;
 
-    public Enemy(Array<Vector2> path, Texture texture, int speed) {
+    public Enemy(Array<Vector2> path, Texture texture, int health, int speed) {
         this.path = path;
         this.position = new Vector2(path.get(0));
         this.textureRegion = new TextureRegion(texture);
+        this.hp = health;
 
         currentWaypointIndex = 1;
         this.speed = speed;

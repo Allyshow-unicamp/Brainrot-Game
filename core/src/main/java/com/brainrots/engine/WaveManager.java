@@ -37,7 +37,7 @@ public class WaveManager {
             if (spawnTimer >= spawnCooldown) {
                 String enemyAsset = enemiesToSpawn.poll();
 
-                Enemy newEnemy = new ConcreteEnemy(levelManager.getPath(), resourceManager.getTexture(enemyAsset), currentWave * 500);
+                Enemy newEnemy = new ConcreteEnemy(levelManager.getPath(), resourceManager.getTexture(enemyAsset), 25, currentWave * 500);
 
                 levelManager.spawnEnemy(newEnemy);
 

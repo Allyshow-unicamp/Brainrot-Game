@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
+import com.brainrots.screen.ScreenManager;
+import com.brainrots.screen.ScreenManager.ScreenType;
 
 public class LevelManager {
 
@@ -20,6 +22,7 @@ public class LevelManager {
     private Base base;
     private WaveManager waveManager;
     private GameResourceManager resourceManager;
+    private ScreenManager screenManager;
 
     public Array<Vector2> getPath() {
         return map.getPath();
@@ -27,10 +30,15 @@ public class LevelManager {
 
     public Array<Enemy> getActiveEnemies() {
         return activeEnemies;
+    } 
+    
+    public int getBaseHealth() {
+        return base.getHealth();
     }
 
-    public LevelManager(GameResourceManager resourceManager, String mapName){
+    public LevelManager(GameResourceManager resourceManager, ScreenManager screenManager, String mapName){
         this.resourceManager = resourceManager;
+        this.screenManager = screenManager;
         map = new Map(mapName, resourceManager);
         base = new Base(maxHealth, map.getLastPosition());
         activeEnemies = new Array<>();
@@ -50,7 +58,10 @@ public class LevelManager {
             enemy.update(delta);
 
             if (enemy.getPosition().dst(base.getPosition()) < 5.0f) {
-                base.takeDamage(enemy.getHp());
+                boolean alive = base.takeDamage(enemy.getHp());
+                if (!alive) {
+                    screenManager.switchScreen(ScreenType.MAIN_MENU);
+                }
                 toBeRemoved.add(enemy);
             }
         }
