@@ -3,6 +3,7 @@ package com.brainrots.core;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class GameResourceManager {
@@ -20,6 +21,8 @@ public class GameResourceManager {
         assetManager.load("Soundtracks/game_song.mp3", Music.class);
 
         assetManager.load("UI/uiskin.json", Skin.class);
+
+        assetManager.load("UI/default.fnt", BitmapFont.class);
 
         assetManager.finishLoading();
     }
@@ -39,6 +42,12 @@ public class GameResourceManager {
     public Skin getSkin(String name) {
         if (assetManager.isLoaded(name, Skin.class))
             return assetManager.get(name, Skin.class);
+        return null;
+    }
+
+    public BitmapFont getFont(String name) {
+        if (assetManager.isLoaded(name, BitmapFont.class))
+            return assetManager.get(name, BitmapFont.class);
         return null;
     }
 

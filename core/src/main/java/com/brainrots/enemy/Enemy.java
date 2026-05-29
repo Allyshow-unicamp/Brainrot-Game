@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.brainrots.engine.Base;
 import com.brainrots.entity.Collidable;
 import com.brainrots.entity.GameObject;
 
@@ -19,31 +18,33 @@ public abstract class Enemy extends GameObject implements Collidable {
 
     public Enemy(Array<Vector2> path, Texture texture, int speed) {
         this.path = path;
-        this.position = path.get(0);
+        this.position = new Vector2(path.get(0));
         this.textureRegion = new TextureRegion(texture);
 
         currentWaypointIndex = 1;
         this.speed = speed;
     }
 
-    public void update(float delta){
+    public void update(float delta) {
+        if (currentWaypointIndex < path.size) {
+            Vector2 target = path.get(currentWaypointIndex);
+            float moveStep = speed * delta;
+            float distanceToTarget = position.dst(target);
 
-        Vector2 vecDist = (new Vector2(path.get(currentWaypointIndex).x, path.get(currentWaypointIndex).y)).sub(position);
-
-        if(currentWaypointIndex < path.size){
-            currentWaypointIndex++;
-
-            Vector2 direction = vecDist.nor();
-
-            // System.out.println("going to:" + direction.y + "distance: " + vecDist.len2());
-
-            position.x += direction.x * speed * delta;
-            position.y += direction.y * speed * delta;
+            if (distanceToTarget <= moveStep) {
+                position.set(target);
+                currentWaypointIndex++;
+            } else {
+                Vector2 direction = new Vector2(target).sub(position).nor();
+                position.add(direction.scl(moveStep));
+            }
         }
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(textureRegion.getRegionX(), textureRegion.getRegionY(), textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+        int height = textureRegion.getRegionHeight();
+        int width = textureRegion.getRegionWidth();
+        return new Rectangle(position.x - width / 2, position.y - height / 2, width, height);
     }
 
     public boolean intersects(Collidable other) {
