@@ -1,42 +1,37 @@
 package com.brainrots.screen;
 
-import java.util.ArrayDeque;
-import java.util.List;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
+import com.brainrots.engine.LevelLoader;
 import com.brainrots.engine.LevelManager;
-import com.brainrots.tower.ConcreteTower;
-import com.brainrots.tower.TargetType;
+import com.brainrots.engine.WorldRenderer;
+import com.brainrots.screen.ScreenManager.ScreenType;
 
 public class GameplayScreen extends GameScreen {
 
-    private OrthographicCamera camera;
-    private LevelManager levelManager;
-    private Label hpLabel;
+    private static final int VIEWPORT_WIDTH = 1920;
+    private static final int VIEWPORT_HEIGHT = 1080;
+
+    private final OrthographicCamera camera = new OrthographicCamera();
+    private final WorldRenderer worldRenderer = new WorldRenderer();
+    private final LevelManager levelManager;
+    private final Label hpLabel;
 
     public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager, ScreenManager screenManager) {
         super(batch, resourceManager, screenManager);
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
-        levelManager = new LevelManager(resourceManager, screenManager, "67Hills");
-        String enemy = "Enemies/temp.png";
-        levelManager.startNextWave(new ArrayDeque<>(List.of(enemy, enemy, enemy, enemy)));
+        Runnable runOnEnd = () -> screenManager.switchScreen(ScreenType.MAIN_MENU);
 
-        Texture towTexture = resourceManager.getTexture("Towers/tung-tung-tung-sahur.png");
-        ConcreteTower concreteTower = new ConcreteTower(towTexture, new Vector2(500, 500), 25, 2000, 250, 0.5f,
-                150, 150, TargetType.SINGLE, levelManager, resourceManager);
-        levelManager.buyAndPlaceTower(concreteTower);
+        camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        levelManager = new LevelManager(resourceManager, Assets.MAP_67_HILLS_ID, runOnEnd);
+        LevelLoader.loadDefaultLevel(levelManager, resourceManager);
 
-        Skin skin = resourceManager.getSkin("UI/uiskin.json");
+        Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
         LabelStyle labelStyle = new LabelStyle(skin.get(LabelStyle.class));
         hpLabel = new Label("HP: " + levelManager.getBaseHealth(), labelStyle);
 
@@ -55,11 +50,14 @@ public class GameplayScreen extends GameScreen {
         batch.setProjectionMatrix(camera.combined);
 
         levelManager.update(delta);
-        levelManager.draw(batch);
+
+        batch.begin();
+        worldRenderer.render(batch, levelManager);
+        batch.end();
 
         hpLabel.setText("HP: " + levelManager.getBaseHealth());
 
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        StageHelper.act(stage);
         stage.draw();
     }
 }

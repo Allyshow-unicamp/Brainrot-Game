@@ -2,14 +2,11 @@ package com.brainrots.enemy;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.brainrots.entity.Collidable;
 import com.brainrots.entity.GameObject;
 
-public abstract class Enemy extends GameObject implements Collidable {
+public abstract class Enemy extends GameObject {
     protected int hp;
     protected int speed;
     protected int rewardCoins;
@@ -42,14 +39,6 @@ public abstract class Enemy extends GameObject implements Collidable {
                 position.add(direction.scl(moveStep));
             }
         }
-    }
-
-    public Rectangle getBounds() {
-        return new Rectangle(position.x - width / 2, position.y - height / 2, width, height);
-    }
-
-    public boolean intersects(Collidable other) {
-        return Intersector.overlaps(this.getBounds(), other.getBounds());
     }
 
     public boolean takeDamage(int damage) {

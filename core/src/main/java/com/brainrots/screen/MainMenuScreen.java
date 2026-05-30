@@ -1,6 +1,5 @@
 package com.brainrots.screen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,20 +11,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.screen.ScreenManager.ScreenType;
 
 public class MainMenuScreen extends GameScreen {
 
-    public MainMenuScreen(SpriteBatch batch, GameResourceManager resourceManager, ScreenManager screenManager){
+    public MainMenuScreen(SpriteBatch batch, GameResourceManager resourceManager, ScreenManager screenManager) {
         super(batch, resourceManager, screenManager);
 
         Table table = new Table();
         table.setFillParent(true);
         table.defaults().pad(10);
 
-        Skin skin = resourceManager.getSkin("UI/uiskin.json");
-        BitmapFont font = resourceManager.getFont("UI/default.fnt");
+        Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
+        BitmapFont font = resourceManager.getFont(Assets.UI_FONT);
 
         LabelStyle labelStyle = new LabelStyle(skin.get(LabelStyle.class));
         font.getData().setScale(4.0f);
@@ -60,7 +60,7 @@ public class MainMenuScreen extends GameScreen {
 
     @Override
     protected void drawScreen(float delta) {
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1/30f));
+        StageHelper.act(stage);
         stage.draw();
     }
 }

@@ -18,7 +18,7 @@ public class BrainRotGame extends Game implements ScreenManager {
         resourceManager = new GameResourceManager();
         resourceManager.loadAssets();
 
-        Music backgroundMusic = resourceManager.getSound("Soundtracks/game_song.mp3");
+        Music backgroundMusic = resourceManager.getSound(Assets.MUSIC_GAME);
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.5f);
         backgroundMusic.play();
@@ -26,13 +26,14 @@ public class BrainRotGame extends Game implements ScreenManager {
         switchScreen(ScreenType.MAIN_MENU);
     }
 
-    public void switchScreen(ScreenType type){
+    public void switchScreen(ScreenType type) {
         switch (type) {
             case MAIN_MENU:
-                this.setScreen(new MainMenuScreen(batch, resourceManager, this));
+                setScreen(new MainMenuScreen(batch, resourceManager, this));
                 break;
             case GAMEPLAY:
-                this.setScreen(new GameplayScreen(batch, resourceManager, this));
+                setScreen(new GameplayScreen(batch, resourceManager, this));
+                break;
             default:
                 break;
         }
@@ -40,6 +41,10 @@ public class BrainRotGame extends Game implements ScreenManager {
 
     @Override
     public void dispose() {
+        if (getScreen() != null) {
+            getScreen().dispose();
+        }
+        resourceManager.dispose();
         batch.dispose();
     }
 }

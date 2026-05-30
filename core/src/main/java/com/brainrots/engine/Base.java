@@ -14,8 +14,8 @@ public class Base {
     }
 
     public boolean takeDamage(int damage) {
-        health -= health - damage >= 0 ? damage : health;
-        return health != 0;
+        health -= Math.min(health, damage);
+        return health > 0;
     }
 
     public int calculateStars() {

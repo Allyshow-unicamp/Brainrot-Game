@@ -2,17 +2,15 @@ package com.brainrots.tower;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.LevelManager;
-import com.brainrots.entity.Collidable;
 import com.brainrots.entity.GameObject;
 import com.brainrots.projectile.Projectile;
 
-public abstract class Tower extends GameObject implements Collidable {
+public abstract class Tower extends GameObject {
     private String id;
     private String name;
     protected int damage;
@@ -43,25 +41,17 @@ public abstract class Tower extends GameObject implements Collidable {
     public abstract Projectile createProjectile(Texture texture, Enemy target);
 
     @Override
-    public Rectangle getBounds() {
-        return new Rectangle(position.x - width / 2, position.y - height / 2, width, height);
-    }
-
-    @Override
-    public boolean intersects(Collidable other) {
-        return Intersector.overlaps(this.getBounds(), other.getBounds());
-    }
-
-    @Override
     public void update(float deltaTime) {
         timeSinceLastAttack += deltaTime;
         if (timeSinceLastAttack >= attackCooldown) {
             Enemy closestEnemy = levelManager.closestEnemy(position);
 
-            if (closestEnemy == null) return;
+            if (closestEnemy == null) {
+                return;
+            }
 
             if (position.dst(closestEnemy.getPosition()) < range) {
-                Texture texture = resourceManager.getTexture("Projectiles/black.png");
+                Texture texture = resourceManager.getTexture(Assets.PROJECTILE_BLACK);
                 levelManager.spawnProjectile(createProjectile(texture, closestEnemy));
                 timeSinceLastAttack = 0;
             }

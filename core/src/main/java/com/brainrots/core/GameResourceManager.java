@@ -8,48 +8,47 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class GameResourceManager {
 
-    private AssetManager assetManager;
+    private final AssetManager assetManager = new AssetManager();
 
-    public GameResourceManager(){
-        assetManager = new AssetManager();
-    }
+    public void loadAssets() {
+        assetManager.load(Assets.MAP_67_HILLS_BG, Texture.class);
+        assetManager.load(Assets.ENEMY_TEMP, Texture.class);
+        assetManager.load(Assets.TOWER_TUNG, Texture.class);
+        assetManager.load(Assets.PROJECTILE_BLACK, Texture.class);
 
-    public void loadAssets(){
-        assetManager.load("Maps/67Hills/67Hills.png", Texture.class);
-        assetManager.load("Enemies/temp.png", Texture.class);
-        assetManager.load("Towers/tung-tung-tung-sahur.png", Texture.class);
-        assetManager.load("Projectiles/black.png", Texture.class);
+        assetManager.load(Assets.MUSIC_GAME, Music.class);
 
-        assetManager.load("Soundtracks/game_song.mp3", Music.class);
-
-        assetManager.load("UI/uiskin.json", Skin.class);
-
-        assetManager.load("UI/default.fnt", BitmapFont.class);
+        assetManager.load(Assets.UI_SKIN, Skin.class);
+        assetManager.load(Assets.UI_FONT, BitmapFont.class);
 
         assetManager.finishLoading();
     }
 
     public Texture getTexture(String name) {
-        if (assetManager.isLoaded(name, Texture.class))
+        if (assetManager.isLoaded(name, Texture.class)) {
             return assetManager.get(name, Texture.class);
+        }
         return null;
     }
 
     public Music getSound(String name) {
-        if (assetManager.isLoaded(name, Music.class))
+        if (assetManager.isLoaded(name, Music.class)) {
             return assetManager.get(name, Music.class);
+        }
         return null;
     }
 
     public Skin getSkin(String name) {
-        if (assetManager.isLoaded(name, Skin.class))
+        if (assetManager.isLoaded(name, Skin.class)) {
             return assetManager.get(name, Skin.class);
+        }
         return null;
     }
 
     public BitmapFont getFont(String name) {
-        if (assetManager.isLoaded(name, BitmapFont.class))
+        if (assetManager.isLoaded(name, BitmapFont.class)) {
             return assetManager.get(name, BitmapFont.class);
+        }
         return null;
     }
 
