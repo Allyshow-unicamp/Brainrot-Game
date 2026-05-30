@@ -25,7 +25,7 @@ public class MainMenuScreen extends GameScreen {
         table.defaults().pad(10);
 
         Skin skin = resourceManager.getSkin("UI/uiskin.json");
-        BitmapFont font = new BitmapFont();
+        BitmapFont font = resourceManager.getFont("UI/default.fnt");
 
         LabelStyle labelStyle = new LabelStyle(skin.get(LabelStyle.class));
         font.getData().setScale(4.0f);

@@ -58,4 +58,8 @@ public class Map {
     public Array<Vector2> getPath(){
         return enemyPath;
     }
+
+    public Vector2 getLastPosition() {
+        return enemyPath.get(enemyPath.size - 1);
+    }
 }

@@ -10,42 +10,54 @@ import com.brainrots.entity.Collidable;
 import com.brainrots.entity.GameObject;
 
 public abstract class Enemy extends GameObject implements Collidable {
-    protected float hp;
-    protected float speed;
+    protected int hp;
+    protected int speed;
     protected int rewardCoins;
     private Array<Vector2> path;
     private int currentWaypointIndex;
 
-    public Enemy(Array<Vector2> path, Texture texture) {
+    public Enemy(Array<Vector2> path, Texture texture, int health, int speed, int width, int height) {
         this.path = path;
-        this.position = path.get(0);
+        this.position = new Vector2(path.get(0));
         this.textureRegion = new TextureRegion(texture);
+        this.hp = health;
+        this.width = width;
+        this.height = height;
 
         currentWaypointIndex = 1;
-        speed = 500;
+        this.speed = speed;
     }
 
-    public void update(float delta){
+    public void update(float delta) {
+        if (currentWaypointIndex < path.size) {
+            Vector2 target = path.get(currentWaypointIndex);
+            float moveStep = speed * delta;
+            float distanceToTarget = position.dst(target);
 
-        Vector2 vecDist = (new Vector2(path.get(currentWaypointIndex).x, path.get(currentWaypointIndex).y)).sub(position);
-
-        if(vecDist.len2() < 100){
-            currentWaypointIndex++;
+            if (distanceToTarget <= moveStep) {
+                position.set(target);
+                currentWaypointIndex++;
+            } else {
+                Vector2 direction = new Vector2(target).sub(position).nor();
+                position.add(direction.scl(moveStep));
+            }
         }
-
-        Vector2 direction = vecDist.nor();
-
-        // System.out.println("going to:" + direction.y + "distance: " + vecDist.len2());
-
-        position.x += direction.x * speed * delta;
-        position.y += direction.y * speed * delta;
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(textureRegion.getRegionX(), textureRegion.getRegionY(), textureRegion.getRegionWidth(), textureRegion.getRegionHeight());
+        return new Rectangle(position.x - width / 2, position.y - height / 2, width, height);
     }
 
     public boolean intersects(Collidable other) {
         return Intersector.overlaps(this.getBounds(), other.getBounds());
+    }
+
+    public boolean takeDamage(int damage) {
+        hp -= damage;
+        return hp <= 0;
+    }
+
+    public int getHp() {
+        return hp;
     }
 }
