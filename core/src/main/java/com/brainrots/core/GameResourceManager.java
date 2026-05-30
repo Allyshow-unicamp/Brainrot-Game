@@ -16,7 +16,9 @@ public class GameResourceManager {
 
     public void loadAssets(){
         assetManager.load("Maps/67Hills/67Hills.png", Texture.class);
-        assetManager.load("temp.png", Texture.class);
+        assetManager.load("Enemies/temp.png", Texture.class);
+        assetManager.load("Towers/tung-tung-tung-sahur.png", Texture.class);
+        assetManager.load("Projectiles/black.png", Texture.class);
 
         assetManager.load("Soundtracks/game_song.mp3", Music.class);
 
