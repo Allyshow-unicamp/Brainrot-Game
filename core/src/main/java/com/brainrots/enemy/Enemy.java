@@ -16,11 +16,13 @@ public abstract class Enemy extends GameObject implements Collidable {
     private Array<Vector2> path;
     private int currentWaypointIndex;
 
-    public Enemy(Array<Vector2> path, Texture texture, int health, int speed) {
+    public Enemy(Array<Vector2> path, Texture texture, int health, int speed, int width, int height) {
         this.path = path;
         this.position = new Vector2(path.get(0));
         this.textureRegion = new TextureRegion(texture);
         this.hp = health;
+        this.width = width;
+        this.height = height;
 
         currentWaypointIndex = 1;
         this.speed = speed;
@@ -43,13 +45,16 @@ public abstract class Enemy extends GameObject implements Collidable {
     }
 
     public Rectangle getBounds() {
-        int height = textureRegion.getRegionHeight();
-        int width = textureRegion.getRegionWidth();
         return new Rectangle(position.x - width / 2, position.y - height / 2, width, height);
     }
 
     public boolean intersects(Collidable other) {
         return Intersector.overlaps(this.getBounds(), other.getBounds());
+    }
+
+    public boolean takeDamage(int damage) {
+        hp -= damage;
+        return hp <= 0;
     }
 
     public int getHp() {

@@ -8,8 +8,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
+import com.brainrots.projectile.Projectile;
 import com.brainrots.screen.ScreenManager;
 import com.brainrots.screen.ScreenManager.ScreenType;
+import com.brainrots.tower.Tower;
 
 public class LevelManager {
 
@@ -19,6 +21,8 @@ public class LevelManager {
     private int coins;
     private Map map;
     private Array<Enemy> activeEnemies;
+    private Array<Projectile> activeProjectiles;
+    private Array<Tower> activeTowers;
     private Base base;
     private WaveManager waveManager;
     private GameResourceManager resourceManager;
@@ -30,8 +34,8 @@ public class LevelManager {
 
     public Array<Enemy> getActiveEnemies() {
         return activeEnemies;
-    } 
-    
+    }
+
     public int getBaseHealth() {
         return base.getHealth();
     }
@@ -42,6 +46,8 @@ public class LevelManager {
         map = new Map(mapName, resourceManager);
         base = new Base(maxHealth, map.getLastPosition());
         activeEnemies = new Array<>();
+        activeProjectiles = new Array<>();
+        activeTowers = new Array<>();
         waveManager = new WaveManager(maxWaves);
     }
 
@@ -49,11 +55,45 @@ public class LevelManager {
         waveManager.startNextWave(enemiesToSpawn);
     }
 
+    public Enemy closestEnemy(Vector2 position) {
+        float minDst = Float.POSITIVE_INFINITY;
+        Enemy minEnemy = null;
+        for (Enemy enemy : activeEnemies) {
+            float dst = enemy.getPosition().dst(position);
+            if (dst < minDst) {
+                minDst = dst;
+                minEnemy = enemy;
+            }
+        }
+        return minEnemy;
+    }
+
     public void update(float delta) {
+        for (Tower tower : activeTowers) {
+            tower.update(delta);
+        }
+
+        Array<Projectile> projectilesToBeRemoved = new Array<>();
+        for (Projectile projectile : activeProjectiles) {
+            projectile.update(delta);
+
+            if (projectile.reachedTarget())
+                projectilesToBeRemoved.add(projectile);
+
+            // inimigo que já morreu
+            if (!activeEnemies.contains(projectile.getTarget(), true))
+                projectilesToBeRemoved.add(projectile);
+
+            if (projectile.getPosition().dst(projectile.getParent().getPosition()) > projectile.getParent().getRange())
+                projectilesToBeRemoved.add(projectile);
+        }
+        for (Projectile projectile : projectilesToBeRemoved) {
+            activeProjectiles.removeValue(projectile, true);
+        }
+
         waveManager.update(delta, this, resourceManager);
 
-        Array<Enemy> toBeRemoved = new Array<>();
-
+        Array<Enemy> enemiesToBeRemoved = new Array<>();
         for(Enemy enemy : activeEnemies){
             enemy.update(delta);
 
@@ -62,11 +102,13 @@ public class LevelManager {
                 if (!alive) {
                     screenManager.switchScreen(ScreenType.MAIN_MENU);
                 }
-                toBeRemoved.add(enemy);
+                enemiesToBeRemoved.add(enemy);
             }
-        }
 
-        for (Enemy enemy : toBeRemoved){
+            if (enemy.getHp() <= 0)
+                enemiesToBeRemoved.add(enemy);
+        }
+        for (Enemy enemy : enemiesToBeRemoved){
             activeEnemies.removeValue(enemy, true);
         }
     }
@@ -75,17 +117,32 @@ public class LevelManager {
         activeEnemies.add(enemy);
     }
 
-    public void draw(SpriteBatch batch) {
-        Texture background = map.getBackground();
+    public void spawnProjectile(Projectile projectile) {
+        activeProjectiles.add(projectile);
+    }
 
+    public void draw(SpriteBatch batch) {
         batch.begin();
 
+        Texture background = map.getBackground();
         batch.draw(background, 0, 0);
 
         for(Enemy enemy : activeEnemies){
             enemy.draw(batch);
         }
 
+        for(Tower tower : activeTowers) {
+            tower.draw(batch);
+        }
+
+        for(Projectile projectile: activeProjectiles) {
+            projectile.draw(batch);
+        }
+
         batch.end();
+    }
+
+    public void buyAndPlaceTower(Tower tower) {
+        activeTowers.add(tower);
     }
 }
