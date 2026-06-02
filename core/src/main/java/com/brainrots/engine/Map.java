@@ -27,7 +27,7 @@ public class Map {
                 break;
         }
 
-        Object pathObject = tiledMap.getLayers().get("path").getObjects().get(0);
+        Object pathObject = tiledMap.getLayers().get("Path").getObjects().get(0);
 
         if (pathObject instanceof PolylineMapObject polylineObject) {
             Polyline polyline = polylineObject.getPolyline();

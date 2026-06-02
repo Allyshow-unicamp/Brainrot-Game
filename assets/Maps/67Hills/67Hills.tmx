@@ -1,32 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="1920" height="1080" tilewidth="1" tileheight="1" infinite="0" nextlayerid="5" nextobjectid="34">
- <imagelayer id="2" name="map">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1920" tileheight="1080" infinite="0" nextlayerid="5" nextobjectid="4">
+ <imagelayer id="2" name="Image">
   <image source="67Hills.png" width="1920" height="1080"/>
  </imagelayer>
- <objectgroup id="3" name="path
- " visible="0" locked="1">
-  <object id="11" x="0" y="377.333">
-   <polyline points="0,0 930.667,-14.6667 924,-310.667 456,-304 480,505.333 145.333,516 136,268 1288.67,268 1299.33,-125.333 1723.33,-126.667 1707.33,702"/>
+ <objectgroup id="3" name="Path">
+  <object id="2" x="0" y="578.861">
+   <polyline points="0,0 1213.95,-4.96167 1213.95,-390.318 699.595,-391.972 706.211,324.162 388.664,322.508 387.01,190.197 1538.12,191.851 1533.16,-195.159 1734.93,-190.197 1728.31,501.128"/>
   </object>
  </objectgroup>
- <objectgroup id="4" name="block">
-  <object id="28" x="7.4607e-14" y="326">
-   <polygon points="0,0 979.167,-11.8333 977.667,76.6667 -1.33333,94"/>
-  </object>
-  <object id="29" x="980.667" y="314.667">
-   <polygon points="0,0 1.33333,-286 -109.333,-282.667 -104,0.666667"/>
-  </object>
-  <object id="30" x="402" y="30">
-   <polygon points="0,0 471.333,0.666667 470.667,87.3333 6,91.3333"/>
-  </object>
-  <object id="31" x="513.333" y="121.333">
-   <polygon points="0,0 15.3333,788.667 -78,792.667 -88,566 -96,468 -96.6667,295.333 -105.333,0.666667"/>
-  </object>
-  <object id="32" x="421" y="593">
-   <polygon points="0,0 -328,6 -330,334 14,323 11,252 -220,264 -230,102 5,94"/>
-  </object>
-  <object id="33" x="526.667" y="586.667">
-   <polygon points="0,0 697.333,-9.33333 724,-370.667 1236,-378.667 1225.33,490.667 1117.33,490.667 1141.33,-278.667 812,-276 804,110.667 2.66667,128"/>
+ <objectgroup id="4" name="Barrier">
+  <object id="3" x="0" y="509.398">
+   <polygon points="0,0 645.017,0 640.055,-383.702 1280.11,-382.048 1283.42,127.349 770.712,129.003 770.712,193.505 1476.92,191.851 1471.96,-190.197 1796.12,-188.543 1791.16,568.938 1663.81,568.938 1665.47,-62.8478 1597.66,-64.5017 1599.31,320.855 767.405,322.508 769.058,446.55 320.855,449.858 320.855,193.505 640.055,191.851 641.709,127.349 1.65389,129.003"/>
   </object>
  </objectgroup>
 </map>
