@@ -8,7 +8,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class GameResourceManager {
 
-    private final AssetManager assetManager = new AssetManager();
+    private AssetManager assetManager;
+    private static GameResourceManager resourceManager;
+
+    private GameResourceManager()
+    {
+        this.assetManager = new AssetManager();
+    }
+
+    public static GameResourceManager getGameResourceManager()
+    {
+        if(resourceManager == null)
+            resourceManager = new GameResourceManager();
+        return resourceManager;
+    }
 
     public void loadAssets() {
         assetManager.load(Assets.MAP_67_HILLS_BG, Texture.class);

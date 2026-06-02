@@ -3,6 +3,7 @@ package com.brainrots.screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -17,8 +18,8 @@ import com.brainrots.screen.ScreenManager.ScreenType;
 
 public class MainMenuScreen extends GameScreen {
 
-    public MainMenuScreen(SpriteBatch batch, GameResourceManager resourceManager, ScreenManager screenManager) {
-        super(batch, resourceManager, screenManager);
+    public MainMenuScreen(SpriteBatch batch, GameResourceManager resourceManager, ScreenManager screenManager,ShapeRenderer shapeRenderer) {
+        super(batch, resourceManager, screenManager,shapeRenderer);
 
         Table table = new Table();
         table.setFillParent(true);
