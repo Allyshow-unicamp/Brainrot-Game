@@ -3,6 +3,7 @@ package com.brainrots.core;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.brainrots.screen.GameplayScreen;
 import com.brainrots.screen.MainMenuScreen;
 import com.brainrots.screen.ScreenManager;
@@ -11,11 +12,13 @@ public class BrainRotGame extends Game implements ScreenManager {
 
     private SpriteBatch batch;
     private GameResourceManager resourceManager;
+    private ShapeRenderer shapeRenderer;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        resourceManager = new GameResourceManager();
+        shapeRenderer = new ShapeRenderer();
+        resourceManager = GameResourceManager.getGameResourceManager();
         resourceManager.loadAssets();
 
         Music backgroundMusic = resourceManager.getSound(Assets.MUSIC_GAME);
@@ -29,11 +32,18 @@ public class BrainRotGame extends Game implements ScreenManager {
     public void switchScreen(ScreenType type) {
         switch (type) {
             case MAIN_MENU:
+<<<<<<< Updated upstream
                 setScreen(new MainMenuScreen(batch, resourceManager, this));
                 break;
             case GAMEPLAY:
                 setScreen(new GameplayScreen(batch, resourceManager, this));
                 break;
+=======
+                this.setScreen(new MainMenuScreen(batch, resourceManager, this,shapeRenderer));
+                break;
+            case GAMEPLAY:
+                this.setScreen(new GameplayScreen(batch, resourceManager, this,shapeRenderer));
+>>>>>>> Stashed changes
             default:
                 break;
         }

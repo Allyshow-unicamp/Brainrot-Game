@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class GameResourceManager {
 
+<<<<<<< Updated upstream
     private final AssetManager assetManager = new AssetManager();
 
     public void loadAssets() {
@@ -15,12 +16,37 @@ public class GameResourceManager {
         assetManager.load(Assets.ENEMY_TEMP, Texture.class);
         assetManager.load(Assets.TOWER_TUNG, Texture.class);
         assetManager.load(Assets.PROJECTILE_BLACK, Texture.class);
+=======
+    private AssetManager assetManager;
+    private static GameResourceManager resourceManager;
+
+    private GameResourceManager(){
+        assetManager = new AssetManager();
+        
+    }
+
+    public static GameResourceManager getGameResourceManager()
+    {
+        if(resourceManager == null)
+            resourceManager = new GameResourceManager();
+        return resourceManager;
+    }
+>>>>>>> Stashed changes
 
         assetManager.load(Assets.MUSIC_GAME, Music.class);
 
+<<<<<<< Updated upstream
         assetManager.load(Assets.UI_SKIN, Skin.class);
         assetManager.load(Assets.UI_FONT, BitmapFont.class);
 
+=======
+        assetManager.load("Soundtracks/game_song.mp3", Music.class);
+
+        assetManager.load("UI/uiskin.json", Skin.class);
+
+        assetManager.load("UI/default.fnt", BitmapFont.class);
+        assetManager.load("Towers/castle.png",Texture.class);
+>>>>>>> Stashed changes
         assetManager.finishLoading();
     }
 
