@@ -18,14 +18,8 @@ import com.brainrots.screen.ScreenManager.ScreenType;
 
 public class MainMenuScreen extends GameScreen {
 
-<<<<<<< Updated upstream
-    public MainMenuScreen(SpriteBatch batch, GameResourceManager resourceManager, ScreenManager screenManager) {
-        super(batch, resourceManager, screenManager);
-=======
-    public MainMenuScreen(SpriteBatch batch, GameResourceManager resourceManager, 
-        ScreenManager screenManager, ShapeRenderer shapeRenderer){
+    public MainMenuScreen(SpriteBatch batch, GameResourceManager resourceManager, ScreenManager screenManager,ShapeRenderer shapeRenderer) {
         super(batch, resourceManager, screenManager,shapeRenderer);
->>>>>>> Stashed changes
 
         Table table = new Table();
         table.setFillParent(true);

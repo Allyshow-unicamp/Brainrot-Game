@@ -1,11 +1,10 @@
 package com.brainrots.engine;
 
-import java.util.ArrayDeque;
 import java.util.Queue;
 
 import com.brainrots.core.GameResourceManager;
+import com.brainrots.enemy.ConcreteEnemy;
 import com.brainrots.enemy.Enemy;
-import com.brainrots.enemy.EnemyFactory;
 
 public class WaveManager {
     private int currentWave = 1;
@@ -21,22 +20,16 @@ public class WaveManager {
         this.maxWaves = maxWaves;
     }
 
-    public void startNextWave(int nEnemies, String enemy) {
+    public void startNextWave(Queue<String> enemiesToSpawn) {
         if (this.currentWave <= maxWaves) {
-            this.enemiesToSpawn = new ArrayDeque<>();
-            for (int i = 0; i < nEnemies; i++) {
-                enemiesToSpawn.add(enemy);
-            }
-
+            this.enemiesToSpawn = enemiesToSpawn;
             this.isWaveActive = true;
             this.currentWave++;
         }
     }
 
     public void update(float delta, LevelManager levelManager, GameResourceManager resourceManager) {
-        if (!isWaveActive) {
-            return;
-        }
+        if (!isWaveActive) return;
 
         if (!enemiesToSpawn.isEmpty()) {
             spawnTimer += delta;
@@ -44,17 +37,16 @@ public class WaveManager {
             if (spawnTimer >= spawnCooldown) {
                 String enemyAsset = enemiesToSpawn.poll();
 
-                Enemy newEnemy = EnemyFactory.createDefault(
-                        levelManager.getPath(),
-                        resourceManager.getTexture(enemyAsset),
-                        currentWave);
+                Enemy newEnemy = new ConcreteEnemy(levelManager.getPath(), resourceManager.getTexture(enemyAsset), 50, currentWave * 500, 100, 100);
 
                 levelManager.spawnEnemy(newEnemy);
 
                 spawnTimer = 0f;
             }
-        } else if (levelManager.getActiveEnemies().isEmpty()) {
-            isWaveActive = false;
+        } else {
+            if (levelManager.getActiveEnemies().isEmpty()) {
+                isWaveActive = false;
+            }
         }
     }
 }

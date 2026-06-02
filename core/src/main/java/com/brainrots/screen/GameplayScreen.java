@@ -1,49 +1,36 @@
 package com.brainrots.screen;
 
+import java.util.ArrayDeque;
+import java.util.List;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-<<<<<<< Updated upstream
-=======
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
->>>>>>> Stashed changes
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
-import com.brainrots.engine.LevelLoader;
 import com.brainrots.engine.LevelManager;
-import com.brainrots.engine.WorldRenderer;
-import com.brainrots.screen.ScreenManager.ScreenType;
+import com.brainrots.tower.ConcreteTower;
+import com.brainrots.tower.TargetType;
 
 import java.util.Vector;
 
 public class GameplayScreen extends GameScreen {
 
-<<<<<<< Updated upstream
-    private static final int VIEWPORT_WIDTH = 1920;
-    private static final int VIEWPORT_HEIGHT = 1080;
-
-    private final OrthographicCamera camera = new OrthographicCamera();
-    private final WorldRenderer worldRenderer = new WorldRenderer();
-    private final LevelManager levelManager;
-    private final Label hpLabel;
-=======
     private OrthographicCamera camera;
     private OrthographicCamera uiCamera; //importtante pra n zikar o jogo, confia
     private LevelManager levelManager;
     private Label hpLabel;
     private TowerButton towerButton;
->>>>>>> Stashed changes
 
     public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager, 
                 ScreenManager screenManager, ShapeRenderer shapeRenderer) {
         super(batch, resourceManager, screenManager,shapeRenderer);
 
-<<<<<<< Updated upstream
-        Runnable runOnEnd = () -> screenManager.switchScreen(ScreenType.MAIN_MENU);
-=======
         camera = new OrthographicCamera();
         uiCamera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
@@ -51,13 +38,13 @@ public class GameplayScreen extends GameScreen {
         levelManager = new LevelManager(resourceManager, screenManager, "67Hills",camera);
         String enemy = "Enemies/temp.png";
         levelManager.startNextWave(new ArrayDeque<>(List.of(enemy, enemy, enemy, enemy)));
->>>>>>> Stashed changes
 
-        camera.setToOrtho(false, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        levelManager = new LevelManager(resourceManager, Assets.MAP_67_HILLS_ID, runOnEnd);
-        LevelLoader.loadDefaultLevel(levelManager, resourceManager);
+        Texture towTexture = resourceManager.getTexture("Towers/tung-tung-tung-sahur.png");
+        ConcreteTower concreteTower = new ConcreteTower(towTexture, new Vector2(500, 500), 25, 2000, 250, 0.5f,
+                150, 150, TargetType.SINGLE, levelManager, resourceManager);
+        levelManager.buyAndPlaceTower(concreteTower);
 
-        Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
+        Skin skin = resourceManager.getSkin("UI/uiskin.json");
         LabelStyle labelStyle = new LabelStyle(skin.get(LabelStyle.class));
         hpLabel = new Label("HP: " + levelManager.getBaseHealth(), labelStyle);
 
@@ -80,23 +67,12 @@ public class GameplayScreen extends GameScreen {
 
     @Override
     protected void drawScreen(float delta) {
-<<<<<<< Updated upstream
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
-
-        levelManager.update(delta);
-
-        batch.begin();
-        worldRenderer.render(batch, levelManager);
-        batch.end();
-=======
         renderMainCamera(delta);
         renderUICamera();
->>>>>>> Stashed changes
 
         hpLabel.setText("HP: " + levelManager.getBaseHealth());
 
-        StageHelper.act(stage);
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
 
@@ -112,7 +88,7 @@ public class GameplayScreen extends GameScreen {
         });
 
         stage.addActor(towerButton);
-        resize(1920, 1080);
+        resize(1920,1080);
     }
 
     private void renderMainCamera(float delta)

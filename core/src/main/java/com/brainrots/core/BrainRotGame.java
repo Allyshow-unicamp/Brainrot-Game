@@ -32,18 +32,11 @@ public class BrainRotGame extends Game implements ScreenManager {
     public void switchScreen(ScreenType type) {
         switch (type) {
             case MAIN_MENU:
-<<<<<<< Updated upstream
-                setScreen(new MainMenuScreen(batch, resourceManager, this));
+                setScreen(new MainMenuScreen(batch, resourceManager, this,shapeRenderer));
                 break;
             case GAMEPLAY:
-                setScreen(new GameplayScreen(batch, resourceManager, this));
+                setScreen(new GameplayScreen(batch, resourceManager, this,shapeRenderer));
                 break;
-=======
-                this.setScreen(new MainMenuScreen(batch, resourceManager, this,shapeRenderer));
-                break;
-            case GAMEPLAY:
-                this.setScreen(new GameplayScreen(batch, resourceManager, this,shapeRenderer));
->>>>>>> Stashed changes
             default:
                 break;
         }
