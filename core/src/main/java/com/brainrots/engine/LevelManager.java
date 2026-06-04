@@ -62,7 +62,7 @@ public class LevelManager {
         activeEnemies = new Array<>();
         activeProjectiles = new Array<>();
         activeTowers = new Array<>();
-        waveManager = new WaveManager(maxWaves);
+        waveManager = new WaveManager(map.getPath());
     }
 
     public void positionTowerMode(Texture towerGhostTexture)
@@ -71,8 +71,8 @@ public class LevelManager {
         this.isIconSelected = true;
     }
 
-    public void startNextWave(Queue<String> enemiesToSpawn) {
-        waveManager.startNextWave(enemiesToSpawn);
+    public void startNextWave() {
+        waveManager.startNextWave();
     }
 
     public Enemy closestEnemy(Vector2 position) {

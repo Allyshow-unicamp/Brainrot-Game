@@ -1,52 +1,74 @@
 package com.brainrots.engine;
 
-import java.util.Queue;
-
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.Array.ArrayIterator;
 import com.brainrots.core.GameResourceManager;
-import com.brainrots.enemy.ConcreteEnemy;
 import com.brainrots.enemy.Enemy;
+import com.brainrots.enemy.EnemyFactory;
+import com.brainrots.enemy.EnemySpawner;
 
 public class WaveManager {
-    private int currentWave = 1;
-    private int maxWaves;
 
-    private float spawnTimer = 0f;
-    private float spawnCooldown = 1.5f;
+    private int currentWave;
+    private Array<Vector2> path;
+    private EnemyFactory factory = new EnemyFactory();
 
-    private Queue<String> enemiesToSpawn;
-    private boolean isWaveActive = false;
+    private JsonReader reader;
+    private JsonValue allWaves;
 
-    public WaveManager(int maxWaves) {
-        this.maxWaves = maxWaves;
+    private Array<EnemySpawner> activeSpawners;
+
+    private boolean isWaveActive;
+
+    public WaveManager(Array<Vector2> path) {
+        this.currentWave = 0;
+        this.isWaveActive = false;
+        this.reader = new JsonReader();
+        this.allWaves = reader.parse(Gdx.files.internal("data/waves.json"));
+        this.activeSpawners = new Array<>();
+        this.path = path;
     }
 
-    public void startNextWave(Queue<String> enemiesToSpawn) {
-        if (this.currentWave <= maxWaves) {
-            this.enemiesToSpawn = enemiesToSpawn;
-            this.isWaveActive = true;
-            this.currentWave++;
+    public void startNextWave() {
+
+        currentWave++;
+
+        JsonValue waveData = allWaves.get(String.valueOf(currentWave));
+
+        for(JsonValue enemy : waveData.get("enemies")){
+            activeSpawners.add(new EnemySpawner(enemy.getString("type"), enemy.getInt("count"), enemy.getFloat("spawnInterval"),
+        enemy.getInt("spawnTime")));
         }
+
+        isWaveActive = true;
     }
 
     public void update(float delta, LevelManager levelManager, GameResourceManager resourceManager) {
         if (!isWaveActive) return;
 
-        if (!enemiesToSpawn.isEmpty()) {
-            spawnTimer += delta;
+        if(activeSpawners.isEmpty()){
+            isWaveActive = false;
+            return;
+        }
 
-            if (spawnTimer >= spawnCooldown) {
-                String enemyAsset = enemiesToSpawn.poll();
+        ArrayIterator<EnemySpawner> iterator = activeSpawners.iterator();
 
-                Enemy newEnemy = new ConcreteEnemy(levelManager.getPath(), resourceManager.getTexture(enemyAsset), 50, currentWave * 500, 100, 100);
+        while (iterator.hasNext()) {
+            EnemySpawner spawner = iterator.next();
 
-                levelManager.spawnEnemy(newEnemy);
-
-                spawnTimer = 0f;
+            if(spawner.shouldSpawn(delta)){
+                Enemy enemy = factory.spawnEnemy(spawner.getType(), path);
+                levelManager.spawnEnemy(enemy);
             }
-        } else {
-            if (levelManager.getActiveEnemies().isEmpty()) {
-                isWaveActive = false;
+
+            if(spawner.isEmpty()){
+                activeSpawners.removeValue(spawner, false);
             }
         }
+
     }
 }

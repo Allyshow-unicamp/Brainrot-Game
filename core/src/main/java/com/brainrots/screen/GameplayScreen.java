@@ -1,54 +1,38 @@
 package com.brainrots.screen;
 
-import java.util.ArrayDeque;
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.engine.LevelManager;
-import com.brainrots.tower.ConcreteTower;
-import com.brainrots.tower.TargetType;
 
-import java.util.Vector;
 
 public class GameplayScreen extends GameScreen {
 
-    private OrthographicCamera camera;
-    private OrthographicCamera uiCamera; //importtante pra n zikar o jogo, confia
-    private LevelManager levelManager;
+    private OrthographicCamera camera;      // Camera principal do jogo
+    private LevelManager levelManager;      // Gerenciador da fase
     private Label hpLabel;
     private TowerButton towerButton;
 
     public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager, 
                 ScreenManager screenManager, ShapeRenderer shapeRenderer) {
-        super(batch, resourceManager, screenManager,shapeRenderer);
+        super(batch, resourceManager, screenManager, shapeRenderer);
 
         camera = new OrthographicCamera();
-        uiCamera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
-        uiCamera.setToOrtho(false,1920,1080);
-        levelManager = new LevelManager(resourceManager, screenManager, "67Hills",camera);
-        String enemy = "Enemies/temp.png";
-        levelManager.startNextWave(new ArrayDeque<>(List.of(enemy, enemy, enemy, enemy)));
 
-        Texture towTexture = resourceManager.getTexture("Towers/tung-tung-tung-sahur.png");
-        ConcreteTower concreteTower = new ConcreteTower(towTexture, new Vector2(500, 500), 25, 2000, 250, 0.5f,
-                150, 150, TargetType.SINGLE, levelManager, resourceManager);
-        levelManager.buyAndPlaceTower(concreteTower);
+        levelManager = new LevelManager(resourceManager, screenManager, "67Hills", camera);
+        levelManager.startNextWave();
 
         Skin skin = resourceManager.getSkin("UI/uiskin.json");
         LabelStyle labelStyle = new LabelStyle(skin.get(LabelStyle.class));
         hpLabel = new Label("HP: " + levelManager.getBaseHealth(), labelStyle);
 
-        stage.getViewport().setCamera(uiCamera);
         stage.addActor(hpLabel);
     }
 
@@ -68,7 +52,8 @@ public class GameplayScreen extends GameScreen {
     @Override
     protected void drawScreen(float delta) {
         renderMainCamera(delta);
-        renderUICamera();
+
+
 
         hpLabel.setText("HP: " + levelManager.getBaseHealth());
 
@@ -97,12 +82,6 @@ public class GameplayScreen extends GameScreen {
         batch.setProjectionMatrix(camera.combined);
         levelManager.update(delta);
         levelManager.draw(batch,shapeRenderer);
-    }
-    private void renderUICamera()
-    {
-        uiCamera.update();
-        batch.setProjectionMatrix(uiCamera.combined);
-
     }
 
 }

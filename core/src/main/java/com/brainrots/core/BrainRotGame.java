@@ -8,6 +8,9 @@ import com.brainrots.screen.GameplayScreen;
 import com.brainrots.screen.MainMenuScreen;
 import com.brainrots.screen.ScreenManager;
 
+/**
+ * Classe que gerencia todo o jogo.
+ */
 public class BrainRotGame extends Game implements ScreenManager {
 
     private SpriteBatch batch;

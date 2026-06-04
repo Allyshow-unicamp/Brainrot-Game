@@ -24,7 +24,7 @@ public class Map {
                 break;
             default:
                 System.err.println("Mapa não existe");
-                break;
+                return;
         }
 
         Object pathObject = tiledMap.getLayers().get("Path").getObjects().get(0);

@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.brainrots.entity.GameObject;
 
 public abstract class Enemy extends GameObject {
+    
     protected int hp;
     protected int MAX_HP;
     protected int speed;
