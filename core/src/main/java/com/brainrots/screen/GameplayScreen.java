@@ -3,11 +3,13 @@ package com.brainrots.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.engine.LevelManager;
 
@@ -19,7 +21,7 @@ public class GameplayScreen extends GameScreen {
     private Label hpLabel;
     private TowerButton towerButton;
 
-    public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager, 
+    public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager,
                 ScreenManager screenManager, ShapeRenderer shapeRenderer) {
         super(batch, resourceManager, screenManager, shapeRenderer);
 
@@ -29,8 +31,11 @@ public class GameplayScreen extends GameScreen {
         levelManager = new LevelManager(resourceManager, screenManager, "67Hills", camera);
         levelManager.startNextWave();
 
-        Skin skin = resourceManager.getSkin("UI/uiskin.json");
+        Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
+        BitmapFont font = resourceManager.getFont(Assets.UI_FONT);
+        font.getData().setScale(2.0f);
         LabelStyle labelStyle = new LabelStyle(skin.get(LabelStyle.class));
+        labelStyle.font = font;
         hpLabel = new Label("HP: " + levelManager.getBaseHealth(), labelStyle);
 
         stage.addActor(hpLabel);
@@ -53,8 +58,6 @@ public class GameplayScreen extends GameScreen {
     protected void drawScreen(float delta) {
         renderMainCamera(delta);
 
-
-
         hpLabel.setText("HP: " + levelManager.getBaseHealth());
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -63,11 +66,11 @@ public class GameplayScreen extends GameScreen {
 
     @Override
     public void show() {
-        super.show(); 
+        super.show();
 
         Gdx.input.setInputProcessor(stage);
         Texture texturaCastelo = MainUX.getTowerIcon().get(0);
-        
+
         this.towerButton = new TowerButton(texturaCastelo, 0, 0, () -> {
             levelManager.positionTowerMode(texturaCastelo);
         });

@@ -56,6 +56,13 @@ public class MainMenuScreen extends GameScreen {
         TextButton storeButton = new TextButton("Store", buttonStyle);
         table.add(storeButton).size(200, 60);
 
+        storeButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                screenManager.switchScreen(ScreenType.GLOBAL_SHOP);
+            }
+        });
+
         stage.addActor(table);
     }
 
