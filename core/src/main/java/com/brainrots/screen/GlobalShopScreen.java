@@ -1,15 +1,20 @@
 package com.brainrots.screen;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.brainrots.core.Assets;
+import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.core.GlobalShop;
 import com.brainrots.core.PlayerProfile;
@@ -17,22 +22,21 @@ import com.brainrots.exception.InvalidGameActionException;
 import com.brainrots.screen.ScreenManager.ScreenType;
 
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 
 public class GlobalShopScreen extends GameScreen {
-
     private GlobalShop globalShop;
     private Skin skin;
-    private PlayerProfile profile;
+    private PlayerProfile playerProfile;
 
     public GlobalShopScreen(SpriteBatch batch, GameResourceManager resourceManager,
-                            ScreenManager screenManager, ShapeRenderer shapeRenderer, PlayerProfile profile) {
+                            BrainRotGame screenManager, ShapeRenderer shapeRenderer) {
         super(batch, resourceManager, screenManager, shapeRenderer);
-        this.profile = profile;
+        this.playerProfile = screenManager.getPlayerProfile();
 
         String shopPath = Paths.get("data", "shop-data.json").toString();
         this.globalShop = new GlobalShop(shopPath);
-
         this.skin = resourceManager.getSkin(Assets.UI_SKIN);
 
         buildUI();
@@ -43,36 +47,55 @@ public class GlobalShopScreen extends GameScreen {
         rootTable.setFillParent(true);
         rootTable.pad(20);
 
-        Label titleLabel = new Label("Game Store", skin);
-        titleLabel.setFontScale(2.0f);
-        rootTable.add(titleLabel).padBottom(20).colspan(2).center().row();
+        BitmapFont baseFont = resourceManager.getFont(Assets.UI_FONT);
+        BitmapFont titleFont = new BitmapFont(baseFont.getData(), baseFont.getRegion(), true);
+        titleFont.getData().setScale(4.0f);
+
+        BitmapFont regularFont = new BitmapFont(baseFont.getData(), baseFont.getRegion(), true);
+        regularFont.getData().setScale(2.0f);
+
+        LabelStyle titleStyle = new LabelStyle(skin.get(LabelStyle.class));
+        titleStyle.font = titleFont;
+        titleStyle.fontColor = Color.YELLOW;
+
+        LabelStyle itemStyle = new LabelStyle(skin.get(LabelStyle.class));
+        itemStyle.font = regularFont;
+        itemStyle.fontColor = Color.WHITE;
+
+        TextButtonStyle buttonStyle = new TextButtonStyle(skin.get(TextButtonStyle.class));
+        buttonStyle.font = regularFont;
+        buttonStyle.fontColor = Color.WHITE;
+        buttonStyle.downFontColor = Color.YELLOW;
+
+        Label titleLabel = new Label("Game Store", titleStyle);
+        rootTable.add(titleLabel).padBottom(40).colspan(2).center().row();
 
         Table itemsTable = new Table();
-        itemsTable.defaults().pad(10);
+        itemsTable.defaults().pad(15);
 
-        Map<String, Integer> itemPrices = globalShop.getItemPrices();
+        HashMap<String, Integer> itemPrices = globalShop.getItemPrices();
         for (Map.Entry<String, Integer> entry : itemPrices.entrySet()) {
             String itemName = entry.getKey();
             Integer itemPrice = entry.getValue();
 
-            Label nameLabel = new Label(itemName, skin);
-            Label priceLabel = new Label(itemPrice + " Coins", skin);
-            TextButton buyButton = new TextButton("Buy", skin);
+            Label nameLabel = new Label(itemName, itemStyle);
+            Label priceLabel = new Label(itemPrice + " Coins", itemStyle);
+            TextButton buyButton = new TextButton("Buy", buttonStyle);
 
             buyButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     try {
-                        globalShop.purchaseTower(profile, itemName);
+                        globalShop.purchaseTower(playerProfile, itemName);
                     } catch (InvalidGameActionException e) {
                         e.printStackTrace();
                     }
                 }
             });
 
-            itemsTable.add(nameLabel).left().width(300);
-            itemsTable.add(priceLabel).right().width(150);
-            itemsTable.add(buyButton).width(100);
+            itemsTable.add(nameLabel).left().width(400);
+            itemsTable.add(priceLabel).right().width(200);
+            itemsTable.add(buyButton).width(150).height(60);
             itemsTable.row();
         }
 
@@ -80,7 +103,7 @@ public class GlobalShopScreen extends GameScreen {
         scrollPane.setFadeScrollBars(false);
         rootTable.add(scrollPane).expand().fill().colspan(2).row();
 
-        TextButton backButton = new TextButton("Back", skin);
+        TextButton backButton = new TextButton("Back", buttonStyle);
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -88,14 +111,14 @@ public class GlobalShopScreen extends GameScreen {
             }
         });
 
-        rootTable.add(backButton).bottom().left().padTop(20).size(150, 50);
+        rootTable.add(backButton).bottom().left().padTop(20).size(200, 60);
 
         stage.addActor(rootTable);
     }
 
     @Override
     protected void drawScreen(float delta) {
-        stage.act(delta);
+        StageHelper.act(stage);
         stage.draw();
     }
 }

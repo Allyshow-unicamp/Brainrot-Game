@@ -1,0 +1,14 @@
+{
+"Ballerina": {
+	"class": "java.lang.Integer",
+	"value": 20
+},
+"Lirili": {
+	"class": "java.lang.Integer",
+	"value": 30
+},
+"Tung": {
+	"class": "java.lang.Integer",
+	"value": 10
+}
+}

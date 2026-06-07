@@ -1,7 +1,7 @@
 package com.brainrots.core;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -37,19 +37,16 @@ public class JsonGameSaveHandler implements GameSaveHandler {
             return json.fromJson(PlayerProfile.class, file);
         }
 
-        Map<Integer, Integer> defaultMap = Map.ofEntries(
-            Map.entry(1, 0),
-            Map.entry(2, 0),
-            Map.entry(3, 0),
-            Map.entry(4, 0),
-            Map.entry(5, 0)
-        );
+        HashMap<Integer, Integer> defaultMap = new HashMap<>();
+        for (int i = 1; i <= 5; i++) {
+            defaultMap.put(i, 0);
+        }
 
         return new PlayerProfile(0, defaultMap, new ArrayList<>());
     }
 
     @Override
-    public void saveShopData(Map<String, Integer> itemPrices) throws PersistanceException {
+    public void saveShopData(HashMap<String, Integer> itemPrices) throws PersistanceException {
         Json json = new Json();
         json.setOutputType(OutputType.json);
         String jsonString = json.prettyPrint(itemPrices);
@@ -59,19 +56,18 @@ public class JsonGameSaveHandler implements GameSaveHandler {
     }
 
     @Override
-    public Map<String, Integer> loadShopData() throws PersistanceException {
+    public HashMap<String, Integer> loadShopData() throws PersistanceException {
         FileHandle file = Gdx.files.local(shopSaveFileName);
 
         if (file.exists()) {
             Json json = new Json();
-            return json.fromJson(Map.class, Integer.class, file);
+            return json.fromJson(HashMap.class, file);
         }
 
-        Map<String, Integer> defaultMap = Map.ofEntries(
-            Map.entry("Tung", 10),
-            Map.entry("Ballerina", 20),
-            Map.entry("Lirili", 30)
-        );
+        HashMap<String, Integer> defaultMap = new HashMap<>();
+        defaultMap.put("Tung", 10);
+        defaultMap.put("Ballerina", 20);
+        defaultMap.put("Lirili", 30);
 
         saveShopData(defaultMap);
 

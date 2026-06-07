@@ -1,24 +1,23 @@
 package com.brainrots.core;
 
-import java.util.Map;
+import java.util.HashMap;
 
 import com.brainrots.exception.InvalidGameActionException;
-import com.brainrots.exception.PersistanceException;
 
 public class GlobalShop {
-    private Map<String, Integer> itemPrices;
+    private HashMap<String, Integer> itemPrices;
 
-    public Map<String, Integer> getItemPrices() {
+    public HashMap<String, Integer> getItemPrices() {
         return itemPrices;
     }
 
     private GameSaveHandler saveHandler;
 
-    public GlobalShop(String readFile) {
-        saveHandler = new JsonGameSaveHandler("", readFile);
+    public GlobalShop(String shopSaveFileName) {
+        saveHandler = new JsonGameSaveHandler("", shopSaveFileName);
         try {
             this.itemPrices = saveHandler.loadShopData();
-        } catch (PersistanceException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

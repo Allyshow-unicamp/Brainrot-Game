@@ -1,14 +1,22 @@
 package com.brainrots.core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class PlayerProfile {
     private int globalCoins;
-    private Map<Integer, Integer> levelStars;
+    private HashMap<Integer, Integer> levelStars;
     private List<String> unlockedTowerIds;
 
-    public PlayerProfile(int globalCoins, Map<Integer, Integer> levelStars, List<String> unlockedTowerIds) {
+    public PlayerProfile() {
+        this.globalCoins = 0;
+        this.levelStars = new HashMap<>();
+        this.unlockedTowerIds = new ArrayList<>();
+    }
+
+    public PlayerProfile(int globalCoins, HashMap<Integer, Integer> levelStars, List<String> unlockedTowerIds) {
         this.globalCoins = globalCoins;
         this.levelStars = levelStars;
         this.unlockedTowerIds = unlockedTowerIds;
@@ -18,7 +26,7 @@ public class PlayerProfile {
         return globalCoins;
     }
 
-    public Map<Integer, Integer> getLevelStars() {
+    public HashMap<Integer, Integer> getLevelStars() {
         return levelStars;
     }
 

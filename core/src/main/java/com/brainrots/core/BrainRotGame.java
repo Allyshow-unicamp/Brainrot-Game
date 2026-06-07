@@ -6,7 +6,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.brainrots.exception.PersistanceException;
 import com.brainrots.screen.GameplayScreen;
 import com.brainrots.screen.GlobalShopScreen;
 import com.brainrots.screen.LevelSelectionScreen;
@@ -34,8 +33,8 @@ public class BrainRotGame extends Game implements ScreenManager {
 
         gameSaveHandler = new JsonGameSaveHandler(profilePath, "");
         try {
-            playerProfile = gameSaveHandler.loadProfile();
-        } catch (PersistanceException e) {
+            this.playerProfile = gameSaveHandler.loadProfile();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -61,9 +60,11 @@ public class BrainRotGame extends Game implements ScreenManager {
                 setScreen(new GameplayScreen(batch, resourceManager, this, shapeRenderer));
                 break;
             case GLOBAL_SHOP:
-                setScreen(new GlobalShopScreen(batch, resourceManager, this, shapeRenderer, playerProfile));
+                setScreen(new GlobalShopScreen(batch, resourceManager, this, shapeRenderer));
+                break;
             case LEVEL_SELECTION:
                 setScreen(new LevelSelectionScreen(batch, resourceManager, this, shapeRenderer));
+                break;
             default:
                 break;
         }
@@ -79,7 +80,7 @@ public class BrainRotGame extends Game implements ScreenManager {
 
         try {
             gameSaveHandler.saveProfile(playerProfile);
-        } catch (PersistanceException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
