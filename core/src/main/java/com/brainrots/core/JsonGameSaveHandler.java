@@ -23,8 +23,6 @@ public class JsonGameSaveHandler implements GameSaveHandler {
 
         FileHandle file = Gdx.files.local(saveFileName);
         file.writeString(jsonString, false);
-
-        System.out.println("AÇSLDÇSAD");
     }
 
     @Override
