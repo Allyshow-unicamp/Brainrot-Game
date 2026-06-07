@@ -6,8 +6,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.brainrots.exception.ProfilePersistanceException;
+import com.brainrots.exception.PersistanceException;
 import com.brainrots.screen.GameplayScreen;
+import com.brainrots.screen.GlobalShopScreen;
+import com.brainrots.screen.LevelSelectionScreen;
 import com.brainrots.screen.MainMenuScreen;
 import com.brainrots.screen.ScreenManager;
 
@@ -28,10 +30,12 @@ public class BrainRotGame extends Game implements ScreenManager {
 
     @Override
     public void create() {
-        gameSaveHandler = new JsonGameSaveHandler(Paths.get("data", "player-data.json").toString());
+        String profilePath = Paths.get("data", "player-data.json").toString();
+
+        gameSaveHandler = new JsonGameSaveHandler(profilePath, "");
         try {
             playerProfile = gameSaveHandler.loadProfile();
-        } catch (ProfilePersistanceException e) {
+        } catch (PersistanceException e) {
             e.printStackTrace();
         }
 
@@ -51,11 +55,15 @@ public class BrainRotGame extends Game implements ScreenManager {
     public void switchScreen(ScreenType type) {
         switch (type) {
             case MAIN_MENU:
-                setScreen(new MainMenuScreen(batch, resourceManager, this,shapeRenderer));
+                setScreen(new MainMenuScreen(batch, resourceManager, this, shapeRenderer));
                 break;
             case GAMEPLAY:
-                setScreen(new GameplayScreen(batch, resourceManager, this,shapeRenderer));
+                setScreen(new GameplayScreen(batch, resourceManager, this, shapeRenderer));
                 break;
+            case GLOBAL_SHOP:
+                setScreen(new GlobalShopScreen(batch, resourceManager, this, shapeRenderer, playerProfile));
+            case LEVEL_SELECTION:
+                setScreen(new LevelSelectionScreen(batch, resourceManager, this, shapeRenderer));
             default:
                 break;
         }
@@ -71,7 +79,7 @@ public class BrainRotGame extends Game implements ScreenManager {
 
         try {
             gameSaveHandler.saveProfile(playerProfile);
-        } catch (ProfilePersistanceException e) {
+        } catch (PersistanceException e) {
             e.printStackTrace();
         }
     }
