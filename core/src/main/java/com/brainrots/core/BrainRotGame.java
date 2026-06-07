@@ -1,5 +1,7 @@
 package com.brainrots.core;
 
+import java.nio.file.Paths;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,9 +18,18 @@ public class BrainRotGame extends Game implements ScreenManager {
     private SpriteBatch batch;
     private GameResourceManager resourceManager;
     private ShapeRenderer shapeRenderer;
+    private PlayerProfile playerProfile;
+    private GameSaveHandler gameSaveHandler;
+
+    public PlayerProfile getPlayerProfile() {
+        return playerProfile;
+    }
 
     @Override
     public void create() {
+        gameSaveHandler = new JsonGameSaveHandler(Paths.get("data", "player-data.json").toString());
+        playerProfile = gameSaveHandler.loadProfile();
+
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         resourceManager = GameResourceManager.getGameResourceManager();
@@ -52,5 +63,7 @@ public class BrainRotGame extends Game implements ScreenManager {
         }
         resourceManager.dispose();
         batch.dispose();
+
+        gameSaveHandler.saveProfile(playerProfile);
     }
 }
