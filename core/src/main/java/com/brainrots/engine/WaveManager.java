@@ -48,7 +48,10 @@ public class WaveManager {
     }
 
     public void update(float delta, LevelManager levelManager, GameResourceManager resourceManager) {
-        if (!isWaveActive) return;
+        if (!isWaveActive && currentWave < 5){
+            startNextWave();
+            return;
+        }
 
         if(activeSpawners.isEmpty()){
             isWaveActive = false;

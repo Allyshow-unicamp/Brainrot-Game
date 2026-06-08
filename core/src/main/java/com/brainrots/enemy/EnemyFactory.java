@@ -10,7 +10,12 @@ public class EnemyFactory {
         switch (enemy) {
             case "67_Ball":
                 return new Ball_67(path);
-        
+            case "6_Ball":
+                return new Ball_6(path);
+            case "7_Ball":
+                return new Ball_7(path);
+            case "6_7_Ball":
+                return new Ball_6_7(path);
             default:
                 return null;
         }

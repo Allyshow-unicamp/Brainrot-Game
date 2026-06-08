@@ -10,8 +10,8 @@ public class Ball_67 extends Enemy{
 
     public Ball_67(Array<Vector2> path) {
         
-        Texture enemyTexture = GameResourceManager.getGameResourceManager().getTexture(Assets.ENEMY_TEMP);
-        super(path, enemyTexture, 100, 200, 100, 100);
+        Texture enemyTexture = GameResourceManager.getGameResourceManager().getTexture(Assets.ENEMY_67);
+        super(path, enemyTexture, 200, 100, 100, 100);
     }
 
 }
