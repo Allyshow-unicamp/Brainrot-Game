@@ -8,7 +8,6 @@ import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.LevelManager;
 import com.brainrots.entity.GameObject;
-import com.brainrots.projectile.Projectile;
 
 public abstract class Tower extends GameObject {
     private String id;

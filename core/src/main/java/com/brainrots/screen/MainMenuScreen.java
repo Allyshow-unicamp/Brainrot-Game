@@ -13,13 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.brainrots.core.Assets;
+import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.screen.ScreenManager.ScreenType;
 
 public class MainMenuScreen extends GameScreen {
 
-    public MainMenuScreen(SpriteBatch batch, GameResourceManager resourceManager, ScreenManager screenManager,ShapeRenderer shapeRenderer) {
-        super(batch, resourceManager, screenManager,shapeRenderer);
+    public MainMenuScreen(SpriteBatch batch, GameResourceManager resourceManager, BrainRotGame screenManager,
+            ShapeRenderer shapeRenderer) {
+        super(batch, resourceManager, screenManager, shapeRenderer);
 
         Table table = new Table();
         table.setFillParent(true);
@@ -33,7 +35,8 @@ public class MainMenuScreen extends GameScreen {
         labelStyle.font = font;
         labelStyle.fontColor = Color.YELLOW;
 
-        Label titleLabel = new Label("The Lord of Brainrots: The Battle for Brainrot Village II: The Rise of the Brainrot King", labelStyle);
+        Label titleLabel = new Label(
+                "The Lord of Brainrots: The Battle for Brainrot Village II: The Rise of the Brainrot King", labelStyle);
         table.add(titleLabel).pad(60).row();
 
         TextButtonStyle buttonStyle = new TextButtonStyle(skin.get(TextButtonStyle.class));
@@ -49,7 +52,7 @@ public class MainMenuScreen extends GameScreen {
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                screenManager.switchScreen(ScreenType.GAMEPLAY);
+                screenManager.switchScreen(ScreenType.LEVEL_SELECTION);
             }
         });
 

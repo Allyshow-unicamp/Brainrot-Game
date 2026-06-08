@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class PlayerProfile {
     private int globalCoins;
-    private HashMap<Integer, Integer> levelStars;
+    private HashMap<String, Integer> levelStars;
     private List<String> unlockedTowerIds;
 
     public PlayerProfile() {
@@ -16,7 +16,7 @@ public class PlayerProfile {
         this.unlockedTowerIds = new ArrayList<>();
     }
 
-    public PlayerProfile(int globalCoins, HashMap<Integer, Integer> levelStars, List<String> unlockedTowerIds) {
+    public PlayerProfile(int globalCoins, HashMap<String, Integer> levelStars, List<String> unlockedTowerIds) {
         this.globalCoins = globalCoins;
         this.levelStars = levelStars;
         this.unlockedTowerIds = unlockedTowerIds;
@@ -26,7 +26,7 @@ public class PlayerProfile {
         return globalCoins;
     }
 
-    public HashMap<Integer, Integer> getLevelStars() {
+    public HashMap<String, Integer> getLevelStars() {
         return levelStars;
     }
 
@@ -42,7 +42,7 @@ public class PlayerProfile {
         this.globalCoins -= coins;
     }
 
-    public void setStars(int levelId, int stars) {
+    public void setStars(String levelId, int stars) {
         this.levelStars.replace(levelId, stars);
     }
 

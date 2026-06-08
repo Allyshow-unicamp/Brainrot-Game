@@ -1,11 +1,10 @@
-package com.brainrots.projectile;
+package com.brainrots.tower;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.entity.GameObject;
-import com.brainrots.tower.Tower;
 
 public class Projectile extends GameObject {
     private Vector2 targetPosition;

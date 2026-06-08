@@ -30,8 +30,10 @@ public class BrainRotGame extends Game implements ScreenManager {
     @Override
     public void create() {
         String profilePath = Paths.get("data", "player-data.json").toString();
+        String shopPath = Paths.get("data", "shop-data.json").toString();
+        String levelPath = Paths.get("data", "level-data.json").toString();
 
-        gameSaveHandler = new JsonGameSaveHandler(profilePath, "");
+        gameSaveHandler = new JsonGameSaveHandler(profilePath, shopPath, levelPath);
         try {
             this.playerProfile = gameSaveHandler.loadProfile();
         } catch (Exception e) {
@@ -56,18 +58,19 @@ public class BrainRotGame extends Game implements ScreenManager {
             case MAIN_MENU:
                 setScreen(new MainMenuScreen(batch, resourceManager, this, shapeRenderer));
                 break;
-            case GAMEPLAY:
-                setScreen(new GameplayScreen(batch, resourceManager, this, shapeRenderer));
-                break;
             case GLOBAL_SHOP:
-                setScreen(new GlobalShopScreen(batch, resourceManager, this, shapeRenderer));
+                setScreen(new GlobalShopScreen(batch, resourceManager, this, shapeRenderer, gameSaveHandler));
                 break;
             case LEVEL_SELECTION:
-                setScreen(new LevelSelectionScreen(batch, resourceManager, this, shapeRenderer));
+                setScreen(new LevelSelectionScreen(batch, resourceManager, this, shapeRenderer, gameSaveHandler));
                 break;
             default:
                 break;
         }
+    }
+
+    public void selectLevel(String levelName) {
+        setScreen(new GameplayScreen(batch, resourceManager, this, shapeRenderer, levelName));
     }
 
     @Override
