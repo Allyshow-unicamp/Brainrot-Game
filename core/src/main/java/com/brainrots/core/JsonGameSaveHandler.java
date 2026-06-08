@@ -39,9 +39,9 @@ public class JsonGameSaveHandler implements GameSaveHandler {
             return json.fromJson(PlayerProfile.class, file);
         }
 
-        HashMap<Integer, Integer> defaultMap = new HashMap<>();
+        HashMap<String, Integer> defaultMap = new HashMap<>();
         for (int i = 1; i <= 5; i++) {
-            defaultMap.put(i, 0);
+            defaultMap.put(i + "", 0);
         }
 
         return new PlayerProfile(0, defaultMap, new ArrayList<>());
@@ -75,7 +75,7 @@ public class JsonGameSaveHandler implements GameSaveHandler {
         return defaultMap;
     }
 
-    private void saveLevelData(HashMap<Integer, String> levelNames) throws PersistanceException {
+    private void saveLevelData(HashMap<String, String> levelNames) throws PersistanceException {
         Json json = new Json();
         json.setOutputType(OutputType.json);
         String jsonString = json.prettyPrint(levelNames);
@@ -85,7 +85,7 @@ public class JsonGameSaveHandler implements GameSaveHandler {
     }
 
     @Override
-    public HashMap<Integer, String> loadLevelData() throws PersistanceException {
+    public HashMap<String, String> loadLevelData() throws PersistanceException {
         FileHandle file = Gdx.files.local(levelSaveFileName);
 
         if (file.exists()) {
@@ -93,8 +93,8 @@ public class JsonGameSaveHandler implements GameSaveHandler {
             return json.fromJson(HashMap.class, file);
         }
 
-        HashMap<Integer, String>  defaultMap = new HashMap<>();
-        defaultMap.put(1, "67Hills");
+        HashMap<String, String>  defaultMap = new HashMap<>();
+        defaultMap.put(1 + "", "67Hills");
 
         saveLevelData(defaultMap);
 

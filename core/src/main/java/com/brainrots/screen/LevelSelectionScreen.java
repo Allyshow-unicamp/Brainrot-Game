@@ -27,7 +27,7 @@ import com.brainrots.screen.ScreenManager.ScreenType;
 
 public class LevelSelectionScreen extends GameScreen {
     private PlayerProfile playerProfile;
-    private HashMap<Integer, String> levelHashMap;
+    private HashMap<String, String> levelHashMap;
     private Skin skin;
 
     public LevelSelectionScreen(SpriteBatch batch, GameResourceManager resourceManager, BrainRotGame screenManager,
@@ -76,14 +76,14 @@ public class LevelSelectionScreen extends GameScreen {
         Table itemsTable = new Table();
         itemsTable.defaults().pad(15);
 
-        Map<Integer, String> sortedMap = new TreeMap<Integer, String>(levelHashMap);
-        for (Map.Entry<Integer, String> entry : sortedMap.entrySet()) {
-            Integer itemNumber = entry.getKey();
+        Map<String, String> sortedMap = new TreeMap<String, String>(levelHashMap);
+        for (Map.Entry<String, String> entry : sortedMap.entrySet()) {
+            Integer itemNumber = Integer.parseInt(String.valueOf(entry.getKey()));
             String itemName = entry.getValue();
-            Integer stars = playerProfile.getLevelStars().get(itemNumber);
+            Integer stars = playerProfile.getLevelStars().get(String.valueOf(entry.getKey()));
 
             // se nível ainda não está desbloqueado
-            if (itemNumber != 1 && stars < 1 && playerProfile.getLevelStars().get(itemNumber - 1) < 1)
+            if (itemNumber != 1 && stars < 1 && playerProfile.getLevelStars().get(String.valueOf(itemNumber - 1)) < 1)
                 break;
 
             Label numberLabel = new Label("Level " + itemNumber, itemStyle);
@@ -98,9 +98,10 @@ public class LevelSelectionScreen extends GameScreen {
                 }
             });
 
-            itemsTable.add(numberLabel).left().width(400);
-            itemsTable.add(nameLabel).right().width(200);
-            itemsTable.add(starsLabel).width(150).height(60);
+            itemsTable.add(numberLabel).left().width(250);
+            itemsTable.add(nameLabel).right().width(250);
+            itemsTable.add(starsLabel).width(250).height(60);
+            itemsTable.add(playButton).width(250).height(60);
             itemsTable.row();
         }
 

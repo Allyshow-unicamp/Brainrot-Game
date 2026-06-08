@@ -26,11 +26,11 @@ public class WaveManager {
 
     private boolean isWaveActive;
 
-    public WaveManager(Array<Vector2> path) {
+    public WaveManager(String levelName, Array<Vector2> path) {
         this.currentWave = 0;
         this.isWaveActive = false;
         this.reader = new JsonReader();
-        this.allWaves = reader.parse(Gdx.files.internal(Paths.get("Maps", "67Hills", "waves.json").toString()));
+        this.allWaves = reader.parse(Gdx.files.internal(Paths.get("Maps", levelName, "waves.json").toString()));
         this.activeSpawners = new Array<>();
         this.path = path;
     }

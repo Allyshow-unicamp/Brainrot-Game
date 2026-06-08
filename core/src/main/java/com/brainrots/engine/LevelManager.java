@@ -59,7 +59,7 @@ public class LevelManager {
         activeEnemies = new Array<>();
         activeProjectiles = new Array<>();
         activeTowers = new Array<>();
-        waveManager = new WaveManager(map.getPath());
+        waveManager = new WaveManager(mapName, map.getPath());
     }
 
     public void positionTowerMode(Texture towerGhostTexture)
