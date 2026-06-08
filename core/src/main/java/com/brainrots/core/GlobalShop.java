@@ -11,10 +11,7 @@ public class GlobalShop {
         return itemPrices;
     }
 
-    private GameSaveHandler saveHandler;
-
-    public GlobalShop(String shopSaveFileName) {
-        saveHandler = new JsonGameSaveHandler("", shopSaveFileName);
+    public GlobalShop(GameSaveHandler saveHandler) {
         try {
             this.itemPrices = saveHandler.loadShopData();
         } catch (Exception e) {

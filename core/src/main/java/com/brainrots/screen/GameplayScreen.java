@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.brainrots.core.Assets;
+import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.engine.LevelManager;
 
@@ -22,13 +23,13 @@ public class GameplayScreen extends GameScreen {
     private TowerButton towerButton;
 
     public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager,
-                ScreenManager screenManager, ShapeRenderer shapeRenderer) {
+                BrainRotGame screenManager, ShapeRenderer shapeRenderer, String levelName) {
         super(batch, resourceManager, screenManager, shapeRenderer);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
 
-        levelManager = new LevelManager(resourceManager, screenManager, "67Hills", camera);
+        levelManager = new LevelManager(resourceManager, screenManager, levelName, camera);
         levelManager.startNextWave();
 
         Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
