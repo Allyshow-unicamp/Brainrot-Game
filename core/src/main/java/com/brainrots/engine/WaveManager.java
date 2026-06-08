@@ -1,5 +1,7 @@
 package com.brainrots.engine;
 
+import java.nio.file.Paths;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -28,29 +30,30 @@ public class WaveManager {
         this.currentWave = 0;
         this.isWaveActive = false;
         this.reader = new JsonReader();
-        this.allWaves = reader.parse(Gdx.files.internal("data/waves.json"));
+        this.allWaves = reader.parse(Gdx.files.internal(Paths.get("Maps", "67Hills", "waves.json").toString()));
         this.activeSpawners = new Array<>();
         this.path = path;
     }
 
     public void startNextWave() {
-
         currentWave++;
 
         JsonValue waveData = allWaves.get(String.valueOf(currentWave));
 
-        for(JsonValue enemy : waveData.get("enemies")){
-            activeSpawners.add(new EnemySpawner(enemy.getString("type"), enemy.getInt("count"), enemy.getFloat("spawnInterval"),
-        enemy.getInt("spawnTime")));
+        for (JsonValue enemy : waveData.get("enemies")) {
+            activeSpawners.add(
+                    new EnemySpawner(enemy.getString("type"), enemy.getInt("count"), enemy.getFloat("spawnInterval"),
+                            enemy.getInt("spawnTime")));
         }
 
         isWaveActive = true;
     }
 
     public void update(float delta, LevelManager levelManager, GameResourceManager resourceManager) {
-        if (!isWaveActive) return;
+        if (!isWaveActive)
+            return;
 
-        if(activeSpawners.isEmpty()){
+        if (activeSpawners.isEmpty()) {
             isWaveActive = false;
             return;
         }
@@ -60,12 +63,12 @@ public class WaveManager {
         while (iterator.hasNext()) {
             EnemySpawner spawner = iterator.next();
 
-            if(spawner.shouldSpawn(delta)){
+            if (spawner.shouldSpawn(delta)) {
                 Enemy enemy = factory.spawnEnemy(spawner.getType(), path);
                 levelManager.spawnEnemy(enemy);
             }
 
-            if(spawner.isEmpty()){
+            if (spawner.isEmpty()) {
                 activeSpawners.removeValue(spawner, false);
             }
         }

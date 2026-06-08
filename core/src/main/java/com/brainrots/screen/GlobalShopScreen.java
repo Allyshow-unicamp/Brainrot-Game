@@ -16,12 +16,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
+import com.brainrots.core.GameSaveHandler;
 import com.brainrots.core.GlobalShop;
 import com.brainrots.core.PlayerProfile;
 import com.brainrots.exception.InvalidGameActionException;
 import com.brainrots.screen.ScreenManager.ScreenType;
 
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,12 +31,11 @@ public class GlobalShopScreen extends GameScreen {
     private PlayerProfile playerProfile;
 
     public GlobalShopScreen(SpriteBatch batch, GameResourceManager resourceManager,
-                            BrainRotGame screenManager, ShapeRenderer shapeRenderer) {
+                            BrainRotGame screenManager, ShapeRenderer shapeRenderer,
+                            GameSaveHandler saveHandler) {
         super(batch, resourceManager, screenManager, shapeRenderer);
         this.playerProfile = screenManager.getPlayerProfile();
-
-        String shopPath = Paths.get("data", "shop-data.json").toString();
-        this.globalShop = new GlobalShop(shopPath);
+        this.globalShop = new GlobalShop(saveHandler);
         this.skin = resourceManager.getSkin(Assets.UI_SKIN);
 
         buildUI();

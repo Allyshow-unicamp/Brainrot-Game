@@ -12,10 +12,12 @@ import com.brainrots.exception.PersistanceException;
 public class JsonGameSaveHandler implements GameSaveHandler {
     private String profileSaveFileName;
     private String shopSaveFileName;
+    private String levelSaveFileName;
 
-    public JsonGameSaveHandler(String profileSaveFileName, String shopSaveFileName) {
+    public JsonGameSaveHandler(String profileSaveFileName, String shopSaveFileName, String levelSaveFileName) {
         this.profileSaveFileName = profileSaveFileName;
         this.shopSaveFileName = shopSaveFileName;
+        this.levelSaveFileName = levelSaveFileName;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class JsonGameSaveHandler implements GameSaveHandler {
     public PlayerProfile loadProfile() {
         FileHandle file = Gdx.files.local(profileSaveFileName);
 
-        if (file.exists()) {
+        if (file.exists() && file != null) {
             Json json = new Json();
             return json.fromJson(PlayerProfile.class, file);
         }
@@ -45,8 +47,7 @@ public class JsonGameSaveHandler implements GameSaveHandler {
         return new PlayerProfile(0, defaultMap, new ArrayList<>());
     }
 
-    @Override
-    public void saveShopData(HashMap<String, Integer> itemPrices) throws PersistanceException {
+    private void saveShopData(HashMap<String, Integer> itemPrices) throws PersistanceException {
         Json json = new Json();
         json.setOutputType(OutputType.json);
         String jsonString = json.prettyPrint(itemPrices);
@@ -70,6 +71,32 @@ public class JsonGameSaveHandler implements GameSaveHandler {
         defaultMap.put("Lirili", 30);
 
         saveShopData(defaultMap);
+
+        return defaultMap;
+    }
+
+    private void saveLevelData(HashMap<Integer, String> levelNames) throws PersistanceException {
+        Json json = new Json();
+        json.setOutputType(OutputType.json);
+        String jsonString = json.prettyPrint(levelNames);
+
+        FileHandle file = Gdx.files.local(levelSaveFileName);
+        file.writeString(jsonString, false);
+    }
+
+    @Override
+    public HashMap<Integer, String> loadLevelData() throws PersistanceException {
+        FileHandle file = Gdx.files.local(levelSaveFileName);
+
+        if (file.exists()) {
+            Json json = new Json();
+            return json.fromJson(HashMap.class, file);
+        }
+
+        HashMap<Integer, String>  defaultMap = new HashMap<>();
+        defaultMap.put(1, "67Hills");
+
+        saveLevelData(defaultMap);
 
         return defaultMap;
     }

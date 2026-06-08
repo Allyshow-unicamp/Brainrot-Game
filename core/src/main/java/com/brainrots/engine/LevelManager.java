@@ -1,7 +1,5 @@
 package com.brainrots.engine;
 
-import java.util.Queue;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,14 +10,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
-import com.brainrots.projectile.Projectile;
 import com.brainrots.screen.ScreenManager;
 import com.brainrots.screen.ScreenManager.ScreenType;
 import com.brainrots.tower.ConcreteTower;
+import com.brainrots.tower.Projectile;
 import com.brainrots.tower.Tower;
-
-
 import com.brainrots.tower.TargetType;
+
 public class LevelManager {
 
     private final int maxHealth = 100;
@@ -51,7 +48,7 @@ public class LevelManager {
         return base.getHealth();
     }
 
-    public LevelManager(GameResourceManager resourceManager, 
+    public LevelManager(GameResourceManager resourceManager,
         ScreenManager screenManager, String mapName, OrthographicCamera gameScreen){
         this.gameScreen = gameScreen;
         this.coins = 0;
@@ -146,7 +143,7 @@ public class LevelManager {
 
             float xFinal = mapClick.x ;
             float yFinal = mapClick.y ;
-             ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture, 
+             ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture,
                 new Vector2(xFinal, yFinal), 25, 2000, 250, 0.5f,
                 150, 150, TargetType.SINGLE, this, resourceManager);
              buyAndPlaceTower(concreteTower);
@@ -213,7 +210,7 @@ public class LevelManager {
             gameScreen.unproject(mousePosition);
 
             batch.setColor(1, 1, 1, 0.4f);
-            float width = 150f; 
+            float width = 150f;
             float height = 150f;
 
             batch.draw(towerGhostTexture, mousePosition.x - width/2, mousePosition.y -height/2 ,width,height);
