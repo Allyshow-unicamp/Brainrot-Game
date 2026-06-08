@@ -5,7 +5,8 @@ public interface ScreenManager {
         MAIN_MENU,
         GAMEPLAY,
         GLOBAL_SHOP,
-        LEVEL_SELECTION
+        LEVEL_SELECTION,
+        END_GAME
     }
 
     void switchScreen(ScreenType type);

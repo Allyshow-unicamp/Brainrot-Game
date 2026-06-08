@@ -8,10 +8,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
-import com.brainrots.screen.ScreenManager;
-import com.brainrots.screen.ScreenManager.ScreenType;
 import com.brainrots.tower.ConcreteTower;
 import com.brainrots.tower.Projectile;
 import com.brainrots.tower.Tower;
@@ -20,8 +19,8 @@ import com.brainrots.tower.TargetType;
 public class LevelManager {
 
     private final int maxHealth = 100;
-    private final int maxWaves = 50;
 
+    private int level;
     private int coins;
     private Map map;
     private Array<Enemy> activeEnemies;
@@ -31,7 +30,7 @@ public class LevelManager {
     private WaveManager waveManager;
     private GameResourceManager resourceManager;
     private Texture towerGhostTexture;
-    private ScreenManager screenManager;
+    private BrainRotGame screenManager;
     private OrthographicCamera gameScreen;
     private boolean isIconSelected;
 
@@ -49,9 +48,10 @@ public class LevelManager {
     }
 
     public LevelManager(GameResourceManager resourceManager,
-        ScreenManager screenManager, String mapName, OrthographicCamera gameScreen){
+        BrainRotGame screenManager, int level, String mapName, OrthographicCamera gameScreen){
         this.gameScreen = gameScreen;
         this.coins = 0;
+        this.level = level;
         this.resourceManager = resourceManager;
         this.screenManager = screenManager;
         map = new Map(mapName, resourceManager);
@@ -109,6 +109,10 @@ public class LevelManager {
         }
 
         waveManager.update(delta, this, resourceManager);
+        boolean victory = won(waveManager.getCurrentWave(), waveManager.getMaxWaves());
+        if (victory) {
+            screenManager.endGame(level, victory, levelStars(base.getHealth(), maxHealth));
+        }
 
         Array<Enemy> enemiesToBeRemoved = new Array<>();
         for(Enemy enemy : activeEnemies){
@@ -117,7 +121,7 @@ public class LevelManager {
             if (enemy.getPosition().dst(base.getPosition()) < 5.0f) {
                 boolean alive = base.takeDamage(enemy.getHp());
                 if (!alive) {
-                    screenManager.switchScreen(ScreenType.MAIN_MENU);
+                    screenManager.endGame(level, false, 0);
                 }
                 enemiesToBeRemoved.add(enemy);
             }
@@ -150,6 +154,21 @@ public class LevelManager {
             isIconSelected = false;
             towerGhostTexture = null;
         }
+    }
+
+    private boolean won(int currentWave, int maxWaves) {
+        return base.getHealth() > 0 && currentWave == maxWaves && activeEnemies.size == 0;
+    }
+
+    private int levelStars(int hp, int maxHp) {
+        float ratio = hp/maxHp;
+        if (ratio < 0.25)
+            return 0;
+        if (ratio < 0.5)
+            return 1;
+        if (ratio < 0.75)
+            return 2;
+        return 3;
     }
 
     /**

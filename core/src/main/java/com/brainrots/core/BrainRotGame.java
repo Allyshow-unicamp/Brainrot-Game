@@ -6,6 +6,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.brainrots.screen.EndGameScreen;
 import com.brainrots.screen.GameplayScreen;
 import com.brainrots.screen.GlobalShopScreen;
 import com.brainrots.screen.LevelSelectionScreen;
@@ -69,8 +70,12 @@ public class BrainRotGame extends Game implements ScreenManager {
         }
     }
 
-    public void selectLevel(String levelName) {
-        setScreen(new GameplayScreen(batch, resourceManager, this, shapeRenderer, levelName));
+    public void selectLevel(int level, String levelName) {
+        setScreen(new GameplayScreen(batch, resourceManager, this, shapeRenderer, level, levelName));
+    }
+
+    public void endGame(int level, boolean won, int stars) {
+        setScreen(new EndGameScreen(batch, resourceManager, this, shapeRenderer, level, won, stars, gameSaveHandler));
     }
 
     @Override

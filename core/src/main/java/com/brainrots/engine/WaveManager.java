@@ -16,11 +16,21 @@ import com.brainrots.enemy.EnemySpawner;
 public class WaveManager {
 
     private int currentWave;
+
+    public int getCurrentWave() {
+        return currentWave;
+    }
+
     private Array<Vector2> path;
     private EnemyFactory factory = new EnemyFactory();
 
     private JsonReader reader;
     private JsonValue allWaves;
+    private int maxWaves;
+
+    public int getMaxWaves() {
+        return maxWaves;
+    }
 
     private Array<EnemySpawner> activeSpawners;
 
@@ -31,6 +41,7 @@ public class WaveManager {
         this.isWaveActive = false;
         this.reader = new JsonReader();
         this.allWaves = reader.parse(Gdx.files.internal(Paths.get("Maps", levelName, "waves.json").toString()));
+        this.maxWaves = allWaves.size;
         this.activeSpawners = new Array<>();
         this.path = path;
     }
@@ -50,7 +61,7 @@ public class WaveManager {
     }
 
     public void update(float delta, LevelManager levelManager, GameResourceManager resourceManager) {
-        if (!isWaveActive && currentWave < 5){
+        if (!isWaveActive && currentWave < maxWaves){
             startNextWave();
             return;
         }
