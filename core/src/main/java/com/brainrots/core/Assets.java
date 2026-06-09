@@ -13,6 +13,8 @@ public final class Assets {
     public static final String TOWER_TUNG = "Towers/tung-tung-tung-sahur.png";
     public static final String PROJECTILE_BLACK = "Projectiles/black.png";
 
+    public static final String NORMAL_COIN = "CCoins/coins.png";
+
     public static final String MUSIC_GAME = "Soundtracks/game_song.mp3";
     public static final String UI_SKIN = "UI/uiskin.json";
     public static final String UI_FONT = "UI/default.fnt";

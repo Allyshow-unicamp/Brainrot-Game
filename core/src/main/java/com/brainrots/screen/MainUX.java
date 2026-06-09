@@ -10,18 +10,23 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.brainrots.core.GameResourceManager;
+import com.brainrots.engine.CoinHUD;
 
 /**
  * Classe usada como objetivo de auxiliar LevelManager. 
  * <p>Vai possuir os elementos principais pra uma boa UX</p>
  */
 public class MainUX {
-   
 
-    //public static Texture iconeMoeda()
-    //{
-    //    
-    //}
+    private static MainUX mainUX;
+    private CoinHUD coinHUD;
+
+    public static MainUX getMainUX() {
+        if (mainUX == null) {
+            mainUX = new MainUX();
+        }
+        return mainUX;
+    }
 
     public static Vector<Texture> getTowerIcon()
     {
@@ -32,4 +37,27 @@ public class MainUX {
 
         return towerIcon;
     }
+
+    public static Texture getCoinTexture()
+    {
+        GameResourceManager resourceManager = GameResourceManager.getGameResourceManager();
+
+        return resourceManager.getTexture("CCoins/coins.png");
+
+    }
+
+    public void registerCoinHUD(CoinHUD hud) {
+        this.coinHUD = hud;
+    }
+
+    public static void updateCoins(int newCoinCount) {
+        if (getMainUX().coinHUD != null) {
+            getMainUX().coinHUD.updateCoins(newCoinCount);
+        }
+    }
+
+    public void clear() {
+        this.coinHUD = null;
+    }
+
 }

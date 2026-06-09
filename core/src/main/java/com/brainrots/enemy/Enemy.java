@@ -28,7 +28,7 @@ public abstract class Enemy extends GameObject {
         this.hp = health;
         this.width = width;
         this.height = height;
-
+        this.rewardCoins = 100;
         currentWaypointIndex = 1;
         this.speed = speed;
     }

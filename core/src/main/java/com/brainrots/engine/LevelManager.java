@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
+import com.brainrots.screen.MainUX;
 import com.brainrots.screen.ScreenManager;
 import com.brainrots.screen.ScreenManager.ScreenType;
 import com.brainrots.tower.ConcreteTower;
@@ -160,6 +161,7 @@ public class LevelManager {
     private void rewardCoins(Enemy enemy)
     {
         this.coins += enemy.giveCoinOnDeath();
+        MainUX.updateCoins(this.coins);
     }
 
     public void spawnEnemy(Enemy enemy) {

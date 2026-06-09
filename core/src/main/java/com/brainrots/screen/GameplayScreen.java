@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
+import com.brainrots.engine.CoinHUD;
 import com.brainrots.engine.LevelManager;
 
 
@@ -21,6 +22,7 @@ public class GameplayScreen extends GameScreen {
     private LevelManager levelManager;      // Gerenciador da fase
     private Label hpLabel;
     private TowerButton towerButton;
+    private CoinHUD coinHUD;
 
     public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager,
                 BrainRotGame screenManager, ShapeRenderer shapeRenderer, String levelName) {
@@ -70,12 +72,18 @@ public class GameplayScreen extends GameScreen {
         super.show();
 
         Gdx.input.setInputProcessor(stage);
-        Texture texturaCastelo = MainUX.getTowerIcon().get(0);
+        Texture castleTexture = MainUX.getTowerIcon().get(0);
 
-        this.towerButton = new TowerButton(texturaCastelo, 0, 0, () -> {
-            levelManager.positionTowerMode(texturaCastelo);
+        this.towerButton = new TowerButton(castleTexture, 0, 0, () -> {
+            levelManager.positionTowerMode(castleTexture);
         });
 
+        Texture coiTexture = MainUX.getCoinTexture();
+        this.coinHUD = new CoinHUD(coiTexture, 0);
+        coinHUD.setPosition(1000, 680);
+        MainUX.getMainUX().registerCoinHUD(coinHUD);
+
+        stage.addActor(coinHUD);
         stage.addActor(towerButton);
         resize(1920,1080);
     }
