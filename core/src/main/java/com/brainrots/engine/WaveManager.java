@@ -17,7 +17,7 @@ public class WaveManager {
 
     private int currentWave;
     private Array<Vector2> path;
-    private EnemyFactory factory = new EnemyFactory();
+    private EnemyFactory factory = EnemyFactory.getEnemyFactory();
 
     private JsonReader reader;
     private JsonValue allWaves;

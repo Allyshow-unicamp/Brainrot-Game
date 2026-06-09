@@ -6,12 +6,17 @@ import com.badlogic.gdx.utils.Array;
 import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
 
-public class Ball_6 extends Enemy{
+public class Ball_6 extends Enemy implements Spawnable{
 
     public Ball_6(Array<Vector2> path) {
         
         Texture enemyTexture = GameResourceManager.getGameResourceManager().getTexture(Assets.ENEMY_6);
         super(path, enemyTexture, 100, 100, 100, 100);
+    }
+
+    public Enemy spawn(Array<Vector2> path)
+    {
+        return new Ball_6(path);
     }
 
 }

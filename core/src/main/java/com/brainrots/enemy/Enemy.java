@@ -19,7 +19,10 @@ public abstract class Enemy extends GameObject {
 
     public Enemy(Array<Vector2> path, Texture texture, int health, int speed, int width, int height) {
         this.path = path;
-        this.position = new Vector2(path.get(0));
+        if(path != null)
+            this.position = new Vector2(path.get(0));
+        else
+            this.position = new Vector2(0,0); //Pra criacao do prototipo
         this.textureRegion = new TextureRegion(texture);
         this.MAX_HP = health;
         this.hp = health;
@@ -72,8 +75,8 @@ public abstract class Enemy extends GameObject {
         float barWidth = width; 
         float barHeight = 6f;   
         
-        float barX = position.x; 
-        float barY = position.y + height;
+        float barX = position.x + (width / 2f) - (barWidth / 2f);
+        float barY = position.y + height + 5f;
 
         // Fundo da barra
         shapeRenderer.setColor(Color.RED);

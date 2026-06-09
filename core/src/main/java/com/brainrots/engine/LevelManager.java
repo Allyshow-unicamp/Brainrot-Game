@@ -190,7 +190,7 @@ public class LevelManager {
             projectile.draw(batch);
         }
         batch.end();
-
+        shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for(Enemy enemy : activeEnemies)
         {
