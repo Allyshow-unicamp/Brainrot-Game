@@ -23,13 +23,13 @@ public class GameplayScreen extends GameScreen {
     private TowerButton towerButton;
 
     public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager,
-                BrainRotGame screenManager, ShapeRenderer shapeRenderer, String levelName) {
+                BrainRotGame screenManager, ShapeRenderer shapeRenderer, int level, String levelName) {
         super(batch, resourceManager, screenManager, shapeRenderer);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1920, 1080);
 
-        levelManager = new LevelManager(resourceManager, screenManager, levelName, camera);
+        levelManager = new LevelManager(resourceManager, screenManager, level, levelName, camera);
         levelManager.startNextWave();
 
         Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
