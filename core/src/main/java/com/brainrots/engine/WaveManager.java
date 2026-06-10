@@ -20,6 +20,8 @@ public class WaveManager {
     private int maxWaves;
     private Array<EnemySpawner> activeSpawners;
     private boolean isWaveActive;
+    private boolean pausedWave;
+
 
     private EnemyFactory factory;
     private JsonReader reader;
@@ -64,13 +66,21 @@ public class WaveManager {
         isWaveActive = true;
     }
 
+    public void pauseWaveGeneration(){
+        pausedWave = true;
+    }
+
+    public void resumeWaveGeneration(){
+        pausedWave = false;
+    }
+
     public void update(float delta, Array<Enemy> activeEnemies) {
         if (!isWaveActive && currentWave < maxWaves){;
             startNextWave();
             return;
         }
 
-        if (activeSpawners.isEmpty() && activeEnemies.isEmpty()) {
+        if (activeSpawners.isEmpty() && activeEnemies.isEmpty() && pausedWave == false) {
             isWaveActive = false;
             return;
         }

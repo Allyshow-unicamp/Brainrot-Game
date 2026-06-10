@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -40,7 +41,6 @@ public class LevelManager {
 
     private boolean running;
 
-
     public LevelManager(GameResourceManager resourceManager,
         BrainRotGame screenManager, int level, String mapName, OrthographicCamera gameScreen){
         this.gameTime = 0;
@@ -55,7 +55,6 @@ public class LevelManager {
         activeProjectiles = new Array<>();
         activeTowers = new Array<>();
         waveManager = new WaveManager(mapName, map.getPath());
-
     }
 
     /**
@@ -64,6 +63,14 @@ public class LevelManager {
      */
     public Array<Vector2> getPath() {
         return map.getPath();
+    }
+
+    public void pauseWaveGeneration(){
+        waveManager.pauseWaveGeneration();
+    }
+
+    public void resumeWaveGeneration(){
+        waveManager.resumeWaveGeneration();
     }
 
     /**
@@ -180,6 +187,10 @@ public class LevelManager {
 
             enemy.update(delta);
 
+            if(enemy.isDead()){
+                activeEnemies.removeValue(enemy, false);
+            }
+
             if (enemy.getPosition().dst(base.getPosition()) < 5.0f) {
                 base.takeDamage(enemy.getHp());
                 if (!base.hasHealth()) {
@@ -208,7 +219,13 @@ public class LevelManager {
 
             gameScreen.unproject(mapClick);     // Transforma clique em coordenadas no mapa.
 
-            Vector2 transformedCoord = new Vector2(mapClick.x, mapClick.y + 75);
+            Vector2 transformedCoord = new Vector2(mapClick.x, mapClick.y);
+
+            for(Polygon barrier : map.getBarrier()){
+                if(barrier.contains(transformedCoord)){
+                    return;
+                }
+            }
 
             ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture,
                 transformedCoord, 25, 2000, 250, 0.5f,
@@ -227,7 +244,17 @@ public class LevelManager {
             Vector3 mousePosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             gameScreen.unproject(mousePosition);
 
-            batch.setColor(1, 1, 1, 0.4f);
+            for(Polygon barrier : map.getBarrier()){
+            
+                if(barrier.contains(mousePosition.x, mousePosition.y)){
+                    batch.setColor(1, 0, 0, 0.4f);
+                    break;
+                } else {
+                    batch.setColor(1, 1, 1, 0.4f);
+                }
+
+            }
+            
             float width = 150f;
             float height = 150f;
 

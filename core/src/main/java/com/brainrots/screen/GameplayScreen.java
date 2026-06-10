@@ -1,14 +1,20 @@
 package com.brainrots.screen;
 
+import org.w3c.dom.Text;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
@@ -40,6 +46,33 @@ public class GameplayScreen extends GameScreen {
         hpLabel = new Label("HP: " + levelManager.getBaseHealth(), labelStyle);
 
         stage.addActor(hpLabel);
+
+
+        Texture playButton = resourceManager.getTexture(Assets.PLAY_BUTTON);
+        Texture pauseButton = resourceManager.getTexture(Assets.PAUSE_BUTTON);
+
+        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+
+        style.imageUp = new TextureRegionDrawable(playButton);
+        style.imageChecked = new TextureRegionDrawable(pauseButton);
+
+        ImageButton waveControlButton = new ImageButton(style);
+
+        waveControlButton.setPosition(0, 0);
+
+        stage.addActor(waveControlButton);
+
+        waveControlButton.addListener(new ChangeListener() {
+           @Override
+           public void changed(ChangeEvent event, Actor actor) {
+            if(waveControlButton.isChecked()){
+                levelManager.pauseWaveGeneration();
+           } else{
+                levelManager.resumeWaveGeneration();
+           }
+        }
+
+        });
     }
 
     @Override
@@ -59,7 +92,7 @@ public class GameplayScreen extends GameScreen {
     protected void drawScreen(float delta) {
         update(delta);
 
-        
+
 
         hpLabel.setText("HP: " + levelManager.getBaseHealth());
 

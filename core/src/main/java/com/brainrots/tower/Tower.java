@@ -1,6 +1,7 @@
 package com.brainrots.tower;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.brainrots.enemy.Enemy;
@@ -35,6 +36,14 @@ public abstract class Tower extends GameObject {
 
     public abstract Projectile createProjectile(Texture texture, Enemy target);
 
+    @Override
+    public void draw(SpriteBatch batch) {
+        float x = position.x - width / 2f;
+        float y = position.y;
+
+        batch.draw(textureRegion, x, y, width, height);
+    }
+    
     public void setTarget(Enemy enemy){
         target = enemy;
     }
