@@ -13,7 +13,7 @@ public class Projectile extends GameObject {
     private Vector2 mathVector = new Vector2();
     private Tower parent;
 
-    public static final float PROJECTILE_HIT_DISTANCE = 5f;
+    public static final float PROJECTILE_HIT_DISTANCE = 10f;
 
     public Projectile(Texture texture, Enemy target, Tower parent, int width, int height) {
         this.textureRegion = new TextureRegion(texture);

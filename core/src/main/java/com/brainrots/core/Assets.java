@@ -14,6 +14,8 @@ public final class Assets {
     public static final String PROJECTILE_BLACK = "Projectiles/black.png";
 
     public static final String MUSIC_GAME = "Soundtracks/game_song.mp3";
+    public static final String PAUSE_BUTTON = "UI/pause_button.png";
+    public static final String PLAY_BUTTON = "UI/play_button.png";
     public static final String UI_SKIN = "UI/uiskin.json";
     public static final String UI_FONT = "UI/default.fnt";
 }

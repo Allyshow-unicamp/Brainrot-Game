@@ -17,8 +17,8 @@ import com.brainrots.engine.LevelManager;
 
 public class GameplayScreen extends GameScreen {
 
-    private OrthographicCamera camera;      // Camera principal do jogo
-    private LevelManager levelManager;      // Gerenciador da fase
+    private OrthographicCamera main_camera;
+    private LevelManager levelManager;
     private Label hpLabel;
     private TowerButton towerButton;
 
@@ -26,10 +26,10 @@ public class GameplayScreen extends GameScreen {
                 BrainRotGame screenManager, ShapeRenderer shapeRenderer, int level, String levelName) {
         super(batch, resourceManager, screenManager, shapeRenderer);
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
+        main_camera = new OrthographicCamera();
+        main_camera.setToOrtho(false, 1920, 1080);
 
-        levelManager = new LevelManager(resourceManager, screenManager, level, levelName, camera);
+        levelManager = new LevelManager(resourceManager, screenManager, level, levelName, main_camera);
         levelManager.startNextWave();
 
         Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
@@ -57,7 +57,9 @@ public class GameplayScreen extends GameScreen {
 
     @Override
     protected void drawScreen(float delta) {
-        renderMainCamera(delta);
+        update(delta);
+
+        
 
         hpLabel.setText("HP: " + levelManager.getBaseHealth());
 
@@ -80,10 +82,10 @@ public class GameplayScreen extends GameScreen {
         resize(1920,1080);
     }
 
-    private void renderMainCamera(float delta)
+    private void update(float delta)
     {
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
+        main_camera.update();
+        batch.setProjectionMatrix(main_camera.combined);
         levelManager.update(delta);
         levelManager.draw(batch,shapeRenderer);
     }

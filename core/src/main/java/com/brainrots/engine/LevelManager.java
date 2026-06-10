@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Array.ArrayIterator;
+import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
@@ -19,6 +21,8 @@ import com.brainrots.tower.TargetType;
 public class LevelManager {
 
     private final int maxHealth = 100;
+
+    private float gameTime;
 
     private int level;
     private int coins;
@@ -34,21 +38,12 @@ public class LevelManager {
     private OrthographicCamera gameScreen;
     private boolean isIconSelected;
 
+    private boolean running;
 
-    public Array<Vector2> getPath() {
-        return map.getPath();
-    }
-
-    public Array<Enemy> getActiveEnemies() {
-        return activeEnemies;
-    }
-
-    public int getBaseHealth() {
-        return base.getHealth();
-    }
 
     public LevelManager(GameResourceManager resourceManager,
         BrainRotGame screenManager, int level, String mapName, OrthographicCamera gameScreen){
+        this.gameTime = 0;
         this.gameScreen = gameScreen;
         this.coins = 0;
         this.level = level;
@@ -60,6 +55,31 @@ public class LevelManager {
         activeProjectiles = new Array<>();
         activeTowers = new Array<>();
         waveManager = new WaveManager(mapName, map.getPath());
+
+    }
+
+    /**
+     * Retorna as coordenadas do caminho dos inimigos.
+     * @return Array de Vector2 contendo as coordenadas
+     */
+    public Array<Vector2> getPath() {
+        return map.getPath();
+    }
+
+    /**
+     * Retorna os inimigos ativos no mapa.
+     * @return Array de Enemy com os inimigos ativos.
+     */
+    public Array<Enemy> getActiveEnemies() {
+        return activeEnemies;
+    }
+
+    /**
+     * Retorna a vida restante da base.
+     * @return Int representando a vida da base.
+     */
+    public int getBaseHealth() {
+        return base.getHealth();
     }
 
     public void positionTowerMode(Texture towerGhostTexture)
@@ -72,67 +92,109 @@ public class LevelManager {
         waveManager.startNextWave();
     }
 
-    public Enemy closestEnemy(Vector2 position) {
-        float minDst = Float.POSITIVE_INFINITY;
+    public Enemy getClosestEnemy(Tower tower) {
+        float minDist = Float.POSITIVE_INFINITY;
         Enemy minEnemy = null;
+
+        float range = tower.getRange();
+
         for (Enemy enemy : activeEnemies) {
-            float dst = enemy.getPosition().dst(position);
-            if (dst < minDst) {
-                minDst = dst;
+            float dist = enemy.getPosition().dst(tower.getPosition());
+
+            if(dist > range){
+                continue;
+            }
+
+            if (dist < minDist) {
+                minDist = dist;
                 minEnemy = enemy;
             }
         }
         return minEnemy;
     }
 
-    public void update(float delta) {
+    /**
+     * Busca inimigos no range de todas as torres.
+     */
+    public void towerSearch(){
+
         for (Tower tower : activeTowers) {
-            tower.update(delta);
+            tower.setTarget(getClosestEnemy(tower));
+        }
+    }
+
+    /**
+     * Loop Principal do jogo.
+     */
+    public void update(float delta) {
+        
+        towerSearch();
+
+        gameTime += delta;
+
+        float lastAttackTime;
+        float attackCooldown;
+
+        for (Tower tower : activeTowers) {
+
+            lastAttackTime = tower.getLastAttackTime();
+            attackCooldown = tower.getAttackCooldown();
+
+            if(gameTime - lastAttackTime >= attackCooldown){
+                if(tower.hasTarget()){
+                    int damage = tower.getDamage();
+
+                    Enemy target = tower.getTarget();
+
+                    Texture texture = resourceManager.getTexture(Assets.PROJECTILE_BLACK);
+                    spawnProjectile(tower.createProjectile(texture, target));
+
+                    tower.attack(gameTime);
+                }
+            }
+
         }
 
-        Array<Projectile> projectilesToBeRemoved = new Array<>();
-        for (Projectile projectile : activeProjectiles) {
+        ArrayIterator<Projectile> projIterator = activeProjectiles.iterator();
+
+        while (projIterator.hasNext()) {
+
+            Projectile projectile = projIterator.next();
+
             projectile.update(delta);
 
-            if (projectile.reachedTarget())
-                projectilesToBeRemoved.add(projectile);
-
-            // inimigo que já morreu
-            if (!activeEnemies.contains(projectile.getTarget(), true))
-                projectilesToBeRemoved.add(projectile);
-
-            if (projectile.getPosition().dst(projectile.getParent().getPosition()) > projectile.getParent().getRange())
-                projectilesToBeRemoved.add(projectile);
-        }
-        for (Projectile projectile : projectilesToBeRemoved) {
-            activeProjectiles.removeValue(projectile, true);
+            if(projectile.reachedTarget() || !activeEnemies.contains(projectile.getTarget(), true) ||
+             projectile.getPosition().dst(projectile.getParent().getPosition()) > projectile.getParent().getRange()){
+                activeProjectiles.removeValue(projectile, false);
+             }
         }
 
-        waveManager.update(delta, this, resourceManager);
-        boolean victory = won(waveManager.getCurrentWave(), waveManager.getMaxWaves());
-        if (victory) {
-            screenManager.endGame(level, victory, levelStars(base.getHealth(), maxHealth));
-        }
+        waveManager.update(delta, activeEnemies);
 
-        Array<Enemy> enemiesToBeRemoved = new Array<>();
-        for(Enemy enemy : activeEnemies){
+
+        ArrayIterator<Enemy> enemyIterator = activeEnemies.iterator();
+
+        while (enemyIterator.hasNext()) {
+            
+            Enemy enemy = enemyIterator.next();
+
             enemy.update(delta);
 
             if (enemy.getPosition().dst(base.getPosition()) < 5.0f) {
-                boolean alive = base.takeDamage(enemy.getHp());
-                if (!alive) {
+                base.takeDamage(enemy.getHp());
+                if (!base.hasHealth()) {
                     screenManager.endGame(level, false, 0);
                 }
-                enemiesToBeRemoved.add(enemy);
-            }
 
-            if (enemy.isDead())
-                enemiesToBeRemoved.add(enemy);
+            }
         }
-        for (Enemy enemy : enemiesToBeRemoved){
-            activeEnemies.removeValue(enemy, true);
-            rewardCoins(enemy);
+
+        boolean victory = won(waveManager.getCurrentWave(), waveManager.getMaxWaves());
+
+        if (victory) {
+            screenManager.endGame(level, victory, levelStars(base.getHealth(), maxHealth));
         }
+        
         checkPositionTower();
     }
 
@@ -143,33 +205,40 @@ public class LevelManager {
     {
         if (isIconSelected && Gdx.input.justTouched()) {
             Vector3 mapClick = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            gameScreen.unproject(mapClick);
 
-            float xFinal = mapClick.x ;
-            float yFinal = mapClick.y ;
-             ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture,
-                new Vector2(xFinal, yFinal), 25, 2000, 250, 0.5f,
-                150, 150, TargetType.SINGLE, this, resourceManager);
-             buyAndPlaceTower(concreteTower);
+            gameScreen.unproject(mapClick);     // Transforma clique em coordenadas no mapa.
+
+            Vector2 transformedCoord = new Vector2(mapClick.x, mapClick.y + 75);
+
+            ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture,
+                transformedCoord, 25, 2000, 250, 0.5f,
+                150, 150, TargetType.SINGLE);
+
+            activeTowers.add(concreteTower);
+
             isIconSelected = false;
             towerGhostTexture = null;
         }
     }
 
-    private boolean won(int currentWave, int maxWaves) {
-        return base.getHealth() > 0 && currentWave == maxWaves && activeEnemies.size == 0;
+    private void renderGhostTower(SpriteBatch batch)
+    {
+        if (isIconSelected && towerGhostTexture != null) {
+            Vector3 mousePosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            gameScreen.unproject(mousePosition);
+
+            batch.setColor(1, 1, 1, 0.4f);
+            float width = 150f;
+            float height = 150f;
+
+            batch.draw(towerGhostTexture, mousePosition.x - width/2, mousePosition.y,width, height);
+
+            batch.setColor(1, 1, 1, 1.0f);
+        }
     }
 
-    private int levelStars(int hp, int maxHp) {
-        float ratio = hp/maxHp;
-        if (ratio < 0.25)
-            return 0;
-        if (ratio < 0.5)
-            return 1;
-        if (ratio < 0.75)
-            return 2;
-        return 3;
-    }
+
+
 
     /**
      * Funcao para fornecer moedas na morte do inimigo
@@ -218,23 +287,19 @@ public class LevelManager {
         shapeRenderer.end();
     }
 
-    public void buyAndPlaceTower(Tower tower) {
-        activeTowers.add(tower);
+
+    private boolean won(int currentWave, int maxWaves) {
+        return base.getHealth() > 0 && currentWave == maxWaves && activeEnemies.size == 0;
     }
 
-    private void renderGhostTower(SpriteBatch batch)
-    {
-        if (isIconSelected && towerGhostTexture != null) {
-            Vector3 mousePosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            gameScreen.unproject(mousePosition);
-
-            batch.setColor(1, 1, 1, 0.4f);
-            float width = 150f;
-            float height = 150f;
-
-            batch.draw(towerGhostTexture, mousePosition.x - width/2, mousePosition.y -height/2 ,width,height);
-
-            batch.setColor(1, 1, 1, 1.0f);
-        }
+    private int levelStars(int hp, int maxHp) {
+        float ratio = hp/maxHp;
+        if (ratio < 0.25)
+            return 0;
+        if (ratio < 0.5)
+            return 1;
+        if (ratio < 0.75)
+            return 2;
+        return 3;
     }
 }

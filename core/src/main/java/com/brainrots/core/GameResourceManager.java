@@ -37,6 +37,8 @@ public class GameResourceManager {
         assetManager.load(Assets.ENEMY_6_7, Texture.class);
         assetManager.load(Assets.TOWER_TUNG, Texture.class);
         assetManager.load(Assets.PROJECTILE_BLACK, Texture.class);
+        assetManager.load(Assets.PAUSE_BUTTON, Texture.class);
+        assetManager.load(Assets.PLAY_BUTTON, Texture.class);
 
         assetManager.load(Assets.MUSIC_GAME, Music.class);
 
