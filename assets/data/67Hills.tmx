@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1920" tileheight="1080" infinite="0" nextlayerid="5" nextobjectid="5">
+ <imagelayer id="2" name="Image">
+  <image source="../../Downloads/67Hills.png" width="1920" height="1080"/>
+ </imagelayer>
+ <objectgroup id="3" name="Path">
+  <object id="2" x="0" y="578.861">
+   <polyline points="0,0 1213.95,-4.96167 1213.95,-390.318 699.595,-391.972 706.211,324.162 388.664,322.508 387.01,190.197 1538.12,191.851 1533.16,-195.159 1734.93,-190.197 1728.31,501.128"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Barrier">
+  <object id="3" x="0" y="509.398">
+   <polygon points="0,0 645.017,0 640.055,-383.702 1280.11,-382.048 1156.07,-254.699 769.058,-256.353 769.058,193.505 1476.92,191.851 1471.96,-190.197 1796.12,-188.543 1791.16,568.938 1663.81,568.938 1665.47,-62.8478 1597.66,-64.5017 1599.31,320.855 767.405,322.508 769.058,446.55 320.855,449.858 320.855,193.505 640.055,191.851 641.709,127.349 1.65389,129.003"/>
+  </object>
+  <object id="4" x="1156.07" y="256.353">
+   <polygon points="0,0 -1.65389,248.083 -383.702,254.699 -382.048,380.395 125.696,378.741 122.388,-127.349"/>
+  </object>
+ </objectgroup>
+</map>

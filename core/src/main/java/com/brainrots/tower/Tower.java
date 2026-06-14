@@ -1,28 +1,26 @@
 package com.brainrots.tower;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.brainrots.core.Assets;
-import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
-import com.brainrots.engine.LevelManager;
 import com.brainrots.entity.GameObject;
 
 public abstract class Tower extends GameObject {
+
     private String id;
     private String name;
     protected int damage;
     protected int attackSpeed;
     protected float range;
     protected float attackCooldown;
-    private float timeSinceLastAttack;
+    private float lastAttackTime;
+    private Enemy target;
     private TargetType targetType;
-    private LevelManager levelManager;
-    private GameResourceManager resourceManager;
 
     public Tower(Texture texture, Vector2 position, int damage, int attackSpeed, float range, float attackCooldown,
-            int width, int height, TargetType targetType, LevelManager levelManager, GameResourceManager resourceManager) {
+            int width, int height, TargetType targetType) {
         this.textureRegion = new TextureRegion(texture);
         this.position = position;
         this.width = width;
@@ -32,31 +30,47 @@ public abstract class Tower extends GameObject {
         this.range = range;
         this.attackCooldown = attackCooldown;
         this.targetType = targetType;
-        this.timeSinceLastAttack = 0;
-        this.levelManager = levelManager;
-        this.resourceManager = resourceManager;
+        this.lastAttackTime = 0;
+        this.target = null;
     }
 
     public abstract Projectile createProjectile(Texture texture, Enemy target);
 
     @Override
-    public void update(float deltaTime) {
-        timeSinceLastAttack += deltaTime;
-        if (timeSinceLastAttack >= attackCooldown) {
-            Enemy closestEnemy = levelManager.closestEnemy(position);
+    public void draw(SpriteBatch batch) {
+        float x = position.x - width / 2f;
+        float y = position.y;
 
-            if (closestEnemy == null) {
-                return;
-            }
-
-            if (position.dst(closestEnemy.getPosition()) < range) {
-                Texture texture = resourceManager.getTexture(Assets.PROJECTILE_BLACK);
-                levelManager.spawnProjectile(createProjectile(texture, closestEnemy));
-                timeSinceLastAttack = 0;
-            }
-        }
+        batch.draw(textureRegion, x, y, width, height);
+    }
+    
+    public void setTarget(Enemy enemy){
+        target = enemy;
     }
 
+    public Enemy getTarget(){
+        return target;
+    }
+
+    public void attack(float gameTime){
+        lastAttackTime = gameTime;
+    }
+
+    public float getLastAttackTime(){
+        return lastAttackTime;
+    }
+
+    public float getAttackCooldown(){
+        return attackCooldown;
+    }
+
+    public boolean hasTarget(){
+        if(target != null){
+            return true;
+        }
+
+        return false;
+    }
     public int getDamage() {
         return damage;
     }

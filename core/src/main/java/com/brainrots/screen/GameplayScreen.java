@@ -1,14 +1,20 @@
 package com.brainrots.screen;
 
+import org.w3c.dom.Text;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
@@ -18,20 +24,20 @@ import com.brainrots.engine.LevelManager;
 
 public class GameplayScreen extends GameScreen {
 
-    private OrthographicCamera camera;      // Camera principal do jogo
-    private LevelManager levelManager;      // Gerenciador da fase
+    private OrthographicCamera main_camera;
+    private LevelManager levelManager;
     private Label hpLabel;
     private TowerButton towerButton;
     private CoinHUD coinHUD;
 
     public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager,
-                BrainRotGame screenManager, ShapeRenderer shapeRenderer, String levelName) {
+                BrainRotGame screenManager, ShapeRenderer shapeRenderer, int level, String levelName) {
         super(batch, resourceManager, screenManager, shapeRenderer);
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1920, 1080);
+        main_camera = new OrthographicCamera();
+        main_camera.setToOrtho(false, 1920, 1080);
 
-        levelManager = new LevelManager(resourceManager, screenManager, levelName, camera);
+        levelManager = new LevelManager(resourceManager, screenManager, level, levelName, main_camera);
         levelManager.startNextWave();
 
         Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
@@ -42,6 +48,33 @@ public class GameplayScreen extends GameScreen {
         hpLabel = new Label("HP: " + levelManager.getBaseHealth(), labelStyle);
 
         stage.addActor(hpLabel);
+
+
+        Texture playButton = resourceManager.getTexture(Assets.PLAY_BUTTON);
+        Texture pauseButton = resourceManager.getTexture(Assets.PAUSE_BUTTON);
+
+        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+
+        style.imageUp = new TextureRegionDrawable(playButton);
+        style.imageChecked = new TextureRegionDrawable(pauseButton);
+
+        ImageButton waveControlButton = new ImageButton(style);
+
+        waveControlButton.setPosition(0, 0);
+
+        stage.addActor(waveControlButton);
+
+        waveControlButton.addListener(new ChangeListener() {
+           @Override
+           public void changed(ChangeEvent event, Actor actor) {
+            if(waveControlButton.isChecked()){
+                levelManager.pauseWaveGeneration();
+           } else{
+                levelManager.resumeWaveGeneration();
+           }
+        }
+
+        });
     }
 
     @Override
@@ -59,7 +92,9 @@ public class GameplayScreen extends GameScreen {
 
     @Override
     protected void drawScreen(float delta) {
-        renderMainCamera(delta);
+        update(delta);
+
+
 
         hpLabel.setText("HP: " + levelManager.getBaseHealth());
 
@@ -88,10 +123,10 @@ public class GameplayScreen extends GameScreen {
         resize(1920,1080);
     }
 
-    private void renderMainCamera(float delta)
+    private void update(float delta)
     {
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
+        main_camera.update();
+        batch.setProjectionMatrix(main_camera.combined);
         levelManager.update(delta);
         levelManager.draw(batch,shapeRenderer);
     }

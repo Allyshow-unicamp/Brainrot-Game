@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1920" tileheight="1080" infinite="0" nextlayerid="5" nextobjectid="4">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="1920" tileheight="1080" infinite="0" nextlayerid="5" nextobjectid="5">
  <imagelayer id="2" name="Image">
   <image source="67Hills.png" width="1920" height="1080"/>
  </imagelayer>
@@ -10,7 +10,10 @@
  </objectgroup>
  <objectgroup id="4" name="Barrier">
   <object id="3" x="0" y="509.398">
-   <polygon points="0,0 645.017,0 640.055,-383.702 1280.11,-382.048 1283.42,127.349 770.712,129.003 770.712,193.505 1476.92,191.851 1471.96,-190.197 1796.12,-188.543 1791.16,568.938 1663.81,568.938 1665.47,-62.8478 1597.66,-64.5017 1599.31,320.855 767.405,322.508 769.058,446.55 320.855,449.858 320.855,193.505 640.055,191.851 641.709,127.349 1.65389,129.003"/>
+   <polygon points="0,0 645.017,0 640.055,-383.702 1280.11,-382.048 1156.07,-254.699 769.058,-256.353 769.058,193.505 1476.92,191.851 1471.96,-190.197 1796.12,-188.543 1791.16,568.938 1663.81,568.938 1665.47,-62.8478 1597.66,-64.5017 1599.31,320.855 767.405,322.508 769.058,446.55 320.855,449.858 320.855,193.505 640.055,191.851 641.709,127.349 1.65389,129.003"/>
+  </object>
+  <object id="4" x="1156.07" y="256.353">
+   <polygon points="0,0 -1.65389,248.083 -383.702,254.699 -382.048,380.395 125.696,378.741 122.388,-127.349"/>
   </object>
  </objectgroup>
 </map>

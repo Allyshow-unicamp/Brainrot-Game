@@ -94,7 +94,7 @@ public class LevelSelectionScreen extends GameScreen {
             playButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    screenManager.selectLevel(itemName);
+                    screenManager.selectLevel(itemNumber, itemName);
                 }
             });
 

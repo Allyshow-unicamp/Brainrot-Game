@@ -12,8 +12,6 @@ public abstract class GameObject implements Collidable {
     protected int width;
     protected int height;
 
-    public abstract void update(float deltaTime);
-
     public void draw(SpriteBatch batch) {
         float x = position.x - width / 2f;
         float y = position.y - height / 2f;

@@ -1,9 +1,11 @@
 package com.brainrots.engine;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -12,6 +14,7 @@ import com.brainrots.core.GameResourceManager;
 
 public class Map {
     private final Array<Vector2> enemyPath = new Array<>();
+    private final Array<Polygon> barrier = new Array<>();
 
     private TiledMap tiledMap;
     private Texture mapBackground;
@@ -39,6 +42,15 @@ public class Map {
         } else {
             System.err.println("Caminho não é instância de PolylineMapObject");
         }
+
+        for(Object object : tiledMap.getLayers().get("Barrier").getObjects()){
+
+            if (object instanceof PolygonMapObject polygon) {
+                
+                barrier.add(polygon.getPolygon());
+            }
+        }
+
     }
 
     public Texture getBackground() {
@@ -47,6 +59,10 @@ public class Map {
 
     public Array<Vector2> getPath() {
         return enemyPath;
+    }
+
+    public Array<Polygon> getBarrier(){
+        return barrier;
     }
 
     public Vector2 getLastPosition() {

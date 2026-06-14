@@ -5,9 +5,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Array.ArrayIterator;
+import com.brainrots.core.Assets;
+import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.screen.MainUX;
@@ -21,8 +25,10 @@ import com.brainrots.tower.TargetType;
 public class LevelManager {
 
     private final int maxHealth = 100;
-    private final int maxWaves = 50;
 
+    private float gameTime;
+
+    private int level;
     private int coins;
     private Map map;
     private Array<Enemy> activeEnemies;
@@ -32,27 +38,18 @@ public class LevelManager {
     private WaveManager waveManager;
     private GameResourceManager resourceManager;
     private Texture towerGhostTexture;
-    private ScreenManager screenManager;
+    private BrainRotGame screenManager;
     private OrthographicCamera gameScreen;
     private boolean isIconSelected;
 
-
-    public Array<Vector2> getPath() {
-        return map.getPath();
-    }
-
-    public Array<Enemy> getActiveEnemies() {
-        return activeEnemies;
-    }
-
-    public int getBaseHealth() {
-        return base.getHealth();
-    }
+    private boolean running;
 
     public LevelManager(GameResourceManager resourceManager,
-        ScreenManager screenManager, String mapName, OrthographicCamera gameScreen){
+        BrainRotGame screenManager, int level, String mapName, OrthographicCamera gameScreen){
+        this.gameTime = 0;
         this.gameScreen = gameScreen;
         this.coins = 0;
+        this.level = level;
         this.resourceManager = resourceManager;
         this.screenManager = screenManager;
         map = new Map(mapName, resourceManager);
@@ -61,6 +58,38 @@ public class LevelManager {
         activeProjectiles = new Array<>();
         activeTowers = new Array<>();
         waveManager = new WaveManager(mapName, map.getPath());
+    }
+
+    /**
+     * Retorna as coordenadas do caminho dos inimigos.
+     * @return Array de Vector2 contendo as coordenadas
+     */
+    public Array<Vector2> getPath() {
+        return map.getPath();
+    }
+
+    public void pauseWaveGeneration(){
+        waveManager.pauseWaveGeneration();
+    }
+
+    public void resumeWaveGeneration(){
+        waveManager.resumeWaveGeneration();
+    }
+
+    /**
+     * Retorna os inimigos ativos no mapa.
+     * @return Array de Enemy com os inimigos ativos.
+     */
+    public Array<Enemy> getActiveEnemies() {
+        return activeEnemies;
+    }
+
+    /**
+     * Retorna a vida restante da base.
+     * @return Int representando a vida da base.
+     */
+    public int getBaseHealth() {
+        return base.getHealth();
     }
 
     public void positionTowerMode(Texture towerGhostTexture)
@@ -73,63 +102,113 @@ public class LevelManager {
         waveManager.startNextWave();
     }
 
-    public Enemy closestEnemy(Vector2 position) {
-        float minDst = Float.POSITIVE_INFINITY;
+    public Enemy getClosestEnemy(Tower tower) {
+        float minDist = Float.POSITIVE_INFINITY;
         Enemy minEnemy = null;
+
+        float range = tower.getRange();
+
         for (Enemy enemy : activeEnemies) {
-            float dst = enemy.getPosition().dst(position);
-            if (dst < minDst) {
-                minDst = dst;
+            float dist = enemy.getPosition().dst(tower.getPosition());
+
+            if(dist > range){
+                continue;
+            }
+
+            if (dist < minDist) {
+                minDist = dist;
                 minEnemy = enemy;
             }
         }
         return minEnemy;
     }
 
-    public void update(float delta) {
+    /**
+     * Busca inimigos no range de todas as torres.
+     */
+    public void towerSearch(){
+
         for (Tower tower : activeTowers) {
-            tower.update(delta);
+            tower.setTarget(getClosestEnemy(tower));
         }
+    }
 
-        Array<Projectile> projectilesToBeRemoved = new Array<>();
-        for (Projectile projectile : activeProjectiles) {
-            projectile.update(delta);
+    /**
+     * Loop Principal do jogo.
+     */
+    public void update(float delta) {
+        
+        towerSearch();
 
-            if (projectile.reachedTarget())
-                projectilesToBeRemoved.add(projectile);
+        gameTime += delta;
 
-            // inimigo que já morreu
-            if (!activeEnemies.contains(projectile.getTarget(), true))
-                projectilesToBeRemoved.add(projectile);
+        float lastAttackTime;
+        float attackCooldown;
 
-            if (projectile.getPosition().dst(projectile.getParent().getPosition()) > projectile.getParent().getRange())
-                projectilesToBeRemoved.add(projectile);
-        }
-        for (Projectile projectile : projectilesToBeRemoved) {
-            activeProjectiles.removeValue(projectile, true);
-        }
+        for (Tower tower : activeTowers) {
 
-        waveManager.update(delta, this, resourceManager);
+            lastAttackTime = tower.getLastAttackTime();
+            attackCooldown = tower.getAttackCooldown();
 
-        Array<Enemy> enemiesToBeRemoved = new Array<>();
-        for(Enemy enemy : activeEnemies){
-            enemy.update(delta);
+            if(gameTime - lastAttackTime >= attackCooldown){
+                if(tower.hasTarget()){
+                    int damage = tower.getDamage();
 
-            if (enemy.getPosition().dst(base.getPosition()) < 5.0f) {
-                boolean alive = base.takeDamage(enemy.getHp());
-                if (!alive) {
-                    screenManager.switchScreen(ScreenType.MAIN_MENU);
+                    Enemy target = tower.getTarget();
+
+                    Texture texture = resourceManager.getTexture(Assets.PROJECTILE_BLACK);
+                    spawnProjectile(tower.createProjectile(texture, target));
+
+                    tower.attack(gameTime);
                 }
-                enemiesToBeRemoved.add(enemy);
             }
 
-            if (enemy.isDead())
-                enemiesToBeRemoved.add(enemy);
         }
-        for (Enemy enemy : enemiesToBeRemoved){
-            activeEnemies.removeValue(enemy, true);
-            rewardCoins(enemy);
+
+        ArrayIterator<Projectile> projIterator = activeProjectiles.iterator();
+
+        while (projIterator.hasNext()) {
+
+            Projectile projectile = projIterator.next();
+
+            projectile.update(delta);
+
+            if(projectile.reachedTarget() || !activeEnemies.contains(projectile.getTarget(), true) ||
+             projectile.getPosition().dst(projectile.getParent().getPosition()) > projectile.getParent().getRange()){
+                activeProjectiles.removeValue(projectile, false);
+             }
         }
+
+        waveManager.update(delta, activeEnemies);
+
+
+        ArrayIterator<Enemy> enemyIterator = activeEnemies.iterator();
+
+        while (enemyIterator.hasNext()) {
+            
+            Enemy enemy = enemyIterator.next();
+
+            enemy.update(delta);
+
+            if(enemy.isDead()){
+                activeEnemies.removeValue(enemy, false);
+            }
+
+            if (enemy.getPosition().dst(base.getPosition()) < 5.0f) {
+                base.takeDamage(enemy.getHp());
+                if (!base.hasHealth()) {
+                    screenManager.endGame(level, false, 0);
+                }
+
+            }
+        }
+
+        boolean victory = won(waveManager.getCurrentWave(), waveManager.getMaxWaves());
+
+        if (victory) {
+            screenManager.endGame(level, victory, levelStars(base.getHealth(), maxHealth));
+        }
+        
         checkPositionTower();
     }
 
@@ -140,18 +219,56 @@ public class LevelManager {
     {
         if (isIconSelected && Gdx.input.justTouched()) {
             Vector3 mapClick = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            gameScreen.unproject(mapClick);
 
-            float xFinal = mapClick.x ;
-            float yFinal = mapClick.y ;
-             ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture,
-                new Vector2(xFinal, yFinal), 25, 2000, 250, 0.5f,
-                150, 150, TargetType.SINGLE, this, resourceManager);
-             buyAndPlaceTower(concreteTower);
+            gameScreen.unproject(mapClick);     // Transforma clique em coordenadas no mapa.
+
+            Vector2 transformedCoord = new Vector2(mapClick.x, mapClick.y);
+
+            for(Polygon barrier : map.getBarrier()){
+                if(barrier.contains(transformedCoord)){
+                    return;
+                }
+            }
+
+            ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture,
+                transformedCoord, 25, 2000, 250, 0.5f,
+                150, 150, TargetType.SINGLE);
+
+            activeTowers.add(concreteTower);
+
             isIconSelected = false;
             towerGhostTexture = null;
         }
     }
+
+    private void renderGhostTower(SpriteBatch batch)
+    {
+        if (isIconSelected && towerGhostTexture != null) {
+            Vector3 mousePosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            gameScreen.unproject(mousePosition);
+
+            for(Polygon barrier : map.getBarrier()){
+            
+                if(barrier.contains(mousePosition.x, mousePosition.y)){
+                    batch.setColor(1, 0, 0, 0.4f);
+                    break;
+                } else {
+                    batch.setColor(1, 1, 1, 0.4f);
+                }
+
+            }
+            
+            float width = 150f;
+            float height = 150f;
+
+            batch.draw(towerGhostTexture, mousePosition.x - width/2, mousePosition.y,width, height);
+
+            batch.setColor(1, 1, 1, 1.0f);
+        }
+    }
+
+
+
 
     /**
      * Funcao para fornecer moedas na morte do inimigo
@@ -201,23 +318,19 @@ public class LevelManager {
         shapeRenderer.end();
     }
 
-    public void buyAndPlaceTower(Tower tower) {
-        activeTowers.add(tower);
+
+    private boolean won(int currentWave, int maxWaves) {
+        return base.getHealth() > 0 && currentWave == maxWaves && activeEnemies.size == 0;
     }
 
-    private void renderGhostTower(SpriteBatch batch)
-    {
-        if (isIconSelected && towerGhostTexture != null) {
-            Vector3 mousePosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            gameScreen.unproject(mousePosition);
-
-            batch.setColor(1, 1, 1, 0.4f);
-            float width = 150f;
-            float height = 150f;
-
-            batch.draw(towerGhostTexture, mousePosition.x - width/2, mousePosition.y -height/2 ,width,height);
-
-            batch.setColor(1, 1, 1, 1.0f);
-        }
+    private int levelStars(int hp, int maxHp) {
+        float ratio = hp/maxHp;
+        if (ratio < 0.25)
+            return 0;
+        if (ratio < 0.5)
+            return 1;
+        if (ratio < 0.75)
+            return 2;
+        return 3;
     }
 }

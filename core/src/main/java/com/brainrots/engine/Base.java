@@ -13,9 +13,16 @@ public class Base {
         this.position = initialPosition;
     }
 
-    public boolean takeDamage(int damage) {
+    public void takeDamage(int damage) {
         health -= Math.min(health, damage);
-        return health > 0;
+    }
+
+    public boolean hasHealth(){
+        if(health > 0){
+            return true;
+        }
+
+        return false;
     }
 
     public int calculateStars() {
