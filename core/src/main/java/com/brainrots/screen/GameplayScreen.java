@@ -15,10 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.brainrots.MainUX.CoinHUD;
+import com.brainrots.MainUX.MainUX;
+import com.brainrots.MainUX.TowerButton;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
-import com.brainrots.engine.CoinHUD;
 import com.brainrots.engine.LevelManager;
 
 
@@ -33,11 +36,10 @@ public class GameplayScreen extends GameScreen {
     public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager,
                 BrainRotGame screenManager, ShapeRenderer shapeRenderer, int level, String levelName) {
         super(batch, resourceManager, screenManager, shapeRenderer);
-
         main_camera = new OrthographicCamera();
         main_camera.setToOrtho(false, 1920, 1080);
 
-        levelManager = new LevelManager(resourceManager, screenManager, level, levelName, main_camera);
+        levelManager = new LevelManager(resourceManager, screenManager, level, levelName, main_camera,stage);
         levelManager.startNextWave();
 
         Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
@@ -98,7 +100,6 @@ public class GameplayScreen extends GameScreen {
 
         hpLabel.setText("HP: " + levelManager.getBaseHealth());
 
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
 
@@ -128,6 +129,7 @@ public class GameplayScreen extends GameScreen {
         main_camera.update();
         batch.setProjectionMatrix(main_camera.combined);
         levelManager.update(delta);
+        stage.act(delta);
         levelManager.draw(batch,shapeRenderer);
     }
 

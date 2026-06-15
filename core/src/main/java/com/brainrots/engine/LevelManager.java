@@ -8,13 +8,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Array.ArrayIterator;
+import com.brainrots.MainUX.MainUX;
+import com.brainrots.MainUX.UpgradeUX.TowerUpgradeMenu;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
-import com.brainrots.screen.MainUX;
 import com.brainrots.screen.ScreenManager;
 import com.brainrots.screen.ScreenManager.ScreenType;
 import com.brainrots.tower.ConcreteTower;
@@ -41,11 +43,12 @@ public class LevelManager {
     private BrainRotGame screenManager;
     private OrthographicCamera gameScreen;
     private boolean isIconSelected;
+    private Stage stage;
 
     private boolean running;
 
-    public LevelManager(GameResourceManager resourceManager,
-        BrainRotGame screenManager, int level, String mapName, OrthographicCamera gameScreen){
+    public LevelManager(GameResourceManager resourceManager, BrainRotGame screenManager, 
+        int level, String mapName, OrthographicCamera gameScreen, Stage stage){
         this.gameTime = 0;
         this.gameScreen = gameScreen;
         this.coins = 0;
@@ -58,6 +61,7 @@ public class LevelManager {
         activeProjectiles = new Array<>();
         activeTowers = new Array<>();
         waveManager = new WaveManager(mapName, map.getPath());
+        this.stage = stage;
     }
 
     /**
@@ -147,6 +151,7 @@ public class LevelManager {
 
         for (Tower tower : activeTowers) {
 
+            towerClick(tower);
             lastAttackTime = tower.getLastAttackTime();
             attackCooldown = tower.getAttackCooldown();
 
@@ -191,6 +196,7 @@ public class LevelManager {
             enemy.update(delta);
 
             if(enemy.isDead()){
+                rewardCoins(enemy);
                 activeEnemies.removeValue(enemy, false);
             }
 
@@ -210,6 +216,20 @@ public class LevelManager {
         }
         
         checkPositionTower();
+    }
+
+    /**
+     * Funcao para caso o player clique numa torre pra dar upgrade
+     */
+    private void towerClick(Tower tower)
+    {
+        if (Gdx.input.justTouched())
+        {
+            Vector3 clickCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            gameScreen.unproject(clickCoords);
+            if(tower.wasClicked(clickCoords.x,clickCoords.y))
+                MainUX.openUpgradeMenu(tower,stage , resourceManager.getTexture(Assets.TOWER_TUNG),gameScreen);
+        }
     }
 
     /**

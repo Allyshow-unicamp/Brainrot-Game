@@ -18,9 +18,10 @@ public abstract class Tower extends GameObject {
     private float lastAttackTime;
     private Enemy target;
     private TargetType targetType;
+    private int numberUpgrades;
 
     public Tower(Texture texture, Vector2 position, int damage, int attackSpeed, float range, float attackCooldown,
-            int width, int height, TargetType targetType) {
+            int width, int height, TargetType targetType, int numberUpgrades) {
         this.textureRegion = new TextureRegion(texture);
         this.position = position;
         this.width = width;
@@ -32,6 +33,7 @@ public abstract class Tower extends GameObject {
         this.targetType = targetType;
         this.lastAttackTime = 0;
         this.target = null;
+        this.numberUpgrades = numberUpgrades;
     }
 
     public abstract Projectile createProjectile(Texture texture, Enemy target);
@@ -50,6 +52,16 @@ public abstract class Tower extends GameObject {
 
     public Enemy getTarget(){
         return target;
+    }
+
+    public float getTowerHeight()
+    {
+        return textureRegion.getRegionHeight();
+    }
+
+    public float getTowerWidht()
+    {
+        return textureRegion.getRegionWidth();
     }
 
     public void attack(float gameTime){
@@ -81,5 +93,44 @@ public abstract class Tower extends GameObject {
 
     public float getRange() {
         return range;
+    }
+
+    public boolean wasClicked(float mouseXCoord, float mouseYCoord)
+    {
+        //Determinar area da colisao
+        float initialXCoord = position.x - width / 2f;
+        float finalXCoord = initialXCoord + width;
+        float initialYCoord = position.y;
+        float finalYCoord = position.y + height;
+
+        return(onXRange(initialXCoord, finalXCoord, mouseXCoord) && 
+        onYRange(initialYCoord, finalYCoord, mouseYCoord));
+    }
+
+    /**
+     * Metodo ocmplementar de wasClicked, determina 
+     * se a coordenada do mouse foi dentro do intervalo
+     */
+    private boolean onXRange(float initialXCoord, float finalXCoord, float currentXCoord)
+    {
+        if(currentXCoord < finalXCoord && currentXCoord > initialXCoord)
+            return true;
+        return false;
+    }
+
+    /**
+     * Metodo ocmplementar de wasClicked, determina 
+     * se a coordenada do mouse foi dentro do intervalo
+     */
+    private boolean onYRange(float initialYCoord, float finalYCoord, float currentYCoord)
+    {
+        if(currentYCoord < finalYCoord && currentYCoord > initialYCoord)
+            return true;
+        return false;
+    }  
+
+    public int getNumberUpgrades()
+    {
+        return this.numberUpgrades;
     }
 }

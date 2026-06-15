@@ -40,6 +40,9 @@ public class GameResourceManager {
         assetManager.load(Assets.NORMAL_COIN,Texture.class);
 
         assetManager.load(Assets.MUSIC_GAME, Music.class);
+        
+        assetManager.load(Assets.PLAY_BUTTON, Texture.class);
+        assetManager.load(Assets.PAUSE_BUTTON, Texture.class);
 
         assetManager.load(Assets.UI_SKIN, Skin.class);
         assetManager.load(Assets.UI_FONT, BitmapFont.class);

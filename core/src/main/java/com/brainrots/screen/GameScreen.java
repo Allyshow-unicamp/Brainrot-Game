@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
@@ -24,7 +25,6 @@ public abstract class GameScreen extends ScreenAdapter {
         this.batch = batch;
         this.resourceManager = resourceManager;
         this.screenManager = screenManager;
-
         this.stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
     }
