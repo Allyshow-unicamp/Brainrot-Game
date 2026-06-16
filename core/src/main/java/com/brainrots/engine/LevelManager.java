@@ -12,17 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Array.ArrayIterator;
 import com.brainrots.MainUX.MainUX;
-import com.brainrots.MainUX.UpgradeUX.TowerUpgradeMenu;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
-import com.brainrots.screen.ScreenManager;
-import com.brainrots.screen.ScreenManager.ScreenType;
 import com.brainrots.tower.ConcreteTower;
 import com.brainrots.tower.Projectile;
-import com.brainrots.tower.Tower;
 import com.brainrots.tower.TargetType;
+import com.brainrots.tower.Tower;
 
 public class LevelManager {
 
@@ -43,6 +40,7 @@ public class LevelManager {
     private BrainRotGame screenManager;
     private OrthographicCamera gameScreen;
     private boolean isIconSelected;
+    private boolean isUpgradeMenuOpen;
     private Stage stage;
     private boolean wasTowerUpgraded;
 
@@ -63,7 +61,7 @@ public class LevelManager {
         activeTowers = new Array<>();
         waveManager = new WaveManager(mapName, map.getPath());
         this.stage = stage;
-        this.wasTowerUpgraded = false;
+        this.isUpgradeMenuOpen = false;
     }
 
     /**
@@ -229,8 +227,16 @@ public class LevelManager {
         {
             Vector3 clickCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             gameScreen.unproject(clickCoords);
-            if(tower.wasClicked(clickCoords.x,clickCoords.y))
+            if(tower.wasClicked(clickCoords.x,clickCoords.y) && !isUpgradeMenuOpen)
+            {
                 MainUX.openUpgradeMenu(tower,stage,gameScreen,activeTowers);
+                isUpgradeMenuOpen = true;
+            }
+            else
+            {  
+                isUpgradeMenuOpen = false;
+                MainUX.closeUpgradeMenu();
+            }
         }
     }
 

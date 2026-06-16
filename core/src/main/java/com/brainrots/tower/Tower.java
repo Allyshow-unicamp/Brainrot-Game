@@ -1,13 +1,13 @@
 package com.brainrots.tower;
 
+import java.util.Vector;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.entity.GameObject;
-
-import java.util.Vector;
 
 public abstract class Tower extends GameObject {
 

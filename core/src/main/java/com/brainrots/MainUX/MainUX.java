@@ -2,16 +2,10 @@ package com.brainrots.MainUX;
 
 import java.util.Vector;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.brainrots.MainUX.UpgradeUX.TowerUpgradeMenu;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.tower.Tower;
@@ -84,6 +78,10 @@ public class MainUX {
 
     public void clear() {
         this.coinHUD = null;
+    }
+
+    public static int getCurrentCoins() {
+        return getMainUX().coinHUD.getCurrentCoins();
     }
 
 }

@@ -37,4 +37,8 @@ public class CoinHUD extends Table {
             this.pack(); 
         }
     }
+
+    public int getCurrentCoins() {
+        return currentCoins;
+    }
 }

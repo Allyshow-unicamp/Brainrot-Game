@@ -2,6 +2,8 @@ package com.brainrots.MainUX.UpgradeUX;
 
 import com.brainrots.tower.Tower;
 import com.brainrots.tower.TowerEvolutionMap;
+import com.brainrots.MainUX.MainUX;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -48,7 +50,7 @@ public class TowerUpgradeMenu {
         Image circleBackground = new Image(circleTexture);
         circleBackground.setColor(new Color(0.7f, 0.7f, 0.7f, 0.8f)); 
         
-        float backgroundSize = radius * 2.6f; 
+        float backgroundSize = selectedTower.getRange(); 
         circleBackground.setSize(backgroundSize, backgroundSize);
         circleBackground.setPosition(0, 0); 
         
@@ -96,6 +98,8 @@ public class TowerUpgradeMenu {
     private Runnable onClickAction(Tower selectedTower,int index, Array<Tower> activeTowers)
     {
         return () ->{
+            if(MainUX.getCurrentCoins() < 100)
+                return;
             Tower upgradedTower = TowerEvolutionMap.createNewTower(selectedTower, index);
 
             activeTowers.set(selectedTower.getID(), upgradedTower);
