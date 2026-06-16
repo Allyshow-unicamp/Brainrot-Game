@@ -8,6 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter.OutputType;
 import com.brainrots.exception.PersistanceException;
+import com.brainrots.interfaces.GameSaveHandler;
 
 public class JsonGameSaveHandler implements GameSaveHandler {
     private String profileSaveFileName;

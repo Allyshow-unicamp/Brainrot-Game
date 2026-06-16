@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
-import com.brainrots.enemy.Spawnable;
 
 public class Ball_6_7 extends Enemy implements Spawnable{
 

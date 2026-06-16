@@ -1,7 +1,8 @@
-package com.brainrots.core;
+package com.brainrots.interfaces;
 
 import java.util.HashMap;
 
+import com.brainrots.core.PlayerProfile;
 import com.brainrots.exception.PersistanceException;
 
 public interface GameSaveHandler {

@@ -1,6 +1,5 @@
 package com.brainrots.tower;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.brainrots.core.Assets;
 
 public enum TestTower {

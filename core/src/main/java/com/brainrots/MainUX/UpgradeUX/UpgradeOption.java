@@ -1,16 +1,11 @@
 package com.brainrots.MainUX.UpgradeUX;
 
 
-
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.brainrots.MainUX.TowerButton;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-
-
 
 public class UpgradeOption extends Table{
     

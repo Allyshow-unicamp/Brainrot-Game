@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Classe que armazenas os dados do jogador.
+ */
 public class PlayerProfile {
     private int globalCoins;
     private HashMap<String, Integer> levelStars;
