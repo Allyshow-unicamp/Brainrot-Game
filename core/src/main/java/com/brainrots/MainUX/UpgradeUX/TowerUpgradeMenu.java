@@ -1,6 +1,7 @@
 package com.brainrots.MainUX.UpgradeUX;
 
 import com.brainrots.tower.Tower;
+import com.brainrots.tower.TowerEvolutionMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.brainrots.MainUX.TowerButton;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.Vector;
 
@@ -39,7 +41,7 @@ public class TowerUpgradeMenu {
         pixmap.dispose();
     }
 
-    public void openUpgradeMenu(Tower selectedTower, Stage stage, Texture texture, OrthographicCamera gameScreen)
+    public void openUpgradeMenu(Tower selectedTower, Stage stage, OrthographicCamera gameScreen, Array<Tower> activeTowers)
     {
         this.options = selectedTower.getNumberUpgrades();
         
@@ -58,7 +60,8 @@ public class TowerUpgradeMenu {
 
         for (int i = 0; i < options; i++) 
         {
-            UpgradeOption upgradeButton = createUpgradeButton(texture);
+            UpgradeOption upgradeButton = createUpgradeButton(
+                selectedTower,TowerEvolutionMap.getTexture(selectedTower, i),i,activeTowers);
             
             float buttonXCoord = getButtonXCoord(i, groupCenterX, upgradeButton.getWidth());
             float buttonYCoord = getButtonYCoord(i, groupCenterY, upgradeButton.getHeight());
@@ -78,13 +81,26 @@ public class TowerUpgradeMenu {
         listOptions.clear(); 
     }
 
-    private UpgradeOption createUpgradeButton(Texture texture)
+    private UpgradeOption createUpgradeButton(Tower selectedTower,
+        Texture texture,int index,Array<Tower> activeTowers)
     {
-        TowerButton upgradeButton = new TowerButton(texture, 0, 0, null);
+        TowerButton upgradeButton = new TowerButton(
+            texture, 0, 0, onClickAction(selectedTower, index, activeTowers));
+
         UpgradeOption option = new UpgradeOption(upgradeButton, 100);
 
         option.validate();
         return option;
+    }
+
+    private Runnable onClickAction(Tower selectedTower,int index, Array<Tower> activeTowers)
+    {
+        return () ->{
+            Tower upgradedTower = TowerEvolutionMap.createNewTower(selectedTower, index);
+
+            activeTowers.set(selectedTower.getID(), upgradedTower);
+            closeUpgradeMenu();
+        };
     }
 
    private void positionGroup(Tower tower, OrthographicCamera gameScreen, float backgroundSize)

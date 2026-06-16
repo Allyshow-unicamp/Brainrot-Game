@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.entity.GameObject;
 
+import java.util.Vector;
+
 public abstract class Tower extends GameObject {
 
     private String id;
@@ -18,10 +20,12 @@ public abstract class Tower extends GameObject {
     private float lastAttackTime;
     private Enemy target;
     private TargetType targetType;
-    private int numberUpgrades;
+    protected int numberUpgrades;
+    protected Vector<Tower> avaiableUpgrades;
+    protected int towerID;
 
     public Tower(Texture texture, Vector2 position, int damage, int attackSpeed, float range, float attackCooldown,
-            int width, int height, TargetType targetType, int numberUpgrades) {
+            int width, int height, TargetType targetType, int numberUpgrades, int towerID) {
         this.textureRegion = new TextureRegion(texture);
         this.position = position;
         this.width = width;
@@ -34,6 +38,7 @@ public abstract class Tower extends GameObject {
         this.lastAttackTime = 0;
         this.target = null;
         this.numberUpgrades = numberUpgrades;
+        this.towerID = towerID;
     }
 
     public abstract Projectile createProjectile(Texture texture, Enemy target);
@@ -56,7 +61,7 @@ public abstract class Tower extends GameObject {
 
     public float getTowerHeight()
     {
-        return textureRegion.getRegionHeight();
+        return this.height;
     }
 
     public float getTowerWidht()
@@ -87,12 +92,27 @@ public abstract class Tower extends GameObject {
         return damage;
     }
 
+    public int getID()
+    {
+        return towerID;
+    }
+
     public int getAttackSpeed() {
         return attackSpeed;
     }
 
     public float getRange() {
         return range;
+    }
+
+    public void setID(int newID)
+    {
+        this.towerID = newID;
+    }
+
+    public void setPosition(Vector2 newPosition)
+    {
+        this.position = newPosition;
     }
 
     public boolean wasClicked(float mouseXCoord, float mouseYCoord)

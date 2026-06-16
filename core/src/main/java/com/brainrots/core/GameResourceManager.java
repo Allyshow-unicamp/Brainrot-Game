@@ -31,13 +31,22 @@ public class GameResourceManager {
      */
     public void loadAssets() {
         assetManager.load(Assets.MAP_67_HILLS_BG, Texture.class);
+        assetManager.load(Assets.NORMAL_COIN,Texture.class);
+
+        //Inimigos
         assetManager.load(Assets.ENEMY_67, Texture.class);
         assetManager.load(Assets.ENEMY_6, Texture.class);
         assetManager.load(Assets.ENEMY_7, Texture.class);
         assetManager.load(Assets.ENEMY_6_7, Texture.class);
-        assetManager.load(Assets.TOWER_TUNG, Texture.class);
+
+        //Projeteis
         assetManager.load(Assets.PROJECTILE_BLACK, Texture.class);
-        assetManager.load(Assets.NORMAL_COIN,Texture.class);
+
+        //Torres
+        assetManager.load(Assets.TOWER_TUNG, Texture.class);
+        assetManager.load(Assets.TOWER_CAPPUCCINO, Texture.class);
+        assetManager.load(Assets.TOWER_PATAPIM,Texture.class);
+        assetManager.load(Assets.TOWER_VACA_SATURNITA, Texture.class);
 
         assetManager.load(Assets.MUSIC_GAME, Music.class);
         

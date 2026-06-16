@@ -10,9 +10,15 @@ public final class Assets {
     public static final String ENEMY_6 = "Enemies/6_Ball.png";
     public static final String ENEMY_7 = "Enemies/7_Ball.png";
     public static final String ENEMY_6_7 = "Enemies/6+7_Ball.png";
-    public static final String TOWER_TUNG = "Towers/tung-tung-tung-sahur.png";
     public static final String PROJECTILE_BLACK = "Projectiles/black.png";
 
+
+    public static final String TOWER_TUNG = "Towers/tung-tung-tung-sahur.png";
+    public static final String TOWER_VACA_SATURNITA = "Towers/la-vaca-saturno-saturnita.png";
+    public static final String TOWER_CAPPUCCINO = "Towers/cappuccino-assassino.png";
+    public static final String TOWER_PATAPIM = "Towers/brr-brr-patapim.png";
+
+    
     public static final String NORMAL_COIN = "CCoins/coins.png";
 
     public static final String MUSIC_GAME = "Soundtracks/game_song.mp3";

@@ -44,6 +44,7 @@ public class LevelManager {
     private OrthographicCamera gameScreen;
     private boolean isIconSelected;
     private Stage stage;
+    private boolean wasTowerUpgraded;
 
     private boolean running;
 
@@ -62,6 +63,7 @@ public class LevelManager {
         activeTowers = new Array<>();
         waveManager = new WaveManager(mapName, map.getPath());
         this.stage = stage;
+        this.wasTowerUpgraded = false;
     }
 
     /**
@@ -228,7 +230,7 @@ public class LevelManager {
             Vector3 clickCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             gameScreen.unproject(clickCoords);
             if(tower.wasClicked(clickCoords.x,clickCoords.y))
-                MainUX.openUpgradeMenu(tower,stage , resourceManager.getTexture(Assets.TOWER_TUNG),gameScreen);
+                MainUX.openUpgradeMenu(tower,stage,gameScreen,activeTowers);
         }
     }
 
@@ -252,7 +254,7 @@ public class LevelManager {
 
             ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture,
                 transformedCoord, 25, 2000, 250, 0.5f,
-                150, 150, TargetType.SINGLE);
+                150, 150, TargetType.SINGLE,activeTowers.size);
 
             activeTowers.add(concreteTower);
 

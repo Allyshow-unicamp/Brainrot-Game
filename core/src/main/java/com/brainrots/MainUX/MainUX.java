@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.brainrots.MainUX.UpgradeUX.TowerUpgradeMenu;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.tower.Tower;
+
 
 /**
  * Classe usada como objetivo de auxiliar LevelManager. 
@@ -59,9 +61,10 @@ public class MainUX {
         this.towerUpgradeMenu = menu;
     }
 
-    public static void openUpgradeMenu(Tower tower, Stage stage, Texture texture, OrthographicCamera gameScreen) 
+    public static void openUpgradeMenu(Tower tower, Stage stage,
+        OrthographicCamera gameScreen,Array<Tower> activeTowers) 
     {
-        getMainUX().towerUpgradeMenu.openUpgradeMenu(tower, stage, texture,gameScreen);
+        getMainUX().towerUpgradeMenu.openUpgradeMenu(tower, stage,gameScreen,activeTowers);
     }
 
     public static void closeUpgradeMenu()
