@@ -31,7 +31,7 @@ public class GlobalShopScreen extends GameScreen {
     private Skin skin;
     private PlayerProfile playerProfile;
 
-    public GlobalShopScreen(SpriteBatch batch, GameResourceManager resourceManager,
+    public GlobalShopScreen(SpriteBatch batch,
                             BrainRotGame screenManager, ShapeRenderer shapeRenderer,
                             GameSaveHandler saveHandler) {
         super(batch, screenManager, shapeRenderer);

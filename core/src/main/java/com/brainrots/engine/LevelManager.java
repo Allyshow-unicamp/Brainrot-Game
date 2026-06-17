@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Array.ArrayIterator;
@@ -224,6 +225,14 @@ public class LevelManager {
     {
         if (Gdx.input.justTouched())
         {
+
+            Vector2 stageCoords = stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+            Actor hitActor = stage.hit(stageCoords.x, stageCoords.y, true);
+
+            if (hitActor != null) {
+                return; 
+            }
+
             Vector3 clickCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             gameScreen.unproject(clickCoords);
             if(tower.wasClicked(clickCoords.x,clickCoords.y))
@@ -237,6 +246,16 @@ public class LevelManager {
     private void checkPositionTower()
     {
         if (isIconSelected && Gdx.input.justTouched()) {
+
+
+            Vector2 stageCoords = stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+            Actor hitActor = stage.hit(stageCoords.x, stageCoords.y, true);
+
+            if (hitActor != null) {
+                return; 
+            }
+
+
             Vector3 mapClick = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 
             gameScreen.unproject(mapClick);     // Transforma clique em coordenadas no mapa.
@@ -287,8 +306,6 @@ public class LevelManager {
     }
 
 
-
-
     /**
      * Funcao para fornecer moedas na morte do inimigo
      * <p>Fornece e starta a animacao de moedas</p>
@@ -330,6 +347,7 @@ public class LevelManager {
         batch.end();
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
         for(Enemy enemy : activeEnemies)
         {
             enemy.drawHealthBar(shapeRenderer);

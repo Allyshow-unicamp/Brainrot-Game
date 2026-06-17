@@ -87,10 +87,10 @@ public class BrainRotGame extends Game implements ScreenManager {
     public void switchScreen(ScreenType type) {
         switch (type) {
             case MAIN_MENU:
-                setScreen(new MainMenuScreen(batch, resourceManager, this, shapeRenderer));
+                setScreen(new MainMenuScreen(batch, this, shapeRenderer));
                 break;
             case GLOBAL_SHOP:
-                setScreen(new GlobalShopScreen(batch, resourceManager, this, shapeRenderer, gameSaveHandler));
+                setScreen(new GlobalShopScreen(batch, this, shapeRenderer, gameSaveHandler));
                 break;
             case LEVEL_SELECTION:
                 setScreen(new LevelSelectionScreen(batch, this, shapeRenderer, gameSaveHandler));
@@ -131,10 +131,10 @@ public class BrainRotGame extends Game implements ScreenManager {
 
 
     public void selectLevel(int level, String levelName) {
-        setScreen(new GameplayScreen(batch, resourceManager, this, shapeRenderer, level, levelName));
+        setScreen(new GameplayScreen(batch, this, shapeRenderer, level, levelName));
     }
 
     public void endGame(int level, boolean won, int stars) {
-        setScreen(new EndGameScreen(batch, resourceManager, this, shapeRenderer, level, won, stars, gameSaveHandler));
+        setScreen(new EndGameScreen(batch, this, shapeRenderer, level, won, stars, gameSaveHandler));
     }
 }

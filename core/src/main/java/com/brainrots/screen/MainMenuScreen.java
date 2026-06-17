@@ -14,13 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
-import com.brainrots.core.GameResourceManager;
 import com.brainrots.interfaces.StageHelper;
 import com.brainrots.interfaces.ScreenManager.ScreenType;
 
 public class MainMenuScreen extends GameScreen {
 
-    public MainMenuScreen(SpriteBatch batch, GameResourceManager resourceManager, BrainRotGame screenManager,
+    public MainMenuScreen(SpriteBatch batch, BrainRotGame screenManager,
             ShapeRenderer shapeRenderer) {
         super(batch, screenManager, shapeRenderer);
 

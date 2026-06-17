@@ -32,6 +32,7 @@ public class WaveManager {
         this.maxWaves = allWaves.size;
         this.activeSpawners = new Array<>();
         this.path = path;
+        this.pausedWave = true;
     }
 
     public int getCurrentWave() {
@@ -71,7 +72,7 @@ public class WaveManager {
     }
 
     public void update(float delta, Array<Enemy> activeEnemies) {
-        if (!isWaveActive && currentWave < maxWaves){;
+        if (!isWaveActive && currentWave < maxWaves && pausedWave == false){;
             startNextWave();
             return;
         }

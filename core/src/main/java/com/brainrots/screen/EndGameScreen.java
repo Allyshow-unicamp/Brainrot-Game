@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
-import com.brainrots.core.GameResourceManager;
 import com.brainrots.interfaces.GameSaveHandler;
 import com.brainrots.interfaces.StageHelper;
 import com.brainrots.interfaces.ScreenManager.ScreenType;
@@ -23,7 +22,7 @@ import com.brainrots.exception.PersistanceException;
 
 public class EndGameScreen extends GameScreen {
 
-    public EndGameScreen(SpriteBatch batch, GameResourceManager resourceManager, BrainRotGame screenManager,
+    public EndGameScreen(SpriteBatch batch, BrainRotGame screenManager,
             ShapeRenderer shapeRenderer, int level, boolean won, int stars, GameSaveHandler gameSaveHandler) {
         super(batch, screenManager, shapeRenderer);
 

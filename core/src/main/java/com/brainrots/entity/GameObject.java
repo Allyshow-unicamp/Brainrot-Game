@@ -32,4 +32,38 @@ public abstract class GameObject implements Collidable {
     public Vector2 getPosition() {
         return position;
     }
+
+     public boolean wasClicked(float mouseXCoord, float mouseYCoord)
+    {
+        //Determinar area da colisao
+        float initialXCoord = position.x - width / 2f;
+        float finalXCoord = initialXCoord + width;
+        float initialYCoord = position.y;
+        float finalYCoord = position.y + height;
+
+        return(onXRange(initialXCoord, finalXCoord, mouseXCoord) && 
+        onYRange(initialYCoord, finalYCoord, mouseYCoord));
+    }
+
+    /**
+     * Metodo ocmplementar de wasClicked, determina 
+     * se a coordenada do mouse foi dentro do intervalo
+     */
+    private boolean onXRange(float initialXCoord, float finalXCoord, float currentXCoord)
+    {
+        if(currentXCoord < finalXCoord && currentXCoord > initialXCoord)
+            return true;
+        return false;
+    }
+
+    /**
+     * Metodo ocmplementar de wasClicked, determina 
+     * se a coordenada do mouse foi dentro do intervalo
+     */
+    private boolean onYRange(float initialYCoord, float finalYCoord, float currentYCoord)
+    {
+        if(currentYCoord < finalYCoord && currentYCoord > initialYCoord)
+            return true;
+        return false;
+    }  
 }

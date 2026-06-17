@@ -18,7 +18,6 @@ import com.brainrots.MainUX.MainUX;
 import com.brainrots.MainUX.TowerButton;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
-import com.brainrots.core.GameResourceManager;
 import com.brainrots.engine.LevelManager;
 
 
@@ -38,16 +37,14 @@ public class GameplayScreen extends GameScreen {
     /**
      * Inicializa o jogo.
      */
-    public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager,
-                BrainRotGame screenManager, ShapeRenderer shapeRenderer, int level, String levelName) {
+    public GameplayScreen(SpriteBatch batch, BrainRotGame screenManager,
+         ShapeRenderer shapeRenderer, int level, String levelName) {
         super(batch, screenManager, shapeRenderer);
         
         main_camera = new OrthographicCamera();
         levelManager = new LevelManager(resourceManager, screenManager, level, levelName, main_camera,stage);
 
         initializeHud();
-
-        levelManager.startNextWave();
     }
 
 
@@ -69,20 +66,20 @@ public class GameplayScreen extends GameScreen {
 
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
 
-        style.imageUp = new TextureRegionDrawable(playButton);
-        style.imageChecked = new TextureRegionDrawable(pauseButton);
+        style.imageUp = new TextureRegionDrawable(pauseButton);
+        style.imageChecked = new TextureRegionDrawable(playButton);
 
         ImageButton waveControlButton = new ImageButton(style);
 
-        waveControlButton.setPosition(0, 0);
+        waveControlButton.setPosition(1500 - pauseButton.getWidth(), 0);
 
         waveControlButton.addListener(new ChangeListener() {
            @Override
            public void changed(ChangeEvent event, Actor actor) {
             if(waveControlButton.isChecked()){
-                levelManager.pauseWaveGeneration();
-           } else{
                 levelManager.resumeWaveGeneration();
+           } else{
+                levelManager.pauseWaveGeneration();
            }
         }});
 
