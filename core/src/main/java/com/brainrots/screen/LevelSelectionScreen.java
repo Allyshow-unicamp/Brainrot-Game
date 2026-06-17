@@ -19,20 +19,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
-import com.brainrots.core.GameResourceManager;
-import com.brainrots.core.GameSaveHandler;
+import com.brainrots.interfaces.GameSaveHandler;
+import com.brainrots.interfaces.StageHelper;
+import com.brainrots.interfaces.ScreenManager.ScreenType;
 import com.brainrots.core.PlayerProfile;
 import com.brainrots.exception.PersistanceException;
-import com.brainrots.screen.ScreenManager.ScreenType;
 
 public class LevelSelectionScreen extends GameScreen {
     private PlayerProfile playerProfile;
     private HashMap<String, String> levelHashMap;
     private Skin skin;
 
-    public LevelSelectionScreen(SpriteBatch batch, GameResourceManager resourceManager, BrainRotGame screenManager,
+    public LevelSelectionScreen(SpriteBatch batch, BrainRotGame screenManager,
             ShapeRenderer shapeRenderer, GameSaveHandler saveHandler) {
-        super(batch, resourceManager, screenManager, shapeRenderer);
+        super(batch, screenManager, shapeRenderer);
 
         this.playerProfile = screenManager.getPlayerProfile();
         this.skin = resourceManager.getSkin(Assets.UI_SKIN);
@@ -42,10 +42,10 @@ public class LevelSelectionScreen extends GameScreen {
             e.printStackTrace();
         }
 
-        buildUI();
+        initializeHud();
     }
 
-     private void buildUI() {
+     protected void initializeHud() {
         Table rootTable = new Table();
         rootTable.setFillParent(true);
         rootTable.pad(20);

@@ -1,10 +1,7 @@
 package com.brainrots.tower;
 
-import java.util.Vector;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.brainrots.tower.TestTower;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
 

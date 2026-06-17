@@ -30,29 +30,32 @@ public class GameResourceManager {
      * Carrega todos os assets do jogo.
      */
     public void loadAssets() {
+
+        /* MAPS */
         assetManager.load(Assets.MAP_67_HILLS_BG, Texture.class);
         assetManager.load(Assets.NORMAL_COIN,Texture.class);
 
-        //Inimigos
+        /* ENEMIES */
         assetManager.load(Assets.ENEMY_67, Texture.class);
         assetManager.load(Assets.ENEMY_6, Texture.class);
         assetManager.load(Assets.ENEMY_7, Texture.class);
         assetManager.load(Assets.ENEMY_6_7, Texture.class);
 
-        //Projeteis
+        /* PROJECTILES */
         assetManager.load(Assets.PROJECTILE_BLACK, Texture.class);
 
-        //Torres
+        /* TOWERS */
         assetManager.load(Assets.TOWER_TUNG, Texture.class);
         assetManager.load(Assets.TOWER_CAPPUCCINO, Texture.class);
         assetManager.load(Assets.TOWER_PATAPIM,Texture.class);
         assetManager.load(Assets.TOWER_VACA_SATURNITA, Texture.class);
 
+        /* SOUNDS */
         assetManager.load(Assets.MUSIC_GAME, Music.class);
         
+        /* HUD */
         assetManager.load(Assets.PLAY_BUTTON, Texture.class);
         assetManager.load(Assets.PAUSE_BUTTON, Texture.class);
-
         assetManager.load(Assets.UI_SKIN, Skin.class);
         assetManager.load(Assets.UI_FONT, BitmapFont.class);
 

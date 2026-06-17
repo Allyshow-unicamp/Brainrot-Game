@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.entity.GameObject;
 
+import java.util.UUID;
+
 public abstract class Tower extends GameObject {
 
     private String id;
@@ -26,6 +28,7 @@ public abstract class Tower extends GameObject {
 
     public Tower(Texture texture, Vector2 position, int damage, int attackSpeed, float range, float attackCooldown,
             int width, int height, TargetType targetType, int numberUpgrades, int towerID) {
+        this.id = UUID.randomUUID().toString();
         this.textureRegion = new TextureRegion(texture);
         this.position = position;
         this.width = width;
@@ -114,40 +117,6 @@ public abstract class Tower extends GameObject {
     {
         this.position = newPosition;
     }
-
-    public boolean wasClicked(float mouseXCoord, float mouseYCoord)
-    {
-        //Determinar area da colisao
-        float initialXCoord = position.x - width / 2f;
-        float finalXCoord = initialXCoord + width;
-        float initialYCoord = position.y;
-        float finalYCoord = position.y + height;
-
-        return(onXRange(initialXCoord, finalXCoord, mouseXCoord) && 
-        onYRange(initialYCoord, finalYCoord, mouseYCoord));
-    }
-
-    /**
-     * Metodo ocmplementar de wasClicked, determina 
-     * se a coordenada do mouse foi dentro do intervalo
-     */
-    private boolean onXRange(float initialXCoord, float finalXCoord, float currentXCoord)
-    {
-        if(currentXCoord < finalXCoord && currentXCoord > initialXCoord)
-            return true;
-        return false;
-    }
-
-    /**
-     * Metodo ocmplementar de wasClicked, determina 
-     * se a coordenada do mouse foi dentro do intervalo
-     */
-    private boolean onYRange(float initialYCoord, float finalYCoord, float currentYCoord)
-    {
-        if(currentYCoord < finalYCoord && currentYCoord > initialYCoord)
-            return true;
-        return false;
-    }  
 
     public int getNumberUpgrades()
     {

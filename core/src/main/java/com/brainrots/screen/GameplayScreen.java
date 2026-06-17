@@ -1,7 +1,5 @@
 package com.brainrots.screen;
 
-import org.w3c.dom.Text;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,32 +13,75 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.brainrots.MainUX.CoinHUD;
 import com.brainrots.MainUX.MainUX;
 import com.brainrots.MainUX.TowerButton;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
-import com.brainrots.core.GameResourceManager;
 import com.brainrots.engine.LevelManager;
 
 
+/**
+ * Classe que inicializa uma tela de level.
+ */
 public class GameplayScreen extends GameScreen {
 
-    private OrthographicCamera main_camera;
     private LevelManager levelManager;
+
+    private OrthographicCamera main_camera;
+
     private Label hpLabel;
     private TowerButton towerButton;
     private CoinHUD coinHUD;
 
-    public GameplayScreen(SpriteBatch batch, GameResourceManager resourceManager,
-                BrainRotGame screenManager, ShapeRenderer shapeRenderer, int level, String levelName) {
-        super(batch, resourceManager, screenManager, shapeRenderer);
+    /**
+     * Inicializa o jogo.
+     */
+    public GameplayScreen(SpriteBatch batch, BrainRotGame screenManager,
+         ShapeRenderer shapeRenderer, int level, String levelName) {
+        super(batch, screenManager, shapeRenderer);
+        
         main_camera = new OrthographicCamera();
+        levelManager = new LevelManager(resourceManager, screenManager, level, levelName, main_camera,stage);
+
+        initializeHud();
+    }
+
+
+    private void update(float delta)
+    {
+        main_camera.update();
+        batch.setProjectionMatrix(main_camera.combined);
+        levelManager.update(delta);
+        stage.act(delta);
+        levelManager.draw(batch,shapeRenderer);
+    }
+
+    @Override
+    protected void initializeHud() {
         main_camera.setToOrtho(false, 1920, 1080);
 
-        levelManager = new LevelManager(resourceManager, screenManager, level, levelName, main_camera,stage);
-        levelManager.startNextWave();
+        Texture playButton = resourceManager.getTexture(Assets.PLAY_BUTTON);
+        Texture pauseButton = resourceManager.getTexture(Assets.PAUSE_BUTTON);
+
+        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
+
+        style.imageUp = new TextureRegionDrawable(pauseButton);
+        style.imageChecked = new TextureRegionDrawable(playButton);
+
+        ImageButton waveControlButton = new ImageButton(style);
+
+        waveControlButton.setPosition(1500 - pauseButton.getWidth(), 0);
+
+        waveControlButton.addListener(new ChangeListener() {
+           @Override
+           public void changed(ChangeEvent event, Actor actor) {
+            if(waveControlButton.isChecked()){
+                levelManager.resumeWaveGeneration();
+           } else{
+                levelManager.pauseWaveGeneration();
+           }
+        }});
 
         Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
         BitmapFont font = resourceManager.getFont(Assets.UI_FONT);
@@ -49,34 +90,9 @@ public class GameplayScreen extends GameScreen {
         labelStyle.font = font;
         hpLabel = new Label("HP: " + levelManager.getBaseHealth(), labelStyle);
 
-        stage.addActor(hpLabel);
-
-
-        Texture playButton = resourceManager.getTexture(Assets.PLAY_BUTTON);
-        Texture pauseButton = resourceManager.getTexture(Assets.PAUSE_BUTTON);
-
-        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
-
-        style.imageUp = new TextureRegionDrawable(playButton);
-        style.imageChecked = new TextureRegionDrawable(pauseButton);
-
-        ImageButton waveControlButton = new ImageButton(style);
-
-        waveControlButton.setPosition(0, 0);
 
         stage.addActor(waveControlButton);
-
-        waveControlButton.addListener(new ChangeListener() {
-           @Override
-           public void changed(ChangeEvent event, Actor actor) {
-            if(waveControlButton.isChecked()){
-                levelManager.pauseWaveGeneration();
-           } else{
-                levelManager.resumeWaveGeneration();
-           }
-        }
-
-        });
+        stage.addActor(hpLabel);
     }
 
     @Override
@@ -95,8 +111,6 @@ public class GameplayScreen extends GameScreen {
     @Override
     protected void drawScreen(float delta) {
         update(delta);
-
-
 
         hpLabel.setText("HP: " + levelManager.getBaseHealth());
 
@@ -122,15 +136,6 @@ public class GameplayScreen extends GameScreen {
         stage.addActor(coinHUD);
         stage.addActor(towerButton);
         resize(1920,1080);
-    }
-
-    private void update(float delta)
-    {
-        main_camera.update();
-        batch.setProjectionMatrix(main_camera.combined);
-        levelManager.update(delta);
-        stage.act(delta);
-        levelManager.draw(batch,shapeRenderer);
     }
 
 }

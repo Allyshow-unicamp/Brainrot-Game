@@ -1,4 +1,4 @@
-package com.brainrots.screen;
+package com.brainrots.interfaces;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;

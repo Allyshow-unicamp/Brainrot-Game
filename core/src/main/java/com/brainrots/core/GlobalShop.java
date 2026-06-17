@@ -3,6 +3,7 @@ package com.brainrots.core;
 import java.util.HashMap;
 
 import com.brainrots.exception.InvalidGameActionException;
+import com.brainrots.interfaces.GameSaveHandler;
 
 public class GlobalShop {
     private HashMap<String, Integer> itemPrices;

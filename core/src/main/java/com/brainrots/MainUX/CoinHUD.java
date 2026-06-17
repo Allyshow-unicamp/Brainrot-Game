@@ -23,7 +23,6 @@ public class CoinHUD extends Table {
         this.add(coinImage).size(32, 32).padRight(5);
         this.add(coinLabel);
 
-
         this.pack(); 
     }
 

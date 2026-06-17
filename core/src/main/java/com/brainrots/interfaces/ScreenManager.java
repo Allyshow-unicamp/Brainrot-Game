@@ -1,4 +1,4 @@
-package com.brainrots.screen;
+package com.brainrots.interfaces;
 
 public interface ScreenManager {
     enum ScreenType{
