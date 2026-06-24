@@ -9,16 +9,22 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class TowerButton extends ImageButton{
     
+    private Texture texture;
 
     public TowerButton(Texture texture, float x, float y, Runnable onClick)
     {
         super(new TextureRegionDrawable(new TextureRegion(texture)));
         this.setPosition(x, y);
         this.setSize(64f,64f);
-        this.clickEvent(onClick);
+
+        this.texture = texture;
     }
 
-    private void clickEvent(Runnable onClick)
+    public Texture getTexture(){
+        return texture;
+    }
+
+    public void setClickEvent(Runnable onClick)
     {
         this.addListener(new ClickListener(){
             @Override

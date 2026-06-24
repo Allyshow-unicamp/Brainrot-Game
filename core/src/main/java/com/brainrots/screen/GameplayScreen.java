@@ -1,8 +1,9 @@
 package com.brainrots.screen;
 
+import java.util.Iterator;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,8 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.brainrots.MainUX.CoinHUD;
 import com.brainrots.MainUX.MainUX;
 import com.brainrots.MainUX.TowerButton;
 import com.brainrots.core.Assets;
@@ -31,8 +30,8 @@ public class GameplayScreen extends GameScreen {
     private OrthographicCamera main_camera;
 
     private Label hpLabel;
-    private TowerButton towerButton;
-    private CoinHUD coinHUD;
+
+    private MainUX mainUX;
 
     /**
      * Inicializa o jogo.
@@ -42,7 +41,8 @@ public class GameplayScreen extends GameScreen {
         super(batch, screenManager, shapeRenderer);
         
         main_camera = new OrthographicCamera();
-        levelManager = new LevelManager(resourceManager, screenManager, level, levelName, main_camera,stage);
+        mainUX = new MainUX(1920, 1080, batch);
+        levelManager = new LevelManager(resourceManager, screenManager, level, levelName, main_camera, stage, mainUX);
 
         initializeHud();
     }
@@ -55,24 +55,23 @@ public class GameplayScreen extends GameScreen {
         levelManager.update(delta);
         stage.act(delta);
         levelManager.draw(batch,shapeRenderer);
+
+        mainUX.draw();
     }
 
     @Override
     protected void initializeHud() {
         main_camera.setToOrtho(false, 1920, 1080);
 
-        Texture playButton = resourceManager.getTexture(Assets.PLAY_BUTTON);
-        Texture pauseButton = resourceManager.getTexture(Assets.PAUSE_BUTTON);
+        Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
+        BitmapFont font = resourceManager.getFont(Assets.UI_FONT);
+        font.getData().setScale(2.0f);
+        LabelStyle labelStyle = new LabelStyle(skin.get(LabelStyle.class));
+        labelStyle.font = font;
+        hpLabel = new Label("HP: " + levelManager.getBaseHealth(), labelStyle);
 
-        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle();
-
-        style.imageUp = new TextureRegionDrawable(pauseButton);
-        style.imageChecked = new TextureRegionDrawable(playButton);
-
-        ImageButton waveControlButton = new ImageButton(style);
-
-        waveControlButton.setPosition(1500 - pauseButton.getWidth(), 0);
-
+        ImageButton waveControlButton = mainUX.getWaveButton();
+        
         waveControlButton.addListener(new ChangeListener() {
            @Override
            public void changed(ChangeEvent event, Actor actor) {
@@ -83,14 +82,6 @@ public class GameplayScreen extends GameScreen {
            }
         }});
 
-        Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
-        BitmapFont font = resourceManager.getFont(Assets.UI_FONT);
-        font.getData().setScale(2.0f);
-        LabelStyle labelStyle = new LabelStyle(skin.get(LabelStyle.class));
-        labelStyle.font = font;
-        hpLabel = new Label("HP: " + levelManager.getBaseHealth(), labelStyle);
-
-
         stage.addActor(waveControlButton);
         stage.addActor(hpLabel);
     }
@@ -100,12 +91,8 @@ public class GameplayScreen extends GameScreen {
         super.resize(width, height);
         stage.getViewport().update(width, height,true);
         hpLabel.setPosition(10, stage.getHeight() - hpLabel.getHeight() - 10);
-        if (towerButton != null) {
-            float margem = 20f;
-            float botaoX = stage.getWidth() - towerButton.getWidth() - margem;
-            float botaoY = stage.getHeight() - towerButton.getHeight() - margem;
-            towerButton.setPosition(botaoX, botaoY);
-        }
+       
+        mainUX.resize(width, height);
     }
 
     @Override
@@ -122,19 +109,19 @@ public class GameplayScreen extends GameScreen {
         super.show();
 
         Gdx.input.setInputProcessor(stage);
-        Texture castleTexture = MainUX.getTowerIcon().get(0);
 
-        this.towerButton = new TowerButton(castleTexture, 0, 0, () -> {
-            levelManager.positionTowerMode(castleTexture);
-        });
+        Iterator<TowerButton> iterator = mainUX.getTowerButtons().iterator();
 
-        Texture coiTexture = MainUX.getCoinTexture();
-        this.coinHUD = new CoinHUD(coiTexture, 0);
-        coinHUD.setPosition(1000, 680);
-        MainUX.getMainUX().registerCoinHUD(coinHUD);
+        while (iterator.hasNext()) {
+            TowerButton button = iterator.next();
+            button.setClickEvent(() -> {
+                levelManager.positionTowerMode(button.getTexture());
+            });
 
-        stage.addActor(coinHUD);
-        stage.addActor(towerButton);
+            stage.addActor(button);
+        }
+
+        stage.addActor(mainUX.getCoinHUD());
         resize(1920,1080);
     }
 

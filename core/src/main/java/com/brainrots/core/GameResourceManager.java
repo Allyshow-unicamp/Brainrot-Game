@@ -46,9 +46,15 @@ public class GameResourceManager {
 
         /* TOWERS */
         assetManager.load(Assets.TOWER_TUNG, Texture.class);
-        assetManager.load(Assets.TOWER_CAPPUCCINO, Texture.class);
-        assetManager.load(Assets.TOWER_PATAPIM,Texture.class);
         assetManager.load(Assets.TOWER_VACA_SATURNITA, Texture.class);
+        assetManager.load(Assets.TOWER_TRIPPI_TROPPI, Texture.class);
+        assetManager.load(Assets.TOWER_TRALALERO_TRALALA, Texture.class);
+        assetManager.load(Assets.TOWER_PATAPIM, Texture.class);
+        assetManager.load(Assets.TOWER_NUCLEARO_DINOSAURO, Texture.class);
+        assetManager.load(Assets.TOWER_LIRILI_LARILA, Texture.class);
+        assetManager.load(Assets.TOWER_CAPPUCCINO, Texture.class);
+        assetManager.load(Assets.TOWER_CAPPUCCINA, Texture.class);
+        assetManager.load(Assets.TOWER_BOMBARDILO_CROCODILO, Texture.class);
 
         /* SOUNDS */
         assetManager.load(Assets.MUSIC_GAME, Music.class);

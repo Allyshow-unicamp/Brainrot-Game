@@ -48,7 +48,7 @@ public class TowerUpgradeMenu {
         this.options = selectedTower.getNumberUpgrades();
         
         Image circleBackground = new Image(circleTexture);
-        circleBackground.setColor(new Color(0.7f, 0.7f, 0.7f, 0.8f)); 
+        circleBackground.setColor(new Color(0f, 0f, 1f, 0.5f)); 
         
         float backgroundSize = selectedTower.getRange(); 
         circleBackground.setSize(backgroundSize, backgroundSize);
@@ -98,8 +98,8 @@ public class TowerUpgradeMenu {
     private Runnable onClickAction(Tower selectedTower,int index, Array<Tower> activeTowers)
     {
         return () ->{
-            if(MainUX.getCurrentCoins() < 100)
-                return;
+            //if(MainUX.getCurrentCoins() < 100)
+            //    return;
             Tower upgradedTower = TowerEvolutionMap.createNewTower(selectedTower, index);
 
             activeTowers.set(selectedTower.getID(), upgradedTower);

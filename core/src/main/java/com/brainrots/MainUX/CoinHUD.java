@@ -20,7 +20,7 @@ public class CoinHUD extends Table {
         Label.LabelStyle textStyle = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
         this.coinLabel = new Label(String.valueOf(currentCoins), textStyle);
 
-        this.add(coinImage).size(32, 32).padRight(5);
+        this.add(coinImage).size(64,64).padRight(5);
         this.add(coinLabel);
 
         this.pack(); 

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -47,8 +48,10 @@ public class LevelManager {
 
     private boolean running;
 
+    private MainUX mainUX;
+
     public LevelManager(GameResourceManager resourceManager, BrainRotGame screenManager, 
-        int level, String mapName, OrthographicCamera gameScreen, Stage stage){
+        int level, String mapName, OrthographicCamera gameScreen, Stage stage, MainUX mainUX){
         this.gameTime = 0;
         this.gameScreen = gameScreen;
         this.coins = 0;
@@ -63,6 +66,7 @@ public class LevelManager {
         waveManager = new WaveManager(mapName, map.getPath());
         this.stage = stage;
         this.isUpgradeMenuOpen = false;
+        this.mainUX = mainUX;
     }
 
     /**
@@ -153,6 +157,7 @@ public class LevelManager {
         for (Tower tower : activeTowers) {
 
             towerClick(tower);
+
             lastAttackTime = tower.getLastAttackTime();
             attackCooldown = tower.getAttackCooldown();
 
@@ -236,15 +241,16 @@ public class LevelManager {
 
             Vector3 clickCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             gameScreen.unproject(clickCoords);
+
             if(tower.wasClicked(clickCoords.x,clickCoords.y) && !isUpgradeMenuOpen)
             {
-                MainUX.openUpgradeMenu(tower,stage,gameScreen,activeTowers);
+                mainUX.openUpgradeMenu(tower,stage,gameScreen,activeTowers);
                 isUpgradeMenuOpen = true;
             }
             else
             {  
                 isUpgradeMenuOpen = false;
-                MainUX.closeUpgradeMenu();
+                mainUX.closeUpgradeMenu();
             }
         }
     }
@@ -295,6 +301,22 @@ public class LevelManager {
             gameScreen.unproject(mousePosition);
 
             for(Polygon barrier : map.getBarrier()){
+
+
+
+                float[] rectVertices = {
+                mousePosition.x, mousePosition.y,      
+                mousePosition.x, mousePosition.y + 100,    
+                mousePosition.x - 100, mousePosition.y , 
+                mousePosition.x - 100, mousePosition.y + 100,               
+                };
+
+                Polygon rectPolygon = new Polygon(rectVertices);
+
+            //if(Intersector.overlapConvexPolygons(barrier, rectPolygon)){
+            //        batch.setColor(0, 1, 0, 0.4f);
+            //        break;
+            //    }
             
                 if(barrier.contains(mousePosition.x, mousePosition.y)){
                     batch.setColor(1, 0, 0, 0.4f);
@@ -323,7 +345,7 @@ public class LevelManager {
     private void rewardCoins(Enemy enemy)
     {
         this.coins += enemy.giveCoinOnDeath();
-        MainUX.updateCoins(this.coins);
+        mainUX.updateCoins(this.coins);
     }
 
     public void spawnEnemy(Enemy enemy) {

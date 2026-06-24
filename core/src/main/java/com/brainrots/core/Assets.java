@@ -22,6 +22,13 @@ public final class Assets {
     public static final String TOWER_VACA_SATURNITA = "Towers/la-vaca-saturno-saturnita.png";
     public static final String TOWER_CAPPUCCINO = "Towers/cappuccino-assassino.png";
     public static final String TOWER_PATAPIM = "Towers/brr-brr-patapim.png";
+    public static final String TOWER_CAPPUCCINA = "Towers/ballerina-cappuccina.png";
+    public static final String TOWER_TRIPPI_TROPPI = "Towers/trippi-troppi-troppa-trippa.png";
+    public static final String TOWER_TRALALERO_TRALALA = "Towers/tralalero-tralala.png";
+    public static final String TOWER_NUCLEARO_DINOSAURO = "Towers/nuclearo-dinosauro.png";
+    public static final String TOWER_LIRILI_LARILA = "Towers/lirili-larila.png";
+    public static final String TOWER_BOMBARDILO_CROCODILO = "Towers/bombardiro-crocodilo.png";
+
 
     /* HUD */
     public static final String NORMAL_COIN = "CCoins/coins.png";
