@@ -46,7 +46,7 @@ public class PlayerProfile {
     }
 
     public void setStars(String levelId, int stars) {
-        this.levelStars.replace(levelId, stars);
+        this.levelStars.put(levelId, stars);
     }
 
     public void unlockTower(String towerId) {

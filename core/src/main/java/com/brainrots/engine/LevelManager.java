@@ -1,11 +1,11 @@
 package com.brainrots.engine;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -21,11 +21,15 @@ import com.brainrots.enemy.Enemy;
 import com.brainrots.tower.ConcreteTower;
 import com.brainrots.tower.Projectile;
 import com.brainrots.tower.TargetType;
+import com.brainrots.tower.TestTower;
 import com.brainrots.tower.Tower;
 
 public class LevelManager {
 
     private final int maxHealth = 100;
+    private static final int STARTING_COINS = 300;
+    private static final float DRAG_THRESHOLD = 20f;
+    private static final int TOWER_SIZE = 150;
 
     private float gameTime;
 
@@ -44,17 +48,19 @@ public class LevelManager {
     private boolean isIconSelected;
     private boolean isUpgradeMenuOpen;
     private Stage stage;
-    private boolean wasTowerUpgraded;
-
-    private boolean running;
+    private TestTower selectedTowerType;
+    private boolean wasMousePressed;
+    private boolean isMousePressed;
+    private Vector2 dragStartScreenPos;
+    private boolean isDragging;
 
     private MainUX mainUX;
 
-    public LevelManager(GameResourceManager resourceManager, BrainRotGame screenManager, 
+    public LevelManager(GameResourceManager resourceManager, BrainRotGame screenManager,
         int level, String mapName, OrthographicCamera gameScreen, Stage stage, MainUX mainUX){
         this.gameTime = 0;
         this.gameScreen = gameScreen;
-        this.coins = 0;
+        this.coins = STARTING_COINS;
         this.level = level;
         this.resourceManager = resourceManager;
         this.screenManager = screenManager;
@@ -67,6 +73,10 @@ public class LevelManager {
         this.stage = stage;
         this.isUpgradeMenuOpen = false;
         this.mainUX = mainUX;
+        this.wasMousePressed = false;
+        this.isMousePressed = false;
+        this.dragStartScreenPos = new Vector2();
+        this.isDragging = false;
     }
 
     /**
@@ -85,10 +95,10 @@ public class LevelManager {
         waveManager.resumeWaveGeneration();
     }
 
-    /**
-     * Retorna os inimigos ativos no mapa.
-     * @return Array de Enemy com os inimigos ativos.
-     */
+    public boolean isWavePaused() {
+        return waveManager.isPausedWave();
+    }
+
     public Array<Enemy> getActiveEnemies() {
         return activeEnemies;
     }
@@ -101,10 +111,17 @@ public class LevelManager {
         return base.getHealth();
     }
 
-    public void positionTowerMode(Texture towerGhostTexture)
+    public void positionTowerMode(TestTower towerType)
     {
-        this.towerGhostTexture = towerGhostTexture;
+        this.selectedTowerType = towerType;
+        this.towerGhostTexture = resourceManager.getTexture(towerType.getTexture());
         this.isIconSelected = true;
+        this.isDragging = false;
+        this.dragStartScreenPos.set(Gdx.input.getX(), Gdx.input.getY());
+    }
+
+    public int getCoins() {
+        return coins;
     }
 
     public void startNextWave() {
@@ -136,7 +153,6 @@ public class LevelManager {
      * Busca inimigos no range de todas as torres.
      */
     public void towerSearch(){
-
         for (Tower tower : activeTowers) {
             tower.setTarget(getClosestEnemy(tower));
         }
@@ -146,7 +162,6 @@ public class LevelManager {
      * Loop Principal do jogo.
      */
     public void update(float delta) {
-        
         towerSearch();
 
         gameTime += delta;
@@ -173,7 +188,6 @@ public class LevelManager {
                     tower.attack(gameTime);
                 }
             }
-
         }
 
         ArrayIterator<Projectile> projIterator = activeProjectiles.iterator();
@@ -192,11 +206,10 @@ public class LevelManager {
 
         waveManager.update(delta, activeEnemies);
 
-
         ArrayIterator<Enemy> enemyIterator = activeEnemies.iterator();
 
         while (enemyIterator.hasNext()) {
-            
+
             Enemy enemy = enemyIterator.next();
 
             enemy.update(delta);
@@ -211,16 +224,29 @@ public class LevelManager {
                 if (!base.hasHealth()) {
                     screenManager.endGame(level, false, 0);
                 }
-
             }
         }
 
         boolean victory = won(waveManager.getCurrentWave(), waveManager.getMaxWaves());
 
         if (victory) {
-            screenManager.endGame(level, victory, levelStars(base.getHealth(), maxHealth));
+            int stars = levelStars(base.getHealth(), maxHealth);
+            screenManager.endGame(level, victory, stars);
         }
-        
+
+        wasMousePressed = isMousePressed;
+        boolean leftDown = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+        boolean rightDown = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
+        isMousePressed = leftDown || rightDown;
+
+        if (isIconSelected && isMousePressed) {
+            float dx = Gdx.input.getX() - dragStartScreenPos.x;
+            float dy = Gdx.input.getY() - dragStartScreenPos.y;
+            if (dx * dx + dy * dy > DRAG_THRESHOLD * DRAG_THRESHOLD) {
+                isDragging = true;
+            }
+        }
+
         checkPositionTower();
     }
 
@@ -231,12 +257,11 @@ public class LevelManager {
     {
         if (Gdx.input.justTouched())
         {
-
             Vector2 stageCoords = stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
             Actor hitActor = stage.hit(stageCoords.x, stageCoords.y, true);
 
             if (hitActor != null) {
-                return; 
+                return;
             }
 
             Vector3 clickCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -248,50 +273,71 @@ public class LevelManager {
                 isUpgradeMenuOpen = true;
             }
             else
-            {  
+            {
                 isUpgradeMenuOpen = false;
                 mainUX.closeUpgradeMenu();
             }
         }
     }
 
-    /**
-     * Funcao que define a posicao da Torre qnd o player clica nela
-     */
+    private void placeTowerAtPosition(Vector2 worldPosition) {
+        if (selectedTowerType == null) return;
+
+        if (coins < selectedTowerType.getCost()) return;
+
+        for(Polygon barrier : map.getBarrier()){
+            if(barrier.contains(worldPosition)){
+                return;
+            }
+        }
+
+        coins -= selectedTowerType.getCost();
+        mainUX.updateCoins(coins);
+
+        ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture,
+            worldPosition,
+            selectedTowerType.getDamage(),
+            selectedTowerType.getAttackSpeed(),
+            selectedTowerType.getRange(),
+            selectedTowerType.getAttackCooldown(),
+            TOWER_SIZE, TOWER_SIZE,
+            selectedTowerType.getTargetType(),
+            activeTowers.size);
+
+        activeTowers.add(concreteTower);
+
+        isIconSelected = false;
+        towerGhostTexture = null;
+        selectedTowerType = null;
+        isDragging = false;
+    }
+
+    private boolean isCursorOverUI() {
+        Vector2 stageCoords = stage.screenToStageCoordinates(
+            new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+        Actor hitActor = stage.hit(stageCoords.x, stageCoords.y, true);
+        return hitActor != null;
+    }
+
     private void checkPositionTower()
     {
-        if (isIconSelected && Gdx.input.justTouched()) {
+        if (!isIconSelected) return;
 
+        boolean leftClick = Gdx.input.justTouched() &&
+            Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+        boolean rightClick = Gdx.input.justTouched() &&
+            Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
+        boolean dragEnd = isDragging && wasMousePressed && !isMousePressed;
 
-            Vector2 stageCoords = stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
-            Actor hitActor = stage.hit(stageCoords.x, stageCoords.y, true);
+        if (!leftClick && !rightClick && !dragEnd) return;
 
-            if (hitActor != null) {
-                return; 
-            }
+        if (isCursorOverUI()) return;
 
+        Vector3 currentMouseWorld = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        gameScreen.unproject(currentMouseWorld);
+        Vector2 worldPos = new Vector2(currentMouseWorld.x, currentMouseWorld.y);
 
-            Vector3 mapClick = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-
-            gameScreen.unproject(mapClick);     // Transforma clique em coordenadas no mapa.
-
-            Vector2 transformedCoord = new Vector2(mapClick.x, mapClick.y);
-
-            for(Polygon barrier : map.getBarrier()){
-                if(barrier.contains(transformedCoord)){
-                    return;
-                }
-            }
-
-            ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture,
-                transformedCoord, 25, 2000, 250, 0.5f,
-                150, 150, TargetType.SINGLE,activeTowers.size);
-
-            activeTowers.add(concreteTower);
-
-            isIconSelected = false;
-            towerGhostTexture = null;
-        }
+        placeTowerAtPosition(worldPos);
     }
 
     private void renderGhostTower(SpriteBatch batch)
@@ -300,42 +346,28 @@ public class LevelManager {
             Vector3 mousePosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             gameScreen.unproject(mousePosition);
 
+            boolean canAfford = selectedTowerType != null && coins >= selectedTowerType.getCost();
+            boolean onBarrier = false;
+
             for(Polygon barrier : map.getBarrier()){
-
-
-
-                float[] rectVertices = {
-                mousePosition.x, mousePosition.y,      
-                mousePosition.x, mousePosition.y + 100,    
-                mousePosition.x - 100, mousePosition.y , 
-                mousePosition.x - 100, mousePosition.y + 100,               
-                };
-
-                Polygon rectPolygon = new Polygon(rectVertices);
-
-            //if(Intersector.overlapConvexPolygons(barrier, rectPolygon)){
-            //        batch.setColor(0, 1, 0, 0.4f);
-            //        break;
-            //    }
-            
                 if(barrier.contains(mousePosition.x, mousePosition.y)){
-                    batch.setColor(1, 0, 0, 0.4f);
+                    onBarrier = true;
                     break;
-                } else {
-                    batch.setColor(1, 1, 1, 0.4f);
                 }
-
             }
-            
-            float width = 150f;
-            float height = 150f;
 
-            batch.draw(towerGhostTexture, mousePosition.x - width/2, mousePosition.y,width, height);
+            if (onBarrier || !canAfford) {
+                batch.setColor(1, 0, 0, 0.5f);
+            } else {
+                batch.setColor(1, 1, 1, 0.4f);
+            }
+
+            batch.draw(towerGhostTexture, mousePosition.x - TOWER_SIZE/2,
+                mousePosition.y, TOWER_SIZE, TOWER_SIZE);
 
             batch.setColor(1, 1, 1, 1.0f);
         }
     }
-
 
     /**
      * Funcao para fornecer moedas na morte do inimigo
@@ -392,12 +424,12 @@ public class LevelManager {
     }
 
     private int levelStars(int hp, int maxHp) {
-        float ratio = hp/maxHp;
-        if (ratio < 0.25)
+        float ratio = (float) hp / maxHp;
+        if (ratio < 0.25f)
             return 0;
-        if (ratio < 0.5)
+        if (ratio < 0.5f)
             return 1;
-        if (ratio < 0.75)
+        if (ratio < 0.75f)
             return 2;
         return 3;
     }

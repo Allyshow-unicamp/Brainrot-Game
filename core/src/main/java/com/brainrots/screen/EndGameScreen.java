@@ -26,14 +26,23 @@ public class EndGameScreen extends GameScreen {
             ShapeRenderer shapeRenderer, int level, boolean won, int stars, GameSaveHandler gameSaveHandler) {
         super(batch, screenManager, shapeRenderer);
 
-        if (won)
+        if (won) {
             try {
                 PlayerProfile playerProfile = screenManager.getPlayerProfile();
-                playerProfile.setStars(String.valueOf(level), stars);
+
+                int previousStars = playerProfile.getLevelStars().getOrDefault(String.valueOf(level), 0);
+                if (stars > previousStars) {
+                    playerProfile.setStars(String.valueOf(level), stars);
+                }
+
+                int coinReward = calculateCoinReward(stars);
+                playerProfile.addGlobalCoins(coinReward);
+
                 gameSaveHandler.saveProfile(playerProfile);
             } catch (PersistanceException e) {
                 e.printStackTrace();
             }
+        }
 
         Table table = new Table();
         table.setFillParent(true);
@@ -61,7 +70,12 @@ public class EndGameScreen extends GameScreen {
 
         if (won) {
             Label starsLabel = new Label(stars + "/3 Stars", starsStyle);
-            table.add(starsLabel).pad(60).row();
+            table.add(starsLabel).pad(20).row();
+
+            int coinReward = calculateCoinReward(stars);
+            Label coinsLabel = new Label("+" + coinReward + " Coins", starsStyle);
+            coinsLabel.setColor(Color.YELLOW);
+            table.add(coinsLabel).pad(20).row();
         }
 
         TextButtonStyle buttonStyle = new TextButtonStyle(skin.get(TextButtonStyle.class));
@@ -81,6 +95,15 @@ public class EndGameScreen extends GameScreen {
         });
 
         stage.addActor(table);
+    }
+
+    private int calculateCoinReward(int stars) {
+        switch (stars) {
+            case 1: return 50;
+            case 2: return 100;
+            case 3: return 200;
+            default: return 0;
+        }
     }
 
     @Override
