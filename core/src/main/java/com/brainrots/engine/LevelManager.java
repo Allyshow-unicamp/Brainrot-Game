@@ -46,7 +46,7 @@ public class LevelManager {
     private ProjectileManager projectileManager;
     private TowerPlacementController placementController;
 
-    public LevelManager(GameResourceManager resourceManager, BrainRotGame screenManager, 
+    public LevelManager(GameResourceManager resourceManager, BrainRotGame screenManager,
         int level, String mapName, OrthographicCamera gameScreen, Stage stage, MainUX mainUX){
         this.gameTime = 0;
         this.gameScreen = gameScreen;
@@ -107,6 +107,10 @@ public class LevelManager {
 
     public int getCoins() {
         return coinManager.getCoins();
+    }
+
+    public int getCurrentWave() {
+        return waveManager.getCurrentWave();
     }
 
     public void startNextWave() {

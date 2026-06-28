@@ -13,8 +13,6 @@ public class TowerEvolutionMap {
     private TowerEvolutionMap()
     {
         HashMap<String, List<TempInterfaceTower>> newMap = new HashMap<>();
-        newMap.put("ConcreteTower", List.of(new PatapimTower(null, 0)));
-
         this.mapOfEvolutions = newMap;
     }
 

@@ -29,6 +29,7 @@ public class GameplayScreen extends GameScreen {
 
     private Label hpLabel;
     private Label coinLabel;
+    private Label waveLabel;
     private BitmapFont hudFont;
     private float fontScale;
 
@@ -37,7 +38,7 @@ public class GameplayScreen extends GameScreen {
     public GameplayScreen(SpriteBatch batch, BrainRotGame screenManager,
          ShapeRenderer shapeRenderer, int level, String levelName) {
         super(batch, screenManager, shapeRenderer);
-        
+
         main_camera = new OrthographicCamera();
         mainUX = new MainUX(1920, 1080, batch);
         levelManager = new LevelManager(resourceManager, screenManager, level, levelName, main_camera, stage, mainUX);
@@ -69,9 +70,10 @@ public class GameplayScreen extends GameScreen {
         labelStyle.font = hudFont;
         hpLabel = new Label("HP: " + levelManager.getBaseHealth(), labelStyle);
         coinLabel = new Label("Coins: " + levelManager.getCoins(), labelStyle);
+        waveLabel = new Label("Current wave: " + levelManager.getCurrentWave(), labelStyle);
 
         ImageButton waveControlButton = mainUX.getWaveButton();
-        
+
         waveControlButton.addListener(new ChangeListener() {
            @Override
            public void changed(ChangeEvent event, Actor actor) {
@@ -85,6 +87,7 @@ public class GameplayScreen extends GameScreen {
         stage.addActor(waveControlButton);
         stage.addActor(hpLabel);
         stage.addActor(coinLabel);
+        stage.addActor(waveLabel);
     }
 
     @Override
@@ -98,6 +101,7 @@ public class GameplayScreen extends GameScreen {
 
         hpLabel.setPosition(10, stage.getHeight() - hpLabel.getHeight() - 10);
         coinLabel.setPosition(10, stage.getHeight() - hpLabel.getHeight() - coinLabel.getHeight() - 20);
+        waveLabel.setPosition(10, stage.getHeight() - hpLabel.getHeight() - coinLabel.getHeight() - waveLabel.getHeight() - 30);
 
         mainUX.resize(width, height);
     }
@@ -108,6 +112,7 @@ public class GameplayScreen extends GameScreen {
 
         hpLabel.setText("HP: " + levelManager.getBaseHealth());
         coinLabel.setText("Coins: " + levelManager.getCoins());
+        waveLabel.setText("Current wave: " + levelManager.getCurrentWave());
 
         mainUX.getWaveButton().setChecked(!levelManager.isWavePaused());
 
