@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.Texture;
 public class TowerEvolutionMap {
 
     private static TowerEvolutionMap towerEvolutionMap;
-    private HashMap<Class<? extends Tower>,List<TempInterfaceTower>> mapOfEvolutions;
+    private HashMap<String, List<TempInterfaceTower>> mapOfEvolutions;
 
     private TowerEvolutionMap()
     {
-        HashMap<Class<? extends Tower>,List<TempInterfaceTower>> newMap = new HashMap<>();
-        newMap.put(ConcreteTower.class, List.of(new PatapimTower(null, 0)));
+        HashMap<String, List<TempInterfaceTower>> newMap = new HashMap<>();
+        newMap.put("ConcreteTower", List.of(new PatapimTower(null, 0)));
 
         this.mapOfEvolutions = newMap;
     }
@@ -24,19 +24,28 @@ public class TowerEvolutionMap {
             towerEvolutionMap = new TowerEvolutionMap();
         return towerEvolutionMap;
     }
-    
+
     public static Tower createNewTower(Tower tower, int index)
     {
         TowerEvolutionMap towerEvolutionMap = TowerEvolutionMap.getTowerEvolutionMap();
 
-        TempInterfaceTower prototype = towerEvolutionMap.mapOfEvolutions.get(tower.getClass()).get(index);
+        String key = tower.getClass().getSimpleName();
+        List<TempInterfaceTower> evolutions = towerEvolutionMap.mapOfEvolutions.get(key);
+        if (evolutions == null || index >= evolutions.size()) return tower;
+
+        TempInterfaceTower prototype = evolutions.get(index);
         return prototype.createTower(tower.getPosition(), tower.getID());
     }
 
     public static Texture getTexture(Tower tower, int index)
     {
         TowerEvolutionMap towerEvolutionMap = TowerEvolutionMap.getTowerEvolutionMap();
-        TempInterfaceTower prototype = towerEvolutionMap.mapOfEvolutions.get(tower.getClass()).get(index);
+
+        String key = tower.getClass().getSimpleName();
+        List<TempInterfaceTower> evolutions = towerEvolutionMap.mapOfEvolutions.get(key);
+        if (evolutions == null || index >= evolutions.size()) return null;
+
+        TempInterfaceTower prototype = evolutions.get(index);
         return prototype.getTexture();
     }
 }

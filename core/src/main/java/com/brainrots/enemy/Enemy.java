@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.entity.GameObject;
 
-public abstract class Enemy extends GameObject {
+public class Enemy extends GameObject {
     
     protected int hp;
     protected int MAX_HP;
@@ -17,7 +17,7 @@ public abstract class Enemy extends GameObject {
     private Array<Vector2> path;
     private int currentWaypointIndex;
 
-    public Enemy(Array<Vector2> path, Texture texture, int health, int speed, int width, int height) {
+    public Enemy(Array<Vector2> path, Texture texture, int health, int speed, int width, int height, int rewardCoins) {
         this.path = path;
         if(path != null)
             this.position = new Vector2(path.get(0));
@@ -28,7 +28,7 @@ public abstract class Enemy extends GameObject {
         this.hp = health;
         this.width = width;
         this.height = height;
-        this.rewardCoins = 100;
+        this.rewardCoins = rewardCoins;
         currentWaypointIndex = 1;
         this.speed = speed;
     }
@@ -72,21 +72,18 @@ public abstract class Enemy extends GameObject {
 
     public void drawHealthBar(ShapeRenderer shapeRenderer)
     {
-        float barWidth = width; 
-        float barHeight = 6f;   
-        
-        float barX = position.x + (width / 2f) - (barWidth / 2f);
-        float barY = position.y + height + 5f;
+        float barWidth = width;
+        float barHeight = 6f;
 
-        // Fundo da barra
+        float barX = position.x - barWidth / 2f;
+        float barY = position.y + height / 2f + 5f;
+
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.rect(barX, barY, barWidth, barHeight);
 
-        // Vida atual
         float hpPercentage = (float) hp / MAX_HP;
         float currentBarWidth = barWidth * hpPercentage;
 
-        // Barra com vida atual
         shapeRenderer.setColor(Color.GREEN);
         shapeRenderer.rect(barX, barY, currentBarWidth, barHeight);
     }

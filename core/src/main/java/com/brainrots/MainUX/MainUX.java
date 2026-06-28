@@ -91,8 +91,7 @@ public class MainUX {
         towerTable.top().left();
         towerTable.defaults().pad(4);
 
-        BitmapFont priceFont = new BitmapFont(Gdx.files.internal(Assets.UI_FONT));
-        priceFont.getData().setScale(0.75f);
+        BitmapFont priceFont = rm.createFont(Assets.UI_FONT, 1.25f);
         Label.LabelStyle costStyle = new Label.LabelStyle(priceFont, Color.YELLOW);
 
         for (int i = 0; i < towerTypes.size(); i++) {
@@ -100,7 +99,7 @@ public class MainUX {
 
             TowerButton btn = new TowerButton(type, 0, 0);
             towerButtons.add(btn);
-            towerTable.add(btn).size(80, 80).padRight(8);
+            towerTable.add(btn).size(100, 100).padRight(8);
 
             Label costLabel = new Label("$" + type.getCost(), costStyle);
             priceLabels.add(costLabel);
@@ -136,7 +135,7 @@ public class MainUX {
             }
         }
 
-        float waveBtnSize = height * 0.07f;
+        float waveBtnSize = height * 0.1f;
         waveButton.setSize(waveBtnSize, waveBtnSize);
         waveButton.setPosition(width - waveBtnSize - 15, 15);
     }
@@ -185,7 +184,7 @@ public class MainUX {
     }
 
     public void openUpgradeMenu(Tower tower, Stage stage,
-        OrthographicCamera gameScreen,Array<Tower> activeTowers) 
+        OrthographicCamera gameScreen,Array<Tower> activeTowers)
     {
         towerUpgradeMenu.openUpgradeMenu(tower, stage,gameScreen,activeTowers);
     }

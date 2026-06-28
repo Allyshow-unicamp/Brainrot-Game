@@ -63,9 +63,8 @@ public class GameplayScreen extends GameScreen {
         main_camera.setToOrtho(false, 1920, 1080);
 
         Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
-        hudFont = new BitmapFont(Gdx.files.internal(Assets.UI_FONT));
         fontScale = 1.0f;
-        hudFont.getData().setScale(fontScale);
+        hudFont = resourceManager.createFont(Assets.UI_FONT, fontScale);
         LabelStyle labelStyle = new LabelStyle(skin.get(LabelStyle.class));
         labelStyle.font = hudFont;
         hpLabel = new Label("HP: " + levelManager.getBaseHealth(), labelStyle);
@@ -137,7 +136,7 @@ public class GameplayScreen extends GameScreen {
             stage.addActor(scrollPane);
         }
 
-        resize(1920,1080);
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
 }

@@ -76,7 +76,7 @@ public class WaveManager {
     }
 
     public void update(float delta, Array<Enemy> activeEnemies) {
-        if (!isWaveActive && currentWave < maxWaves && pausedWave == false){;
+        if (!isWaveActive && currentWave < maxWaves && pausedWave == false) {
             startNextWave();
             return;
         }
