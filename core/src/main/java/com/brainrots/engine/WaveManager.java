@@ -71,13 +71,20 @@ public class WaveManager {
         pausedWave = false;
     }
 
+    public boolean isPausedWave() {
+        return pausedWave;
+    }
+
     public void update(float delta, Array<Enemy> activeEnemies) {
-        if (!isWaveActive && currentWave < maxWaves && pausedWave == false){;
+        if (!isWaveActive && currentWave < maxWaves && pausedWave == false) {
             startNextWave();
             return;
         }
 
-        if (activeSpawners.isEmpty() && activeEnemies.isEmpty() && pausedWave == false) {
+        if (activeSpawners.isEmpty() && activeEnemies.isEmpty()) {
+            if (isWaveActive) {
+                pausedWave = true;
+            }
             isWaveActive = false;
             return;
         }

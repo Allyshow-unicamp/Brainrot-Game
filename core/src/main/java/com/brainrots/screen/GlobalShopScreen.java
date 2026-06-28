@@ -1,7 +1,6 @@
 package com.brainrots.screen;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -11,12 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.interfaces.GameSaveHandler;
-import com.brainrots.interfaces.StageHelper;
 import com.brainrots.interfaces.ScreenManager.ScreenType;
 import com.brainrots.core.GlobalShop;
 import com.brainrots.core.PlayerProfile;
@@ -27,7 +24,6 @@ import java.util.Map;
 
 public class GlobalShopScreen extends GameScreen {
     private GlobalShop globalShop;
-    private Skin skin;
     private PlayerProfile playerProfile;
 
     public GlobalShopScreen(SpriteBatch batch,
@@ -36,38 +32,18 @@ public class GlobalShopScreen extends GameScreen {
         super(batch, screenManager, shapeRenderer);
         this.playerProfile = screenManager.getPlayerProfile();
         this.globalShop = new GlobalShop(saveHandler);
-        this.skin = resourceManager.getSkin(Assets.UI_SKIN);
 
         initializeHud();
     }
 
     @Override
     protected void initializeHud() {
-        Table rootTable = new Table();
-        rootTable.setFillParent(true);
+        Table rootTable = createFullScreenTable();
         rootTable.pad(20);
 
-        BitmapFont baseFont = resourceManager.getFont(Assets.UI_FONT);
-        BitmapFont titleFont = new BitmapFont(baseFont.getData(), baseFont.getRegion(), true);
-        titleFont.getData().setScale(4.0f);
-
-        BitmapFont regularFont = new BitmapFont(baseFont.getData(), baseFont.getRegion(), true);
-        regularFont.getData().setScale(2.0f);
-
-        LabelStyle titleStyle = new LabelStyle(skin.get(LabelStyle.class));
-        titleStyle.font = titleFont;
-        titleStyle.fontColor = Color.YELLOW;
-
-        LabelStyle itemStyle = new LabelStyle(skin.get(LabelStyle.class));
-        itemStyle.font = regularFont;
-        itemStyle.fontColor = Color.WHITE;
-
-        TextButtonStyle buttonStyle = new TextButtonStyle(skin.get(TextButtonStyle.class));
-        buttonStyle.font = regularFont;
-        buttonStyle.fontColor = Color.WHITE;
-        buttonStyle.downFontColor = Color.YELLOW;
-
-        Label titleLabel = new Label("Game Store", titleStyle);
+        Label titleLabel = new Label("Game Store", createLabelStyle(4.0f, Color.YELLOW));
+        ButtonAssets buttons = createButtonAssets(2.0f);
+        LabelStyle itemStyle = createLabelStyle(2.0f, Color.WHITE);
         rootTable.add(titleLabel).padBottom(40).colspan(2).center().row();
 
         Table itemsTable = new Table();
@@ -80,7 +56,7 @@ public class GlobalShopScreen extends GameScreen {
 
             Label nameLabel = new Label(itemName, itemStyle);
             Label priceLabel = new Label(itemPrice + " Coins", itemStyle);
-            TextButton buyButton = new TextButton("Buy", buttonStyle);
+            TextButton buyButton = new TextButton("Buy", buttons.style);
 
             buyButton.addListener(new ChangeListener() {
                 @Override
@@ -99,11 +75,12 @@ public class GlobalShopScreen extends GameScreen {
             itemsTable.row();
         }
 
+        Skin skin = resourceManager.getSkin(Assets.UI_SKIN);
         ScrollPane scrollPane = new ScrollPane(itemsTable, skin);
         scrollPane.setFadeScrollBars(false);
         rootTable.add(scrollPane).expand().fill().colspan(2).row();
 
-        TextButton backButton = new TextButton("Back", buttonStyle);
+        TextButton backButton = new TextButton("Back", buttons.style);
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -118,7 +95,6 @@ public class GlobalShopScreen extends GameScreen {
 
     @Override
     protected void drawScreen(float delta) {
-        StageHelper.act(stage);
-        stage.draw();
+        drawWithStageHelper(delta);
     }
 }

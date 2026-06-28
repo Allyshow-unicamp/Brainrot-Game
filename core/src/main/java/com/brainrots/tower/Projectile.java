@@ -12,10 +12,15 @@ public class Projectile extends GameObject {
     private boolean reachedTarget = false;
     private Vector2 mathVector = new Vector2();
     private Tower parent;
+    private float aoeRadius;
 
     public static final float PROJECTILE_HIT_DISTANCE = 10f;
 
     public Projectile(Texture texture, Enemy target, Tower parent, int width, int height) {
+        this(texture, target, parent, width, height, 0f);
+    }
+
+    public Projectile(Texture texture, Enemy target, Tower parent, int width, int height, float aoeRadius) {
         this.textureRegion = new TextureRegion(texture);
         this.position = new Vector2(parent.getPosition());
         this.width = width;
@@ -24,10 +29,11 @@ public class Projectile extends GameObject {
         this.parent = parent;
         this.targetPosition = new Vector2(target.getBounds().x + target.getBounds().width / 2f,
                 target.getBounds().y + target.getBounds().height / 2f);
+        this.aoeRadius = aoeRadius;
     }
 
     public void update(float deltaTime) {
-        if (!reachedTarget) {
+        if (!reachedTarget && target != null) {
             targetPosition.set(target.getPosition());
 
             mathVector.set(targetPosition).sub(position).nor();
@@ -51,5 +57,13 @@ public class Projectile extends GameObject {
 
     public Tower getParent() {
         return parent;
+    }
+
+    public boolean isAreaOfEffect() {
+        return aoeRadius > 0f;
+    }
+
+    public float getAoeRadius() {
+        return aoeRadius;
     }
 }

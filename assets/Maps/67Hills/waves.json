@@ -1,39 +1,39 @@
 {
   "1": {
     "enemies": [
-      { "type": "6_Ball", "count": 5, "spawnInterval": 1, "spawnTime": 3 },
-      { "type": "6_Ball", "count": 10, "spawnInterval": 1, "spawnTime": 10 }
+      { "type": "6_Ball", "count": 5, "spawnInterval": 0.5, "spawnTime": 3 },
+      { "type": "6_Ball", "count": 10, "spawnInterval": 0.5, "spawnTime": 10 }
     ]
   },
 
   "2": {
     "enemies": [
-      { "type": "6_Ball", "count": 10, "spawnInterval": 0.5, "spawnTime": 3 },
-      { "type": "6_Ball", "count": 10, "spawnInterval": 1, "spawnTime": 10 },
-      { "type": "7_Ball", "count": 10, "spawnInterval": 1, "spawnTime": 10 }
+      { "type": "6_Ball", "count": 10, "spawnInterval": 0.25, "spawnTime": 3 },
+      { "type": "6_Ball", "count": 10, "spawnInterval": 0.5, "spawnTime": 10 },
+      { "type": "7_Ball", "count": 10, "spawnInterval": 0.5, "spawnTime": 10 }
     ]
   },
 
   "3": {
     "enemies": [
-      { "type": "6_Ball", "count": 20, "spawnInterval": 0.5, "spawnTime": 3 },
-      { "type": "6_Ball", "count": 10, "spawnInterval": 0.5, "spawnTime": 6 },
-      { "type": "7_Ball", "count": 10, "spawnInterval": 0.5, "spawnTime": 10 }
+      { "type": "6_Ball", "count": 20, "spawnInterval": 0.25, "spawnTime": 3 },
+      { "type": "6_Ball", "count": 10, "spawnInterval": 0.25, "spawnTime": 6 },
+      { "type": "7_Ball", "count": 10, "spawnInterval": 0.25, "spawnTime": 10 }
     ]
   },
 
   "4": {
     "enemies": [
-      { "type": "67_Ball", "count": 5, "spawnInterval": 0.5, "spawnTime": 3 },
-      { "type": "6_Ball", "count": 20, "spawnInterval": 0.25, "spawnTime": 6 },
-      { "type": "7_Ball", "count": 10, "spawnInterval": 0.5, "spawnTime": 6 },
-      { "type": "67_Ball", "count": 10, "spawnInterval": 0.5, "spawnTime": 6 }
+      { "type": "67_Ball", "count": 5, "spawnInterval": 0.25, "spawnTime": 3 },
+      { "type": "6_Ball", "count": 20, "spawnInterval": 0.125, "spawnTime": 6 },
+      { "type": "7_Ball", "count": 10, "spawnInterval": 0.25, "spawnTime": 6 },
+      { "type": "67_Ball", "count": 10, "spawnInterval": 0.25, "spawnTime": 6 }
     ]
   },
 
   "5": {
     "enemies": [
-      { "type": "6_7_Ball", "count": 1, "spawnInterval": 0.5, "spawnTime": 10 }
+      { "type": "6_7_Ball", "count": 1, "spawnInterval": 0.25, "spawnTime": 10 }
     ]
   }
 

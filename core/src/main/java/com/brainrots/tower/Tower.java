@@ -122,4 +122,8 @@ public abstract class Tower extends GameObject {
     {
         return this.numberUpgrades;
     }
+
+    public TargetType getTargetType() {
+        return targetType;
+    }
 }

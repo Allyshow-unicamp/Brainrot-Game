@@ -1,5 +1,6 @@
 package com.brainrots.core;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
@@ -114,6 +115,12 @@ public class GameResourceManager {
             return assetManager.get(name, BitmapFont.class);
         }
         return null;
+    }
+
+    public BitmapFont createFont(String name, float scale) {
+        BitmapFont font = new BitmapFont(Gdx.files.internal(name));
+        font.getData().setScale(scale);
+        return font;
     }
 
     public void dispose() {

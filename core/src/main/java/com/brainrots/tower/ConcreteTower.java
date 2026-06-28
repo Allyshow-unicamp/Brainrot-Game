@@ -14,7 +14,8 @@ public class ConcreteTower extends Tower{
 
     @Override
     public Projectile createProjectile(Texture texture, Enemy target) {
-        return new Projectile(texture, target, this, 75, 75);
+        float aoeRadius = getTargetType() == TargetType.AREA ? 150f : 0f;
+        return new Projectile(texture, target, this, 75, 75, aoeRadius);
     }
 
 }
