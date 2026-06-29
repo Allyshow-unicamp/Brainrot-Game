@@ -34,6 +34,10 @@ public class PlayerProfile {
     }
 
     public List<String> getUnlockedTowerIds() {
+        if (unlockedTowerIds == null) {
+            unlockedTowerIds = new ArrayList<>();
+            unlockedTowerIds.add("tung_tung");
+        }
         return unlockedTowerIds;
     }
 
@@ -50,6 +54,12 @@ public class PlayerProfile {
     }
 
     public void unlockTower(String towerId) {
-        this.unlockedTowerIds.add(towerId);
+        if (!unlockedTowerIds.contains(towerId)) {
+            this.unlockedTowerIds.add(towerId);
+        }
+    }
+
+    public boolean isTowerUnlocked(String towerId) {
+        return getUnlockedTowerIds().contains(towerId);
     }
 }

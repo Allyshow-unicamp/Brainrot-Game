@@ -129,6 +129,7 @@ public class GameplayScreen extends GameScreen {
 
         Gdx.input.setInputProcessor(stage);
 
+        mainUX.setUnlockedTowerIds(screenManager.getPlayerProfile().getUnlockedTowerIds());
         mainUX.buildTowerPanel();
         Skin uiSkin = resourceManager.getSkin(Assets.UI_SKIN);
         mainUX.buildUpgradePanel(uiSkin);

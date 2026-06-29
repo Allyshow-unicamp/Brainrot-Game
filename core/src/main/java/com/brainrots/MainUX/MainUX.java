@@ -47,7 +47,6 @@ public class MainUX {
         priceLabels = new Array<>();
         initialized = false;
 
-        loadTowerTypes();
         generateTowerHUDBackground();
 
         GameResourceManager rm = GameResourceManager.getGameResourceManager();
@@ -72,13 +71,14 @@ public class MainUX {
         return towerUpgradePanel;
     }
 
-    private void loadTowerTypes()
+    public void setUnlockedTowerIds(java.util.List<String> unlockedIds)
     {
-        towerTypes.add(BrainrotTower.TUNG_TUNG);
-        towerTypes.add(BrainrotTower.BOMBARDILO_CROCODILO);
-        towerTypes.add(BrainrotTower.NUCLEARO_DINOSAURO);
-        towerTypes.add(BrainrotTower.CAPPUCCINO_ASSASSINO);
-        towerTypes.add(BrainrotTower.BALLERINA_CAPPUCCINA);
+        towerTypes.clear();
+        for (BrainrotTower tower : BrainrotTower.values()) {
+            if (unlockedIds.contains(tower.getTowerId())) {
+                towerTypes.add(tower);
+            }
+        }
     }
 
     public void buildTowerPanel() {
