@@ -156,6 +156,7 @@ public class TowerPlacementController {
 
         ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture,
             worldPosition,
+            selectedTowerType.getDisplayName(),
             selectedTowerType.getDamage(),
             selectedTowerType.getAttackSpeed(),
             selectedTowerType.getRange(),

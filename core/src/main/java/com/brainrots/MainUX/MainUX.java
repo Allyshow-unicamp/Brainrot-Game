@@ -2,36 +2,29 @@ package com.brainrots.MainUX;
 
 import java.util.Vector;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.brainrots.MainUX.UpgradeUX.TowerUpgradeMenu;
 import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
+import com.brainrots.engine.CoinManager;
 import com.brainrots.tower.TestTower;
 import com.brainrots.tower.Tower;
 
 
 public class MainUX {
 
-    private static final float DESIGN_W = 1920;
-    private static final float DESIGN_H = 1080;
-
-    private TowerUpgradeMenu towerUpgradeMenu;
+    private TowerUpgradePanel towerUpgradePanel;
     private Texture towerBackground;
     private Vector<TestTower> towerTypes;
     private Array<TowerButton> towerButtons;
@@ -43,10 +36,10 @@ public class MainUX {
     private boolean initialized;
     private float screenWidth;
     private float screenHeight;
+    private CoinManager coinManager;
 
     public MainUX(int width, int height, SpriteBatch batch)
     {
-        towerUpgradeMenu = new TowerUpgradeMenu();
         towerTypes = new Vector<>();
 
         this.batch = batch;
@@ -64,6 +57,19 @@ public class MainUX {
         style.imageChecked = new TextureRegionDrawable(rm.getTexture(Assets.PAUSE_BUTTON));
         waveButton = new ImageButton(style);
         waveButton.setSize(64, 64);
+    }
+
+    public void setCoinManager(CoinManager coinManager) {
+        this.coinManager = coinManager;
+    }
+
+    public void buildUpgradePanel(Skin skin) {
+        if (towerUpgradePanel != null) return;
+        towerUpgradePanel = new TowerUpgradePanel(skin, coinManager);
+    }
+
+    public TowerUpgradePanel getTowerUpgradePanel() {
+        return towerUpgradePanel;
     }
 
     private void loadTowerTypes()
@@ -175,23 +181,20 @@ public class MainUX {
         return towerScrollPane;
     }
 
-    public TowerUpgradeMenu getTowerUpgradeMenu() {
-        return towerUpgradeMenu;
+    public void openUpgradePanel(Tower tower) {
+        if (towerUpgradePanel != null) {
+            towerUpgradePanel.open(tower);
+        }
     }
 
-    public void setTowerUpgradeMenu(TowerUpgradeMenu menu) {
-        this.towerUpgradeMenu = menu;
+    public void closeUpgradePanel() {
+        if (towerUpgradePanel != null) {
+            towerUpgradePanel.close();
+        }
     }
 
-    public void openUpgradeMenu(Tower tower, Stage stage,
-        OrthographicCamera gameScreen,Array<Tower> activeTowers)
-    {
-        towerUpgradeMenu.openUpgradeMenu(tower, stage,gameScreen,activeTowers);
-    }
-
-    public void closeUpgradeMenu()
-    {
-        towerUpgradeMenu.closeUpgradeMenu();
+    public boolean isUpgradePanelOpen() {
+        return towerUpgradePanel != null && towerUpgradePanel.isOpen();
     }
 
     public void updateCoins(int newCoinCount) {

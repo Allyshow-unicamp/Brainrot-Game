@@ -14,7 +14,7 @@ import java.util.UUID;
 public abstract class Tower extends GameObject {
 
     private String id;
-    private String name;
+    private String displayName;
     protected int damage;
     protected int attackSpeed;
     protected float range;
@@ -22,17 +22,25 @@ public abstract class Tower extends GameObject {
     private float lastAttackTime;
     private Enemy target;
     private TargetType targetType;
-    protected int numberUpgrades;
-    protected Vector<Tower> avaiableUpgrades;
     protected int towerID;
 
-    public Tower(Texture texture, Vector2 position, int damage, int attackSpeed, float range, float attackCooldown,
-            int width, int height, TargetType targetType, int numberUpgrades, int towerID) {
+    private int damageUpgradeLevel;
+    private int rangeUpgradeLevel;
+    private int cooldownUpgradeLevel;
+
+    private static final int BASE_DAMAGE_COST = 50;
+    private static final int BASE_RANGE_COST = 40;
+    private static final int BASE_COOLDOWN_COST = 60;
+    private static final float COST_MULTIPLIER = 2f;
+
+    public Tower(Texture texture, Vector2 position, String displayName, int damage, int attackSpeed, float range, float attackCooldown,
+            int width, int height, TargetType targetType, int towerID) {
         this.id = UUID.randomUUID().toString();
         this.textureRegion = new TextureRegion(texture);
         this.position = position;
         this.width = width;
         this.height = height;
+        this.displayName = displayName;
         this.damage = damage;
         this.attackSpeed = attackSpeed;
         this.range = range;
@@ -40,8 +48,10 @@ public abstract class Tower extends GameObject {
         this.targetType = targetType;
         this.lastAttackTime = 0;
         this.target = null;
-        this.numberUpgrades = numberUpgrades;
         this.towerID = towerID;
+        this.damageUpgradeLevel = 0;
+        this.rangeUpgradeLevel = 0;
+        this.cooldownUpgradeLevel = 0;
     }
 
     public abstract Projectile createProjectile(Texture texture, Enemy target);
@@ -53,7 +63,7 @@ public abstract class Tower extends GameObject {
 
         batch.draw(textureRegion, x, y, width, height);
     }
-    
+
     public void setTarget(Enemy enemy){
         target = enemy;
     }
@@ -118,9 +128,44 @@ public abstract class Tower extends GameObject {
         this.position = newPosition;
     }
 
-    public int getNumberUpgrades()
+    public String getName()
     {
-        return this.numberUpgrades;
+        return this.displayName;
+    }
+
+    public TextureRegion getTextureRegion() {
+        return textureRegion;
+    }
+
+    public int getDamageUpgradeLevel() { return damageUpgradeLevel; }
+    public int getRangeUpgradeLevel() { return rangeUpgradeLevel; }
+    public int getCooldownUpgradeLevel() { return cooldownUpgradeLevel; }
+
+    public int getDamageUpgradeCost() {
+        return (int)(BASE_DAMAGE_COST * Math.pow(COST_MULTIPLIER, damageUpgradeLevel));
+    }
+
+    public int getRangeUpgradeCost() {
+        return (int)(BASE_RANGE_COST * Math.pow(COST_MULTIPLIER, rangeUpgradeLevel));
+    }
+
+    public int getCooldownUpgradeCost() {
+        return (int)(BASE_COOLDOWN_COST * Math.pow(COST_MULTIPLIER, cooldownUpgradeLevel));
+    }
+
+    public void upgradeDamage() {
+        this.damage += 10;
+        this.damageUpgradeLevel++;
+    }
+
+    public void upgradeRange() {
+        this.range += 25;
+        this.rangeUpgradeLevel++;
+    }
+
+    public void upgradeCooldown() {
+        this.attackCooldown = Math.max(0.1f, this.attackCooldown * 0.85f);
+        this.cooldownUpgradeLevel++;
     }
 
     public TargetType getTargetType() {

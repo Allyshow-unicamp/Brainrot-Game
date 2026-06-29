@@ -6,10 +6,10 @@ import com.brainrots.enemy.Enemy;
 
 public class ConcreteTower extends Tower{
 
-    public ConcreteTower(Texture texture, Vector2 position, int damage, int attackSpeed, float range, float attackCooldown,
+    public ConcreteTower(Texture texture, Vector2 position, String displayName, int damage, int attackSpeed, float range, float attackCooldown,
             int width, int height, TargetType targetType, int towerID) {
-        super(texture, position, damage, attackSpeed, range, attackCooldown,
-             width, height, targetType,1,towerID);
+        super(texture, position, displayName, damage, attackSpeed, range, attackCooldown,
+             width, height, targetType, towerID);
     }
 
     @Override
