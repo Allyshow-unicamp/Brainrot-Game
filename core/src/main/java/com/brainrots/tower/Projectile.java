@@ -41,7 +41,7 @@ public class Projectile extends GameObject {
             position.add(mathVector.scl(parent.getAttackSpeed() * deltaTime));
 
             if (position.dst(targetPosition) < PROJECTILE_HIT_DISTANCE) {
-                target.takeDamage(parent.getDamage());
+                target.takeDamage(parent.getTotalDamage());
                 reachedTarget = true;
             }
         }

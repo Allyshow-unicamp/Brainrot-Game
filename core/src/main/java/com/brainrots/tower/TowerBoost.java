@@ -1,0 +1,44 @@
+package com.brainrots.tower;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.brainrots.enemy.Enemy;
+import com.brainrots.engine.CoinManager;
+import com.brainrots.engine.ProjectileManager;
+
+public class TowerBoost extends Tower {
+
+    private int boostAmount;
+
+    public TowerBoost(Texture texture, Vector2 position, String displayName,
+            float range, float attackCooldown, int width, int height, int towerID, int boostAmount) {
+        super(texture, position, displayName, 0, 0, range, attackCooldown, width, height, towerID);
+        this.boostAmount = boostAmount;
+    }
+
+    @Override
+    public void update(float gameTime, Array<Enemy> activeEnemies, Array<Tower> activeTowers,
+                        CoinManager coinManager, ProjectileManager projectileManager, Texture projectileTexture) {
+        if (gameTime - getLastAttackTime() < attackCooldown) return;
+
+        for (int i = 0; i < activeTowers.size; i++) {
+            Tower other = activeTowers.get(i);
+            if (other != this && other.getPosition().dst(position) <= range) {
+                other.addBonusDamage(boostAmount);
+            }
+        }
+        attack(gameTime);
+    }
+
+    @Override
+    public void upgradeDamage() {
+        this.boostAmount += 5;
+        this.damageUpgradeLevel++;
+    }
+
+    @Override
+    public String getDamageUpgradeLabel() {
+        return "Boost [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
+    }
+}

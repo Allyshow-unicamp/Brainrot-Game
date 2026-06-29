@@ -12,16 +12,20 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.MainUX.MainUX;
-import com.brainrots.tower.ConcreteTower;
-import com.brainrots.tower.TestTower;
+import com.brainrots.tower.BrainrotTower;
 import com.brainrots.tower.Tower;
+import com.brainrots.tower.TowerArea;
+import com.brainrots.tower.TowerBoost;
+import com.brainrots.tower.TowerCoin;
+import com.brainrots.tower.TowerProjArea;
+import com.brainrots.tower.TowerProjSingle;
 
 public class TowerPlacementController {
 
     private static final float DRAG_THRESHOLD = 20f;
     private static final int TOWER_SIZE = 150;
 
-    private TestTower selectedTowerType;
+    private BrainrotTower selectedTowerType;
     private Texture towerGhostTexture;
     private boolean isIconSelected;
     private boolean wasMousePressed;
@@ -42,7 +46,7 @@ public class TowerPlacementController {
         this.ghostRed = false;
     }
 
-    public void selectTower(TestTower towerType, Texture ghostTexture) {
+    public void selectTower(BrainrotTower towerType, Texture ghostTexture) {
         this.selectedTowerType = towerType;
         this.towerGhostTexture = ghostTexture;
         this.isIconSelected = true;
@@ -154,20 +158,44 @@ public class TowerPlacementController {
         coinManager.subtractCoins(selectedTowerType.getCost());
         mainUX.updateCoins(coinManager.getCoins());
 
-        ConcreteTower concreteTower = new ConcreteTower(towerGhostTexture,
-            worldPosition,
-            selectedTowerType.getDisplayName(),
-            selectedTowerType.getDamage(),
-            selectedTowerType.getAttackSpeed(),
-            selectedTowerType.getRange(),
-            selectedTowerType.getAttackCooldown(),
-            TOWER_SIZE, TOWER_SIZE,
-            selectedTowerType.getTargetType(),
-            activeTowers.size);
-
-        activeTowers.add(concreteTower);
+        Tower tower = createTowerFromType(selectedTowerType, towerGhostTexture, worldPosition);
+        if (tower != null) {
+            activeTowers.add(tower);
+        }
 
         cancelPlacement();
+    }
+
+    private Tower createTowerFromType(BrainrotTower type, Texture texture, Vector2 position) {
+        switch (type) {
+            case TUNG_TUNG:
+                return new TowerProjSingle(texture, position,
+                    type.getDisplayName(), type.getDamage(), type.getAttackSpeed(),
+                    type.getRange(), type.getAttackCooldown(),
+                    TOWER_SIZE, TOWER_SIZE, 0);
+            case BOMBARDILO_CROCODILO:
+                return new TowerProjArea(texture, position,
+                    type.getDisplayName(), type.getDamage(), type.getAttackSpeed(),
+                    type.getRange(), type.getAttackCooldown(),
+                    TOWER_SIZE, TOWER_SIZE, 0, type.getExtraFloat());
+            case NUCLEARO_DINOSAURO:
+                return new TowerArea(texture, position,
+                    type.getDisplayName(), type.getDamage(),
+                    type.getRange(), type.getAttackCooldown(),
+                    TOWER_SIZE, TOWER_SIZE, 0);
+            case CAPPUCCINO_ASSASSINO:
+                return new TowerCoin(texture, position,
+                    type.getDisplayName(),
+                    type.getRange(), type.getAttackCooldown(),
+                    TOWER_SIZE, TOWER_SIZE, 0, type.getExtraValue());
+            case BALLERINA_CAPPUCCINA:
+                return new TowerBoost(texture, position,
+                    type.getDisplayName(),
+                    type.getRange(), type.getAttackCooldown(),
+                    TOWER_SIZE, TOWER_SIZE, 0, type.getExtraValue());
+            default:
+                return null;
+        }
     }
 
     private boolean isCursorOverUI() {

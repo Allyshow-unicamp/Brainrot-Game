@@ -1,12 +1,13 @@
 package com.brainrots.tower;
 
-import java.util.Vector;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.brainrots.enemy.Enemy;
+import com.brainrots.engine.CoinManager;
+import com.brainrots.engine.ProjectileManager;
 import com.brainrots.entity.GameObject;
 
 import java.util.UUID;
@@ -20,13 +21,12 @@ public abstract class Tower extends GameObject {
     protected float range;
     protected float attackCooldown;
     private float lastAttackTime;
-    private Enemy target;
-    private TargetType targetType;
     protected int towerID;
+    protected int bonusDamage;
 
-    private int damageUpgradeLevel;
-    private int rangeUpgradeLevel;
-    private int cooldownUpgradeLevel;
+    protected int damageUpgradeLevel;
+    protected int rangeUpgradeLevel;
+    protected int cooldownUpgradeLevel;
 
     private static final int BASE_DAMAGE_COST = 50;
     private static final int BASE_RANGE_COST = 40;
@@ -34,7 +34,7 @@ public abstract class Tower extends GameObject {
     private static final float COST_MULTIPLIER = 2f;
 
     public Tower(Texture texture, Vector2 position, String displayName, int damage, int attackSpeed, float range, float attackCooldown,
-            int width, int height, TargetType targetType, int towerID) {
+            int width, int height, int towerID) {
         this.id = UUID.randomUUID().toString();
         this.textureRegion = new TextureRegion(texture);
         this.position = position;
@@ -45,68 +45,49 @@ public abstract class Tower extends GameObject {
         this.attackSpeed = attackSpeed;
         this.range = range;
         this.attackCooldown = attackCooldown;
-        this.targetType = targetType;
         this.lastAttackTime = 0;
-        this.target = null;
         this.towerID = towerID;
         this.damageUpgradeLevel = 0;
         this.rangeUpgradeLevel = 0;
         this.cooldownUpgradeLevel = 0;
+        this.bonusDamage = 0;
     }
 
-    public abstract Projectile createProjectile(Texture texture, Enemy target);
+    public abstract void update(float gameTime, Array<Enemy> activeEnemies, Array<Tower> activeTowers,
+                                 CoinManager coinManager, ProjectileManager projectileManager, Texture projectileTexture);
 
     @Override
     public void draw(SpriteBatch batch) {
         float x = position.x - width / 2f;
         float y = position.y;
-
         batch.draw(textureRegion, x, y, width, height);
     }
 
-    public void setTarget(Enemy enemy){
-        target = enemy;
-    }
-
-    public Enemy getTarget(){
-        return target;
-    }
-
-    public float getTowerHeight()
-    {
-        return this.height;
-    }
-
-    public float getTowerWidht()
-    {
-        return textureRegion.getRegionWidth();
-    }
-
-    public void attack(float gameTime){
+    public void attack(float gameTime) {
         lastAttackTime = gameTime;
     }
 
-    public float getLastAttackTime(){
+    public float getLastAttackTime() {
         return lastAttackTime;
     }
 
-    public float getAttackCooldown(){
+    public float getAttackCooldown() {
         return attackCooldown;
     }
 
-    public boolean hasTarget(){
-        if(target != null){
-            return true;
-        }
-
-        return false;
+    public int getTotalDamage() {
+        return damage + bonusDamage;
     }
+
+    public void addBonusDamage(int amount) {
+        this.bonusDamage += amount;
+    }
+
     public int getDamage() {
         return damage;
     }
 
-    public int getID()
-    {
+    public int getID() {
         return towerID;
     }
 
@@ -118,19 +99,16 @@ public abstract class Tower extends GameObject {
         return range;
     }
 
-    public void setID(int newID)
-    {
-        this.towerID = newID;
-    }
-
-    public void setPosition(Vector2 newPosition)
-    {
+    public void setPosition(Vector2 newPosition) {
         this.position = newPosition;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return this.displayName;
+    }
+
+    public float getTowerHeight() {
+        return this.height;
     }
 
     public TextureRegion getTextureRegion() {
@@ -158,6 +136,10 @@ public abstract class Tower extends GameObject {
         this.damageUpgradeLevel++;
     }
 
+    public String getDamageUpgradeLabel() {
+        return "Damage [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
+    }
+
     public void upgradeRange() {
         this.range += 25;
         this.rangeUpgradeLevel++;
@@ -166,9 +148,5 @@ public abstract class Tower extends GameObject {
     public void upgradeCooldown() {
         this.attackCooldown = Math.max(0.1f, this.attackCooldown * 0.85f);
         this.cooldownUpgradeLevel++;
-    }
-
-    public TargetType getTargetType() {
-        return targetType;
     }
 }
