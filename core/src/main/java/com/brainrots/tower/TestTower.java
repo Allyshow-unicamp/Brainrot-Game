@@ -4,17 +4,18 @@ import com.brainrots.core.Assets;
 
 public enum TestTower {
 
-    TOWER_TUNG(Assets.TOWER_TUNG, 25, 2000, 250f, 0.5f, 150, 150, TargetType.SINGLE, 0, 50),
-    TOWER_VACA_SATURNITA(Assets.TOWER_VACA_SATURNITA, 30, 1800, 275f, 0.6f, 150, 150, TargetType.SINGLE, 0, 80),
-    TOWER_TRIPPI_TROPPI(Assets.TOWER_TRIPPI_TROPPI, 35, 1600, 300f, 0.7f, 150, 150, TargetType.MULTIPLE, 0, 100),
-    TOWER_TRALALERO_TRALALA(Assets.TOWER_TRALALERO_TRALALA, 20, 2200, 200f, 0.4f, 150, 150, TargetType.SINGLE, 0, 60),
-    TOWER_PATAPIM(Assets.TOWER_PATAPIM, 25, 2000, 250f, 0.5f, 150, 150, TargetType.SINGLE, 1, 75),
-    TOWER_NUCLEARO_DINOSAURO(Assets.TOWER_NUCLEARO_DINOSAURO, 50, 1200, 350f, 1.2f, 150, 150, TargetType.AREA, 0, 150),
-    TOWER_LIRILI_LARILA(Assets.TOWER_LIRILI_LARILA, 15, 2500, 200f, 0.3f, 150, 150, TargetType.SINGLE, 0, 40),
-    TOWER_CAPPUCCINO(Assets.TOWER_CAPPUCCINO, 25, 2000, 250f, 0.5f, 150, 150, TargetType.SINGLE, 1, 75),
-    TOWER_CAPPUCCINA(Assets.TOWER_CAPPUCCINA, 40, 1400, 300f, 0.8f, 150, 150, TargetType.MULTIPLE, 0, 120),
-    TOWER_BOMBARDILO_CROCODILO(Assets.TOWER_BOMBARDILO_CROCODILO, 45, 1000, 400f, 1.0f, 150, 150, TargetType.AREA, 0, 200);
+    TOWER_TUNG("Tung Tung", Assets.TOWER_TUNG, 25, 2000, 250f, 0.5f, 150, 150, TargetType.SINGLE, 0, 50),
+    TOWER_VACA_SATURNITA("Vaca Saturnita", Assets.TOWER_VACA_SATURNITA, 30, 1800, 275f, 0.6f, 150, 150, TargetType.SINGLE, 0, 80),
+    TOWER_TRIPPI_TROPPI("Trippi Troppi", Assets.TOWER_TRIPPI_TROPPI, 35, 1600, 300f, 0.7f, 150, 150, TargetType.MULTIPLE, 0, 100),
+    TOWER_TRALALERO_TRALALA("Tralalero Tralala", Assets.TOWER_TRALALERO_TRALALA, 20, 2200, 200f, 0.4f, 150, 150, TargetType.SINGLE, 0, 60),
+    TOWER_PATAPIM("Patapim", Assets.TOWER_PATAPIM, 25, 2000, 250f, 0.5f, 150, 150, TargetType.SINGLE, 1, 75),
+    TOWER_NUCLEARO_DINOSAURO("Nuclearo Dinosauro", Assets.TOWER_NUCLEARO_DINOSAURO, 50, 1200, 350f, 1.2f, 150, 150, TargetType.AREA, 0, 150),
+    TOWER_LIRILI_LARILA("Lirili Larila", Assets.TOWER_LIRILI_LARILA, 15, 2500, 200f, 0.3f, 150, 150, TargetType.SINGLE, 0, 40),
+    TOWER_CAPPUCCINO("Cappuccino", Assets.TOWER_CAPPUCCINO, 25, 2000, 250f, 0.5f, 150, 150, TargetType.SINGLE, 1, 75),
+    TOWER_CAPPUCCINA("Cappuccina", Assets.TOWER_CAPPUCCINA, 40, 1400, 300f, 0.8f, 150, 150, TargetType.MULTIPLE, 0, 120),
+    TOWER_BOMBARDILO_CROCODILO("Bombardilo Crocodilo", Assets.TOWER_BOMBARDILO_CROCODILO, 45, 1000, 400f, 1.0f, 150, 150, TargetType.AREA, 0, 200);
 
+    private final String displayName;
     private final String texture;
     private final int damage;
     private final int attackSpeed;
@@ -26,8 +27,9 @@ public enum TestTower {
     private final int numberUpgrades;
     private final int cost;
 
-    TestTower(String texture, int damage, int attackSpeed, float range, float attackCooldown,
+    TestTower(String displayName, String texture, int damage, int attackSpeed, float range, float attackCooldown,
               int width, int height, TargetType targetType, int numberUpgrades, int cost) {
+        this.displayName = displayName;
         this.texture = texture;
         this.damage = damage;
         this.attackSpeed = attackSpeed;
@@ -40,6 +42,7 @@ public enum TestTower {
         this.cost = cost;
     }
 
+    public String getDisplayName() { return displayName; }
     public String getTexture() { return texture; }
     public int getDamage() { return damage; }
     public int getAttackSpeed() { return attackSpeed; }

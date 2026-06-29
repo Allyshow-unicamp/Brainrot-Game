@@ -1,7 +1,9 @@
 package com.brainrots.engine;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -37,7 +39,6 @@ public class LevelManager {
     private GameResourceManager resourceManager;
     private BrainRotGame screenManager;
     private OrthographicCamera gameScreen;
-    private boolean isUpgradeMenuOpen;
     private Stage stage;
 
     private MainUX mainUX;
@@ -45,6 +46,9 @@ public class LevelManager {
     private TowerTargetingSystem targetingSystem;
     private ProjectileManager projectileManager;
     private TowerPlacementController placementController;
+
+    private Tower selectedTower;
+    private Texture rangeCircleTexture;
 
     public LevelManager(GameResourceManager resourceManager, BrainRotGame screenManager,
         int level, String mapName, OrthographicCamera gameScreen, Stage stage, MainUX mainUX){
@@ -59,12 +63,23 @@ public class LevelManager {
         activeTowers = new Array<>();
         waveManager = new WaveManager(mapName, map.getPath());
         this.stage = stage;
-        this.isUpgradeMenuOpen = false;
         this.mainUX = mainUX;
         this.coinManager = new CoinManager(300);
         this.targetingSystem = new TowerTargetingSystem();
         this.projectileManager = new ProjectileManager();
         this.placementController = new TowerPlacementController(gameScreen, stage);
+        this.selectedTower = null;
+        createRangeCircleTexture();
+        mainUX.setCoinManager(coinManager);
+    }
+
+    private void createRangeCircleTexture() {
+        int texSize = 256;
+        Pixmap pixmap = new Pixmap(texSize, texSize, Pixmap.Format.RGBA8888);
+        pixmap.setColor(0f, 0f, 1f, 0.3f);
+        pixmap.fillCircle(texSize / 2, texSize / 2, texSize / 2);
+        rangeCircleTexture = new Texture(pixmap);
+        pixmap.dispose();
     }
 
     /**
@@ -118,13 +133,13 @@ public class LevelManager {
     }
 
     public void update(float delta) {
+        handleTowerClick();
+
         targetingSystem.searchAll(activeTowers, activeEnemies);
 
         gameTime += delta;
 
         for (Tower tower : activeTowers) {
-            towerClick(tower);
-
             float lastAttackTime = tower.getLastAttackTime();
             float attackCooldown = tower.getAttackCooldown();
 
@@ -177,33 +192,50 @@ public class LevelManager {
         }
 
         placementController.update(map.getBarrier(), activeTowers, coinManager, mainUX);
+
+        if (mainUX.isUpgradePanelOpen()) {
+            mainUX.getTowerUpgradePanel().refresh();
+        }
     }
 
-    private void towerClick(Tower tower)
-    {
-        if (Gdx.input.justTouched())
-        {
-            Vector2 stageCoords = stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
-            Actor hitActor = stage.hit(stageCoords.x, stageCoords.y, true);
+    public Tower getSelectedTower() {
+        return selectedTower;
+    }
 
-            if (hitActor != null) {
-                return;
-            }
+    private void handleTowerClick() {
+        if (!Gdx.input.justTouched()) return;
 
-            Vector3 clickCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            gameScreen.unproject(clickCoords);
+        Vector2 stageCoords = stage.screenToStageCoordinates(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+        Actor hitActor = stage.hit(stageCoords.x, stageCoords.y, true);
+        if (hitActor != null) return;
 
-            if(tower.wasClicked(clickCoords.x,clickCoords.y) && !isUpgradeMenuOpen)
-            {
-                mainUX.openUpgradeMenu(tower,stage,gameScreen,activeTowers);
-                isUpgradeMenuOpen = true;
-            }
-            else
-            {
-                isUpgradeMenuOpen = false;
-                mainUX.closeUpgradeMenu();
+        Vector3 clickCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        gameScreen.unproject(clickCoords);
+
+        Tower clickedTower = null;
+        for (Tower tower : activeTowers) {
+            if (tower.wasClicked(clickCoords.x, clickCoords.y)) {
+                clickedTower = tower;
+                break;
             }
         }
+
+        if (clickedTower != null) {
+            if (clickedTower != selectedTower || !mainUX.isUpgradePanelOpen()) {
+                selectedTower = clickedTower;
+                mainUX.openUpgradePanel(clickedTower);
+            }
+        } else {
+            selectedTower = null;
+            mainUX.closeUpgradePanel();
+        }
+    }
+
+
+
+    public void clearSelectedTower() {
+        selectedTower = null;
+        mainUX.closeUpgradePanel();
     }
 
     private void rewardCoins(Enemy enemy)
@@ -225,6 +257,15 @@ public class LevelManager {
 
         Texture background = map.getBackground();
         batch.draw(background, 0, 0);
+
+        if (selectedTower != null && rangeCircleTexture != null) {
+            float range = selectedTower.getRange();
+            float cx = selectedTower.getPosition().x;
+            float cy = selectedTower.getPosition().y + selectedTower.getTowerHeight() / 2f;
+            batch.setColor(0f, 0f, 1f, 0.2f);
+            batch.draw(rangeCircleTexture, cx - range, cy - range, range * 2, range * 2);
+            batch.setColor(1f, 1f, 1f, 1f);
+        }
 
         for(Enemy enemy : activeEnemies){
             enemy.draw(batch);

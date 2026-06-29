@@ -104,6 +104,10 @@ public class GameplayScreen extends GameScreen {
         waveLabel.setPosition(10, stage.getHeight() - hpLabel.getHeight() - coinLabel.getHeight() - waveLabel.getHeight() - 30);
 
         mainUX.resize(width, height);
+
+        if (mainUX.getTowerUpgradePanel() != null) {
+            mainUX.getTowerUpgradePanel().resizePanel(width, height);
+        }
     }
 
     @Override
@@ -126,6 +130,11 @@ public class GameplayScreen extends GameScreen {
         Gdx.input.setInputProcessor(stage);
 
         mainUX.buildTowerPanel();
+        Skin uiSkin = resourceManager.getSkin(Assets.UI_SKIN);
+        mainUX.buildUpgradePanel(uiSkin);
+        mainUX.getTowerUpgradePanel().setOnCloseCallback(() -> {
+            levelManager.clearSelectedTower();
+        });
 
         Iterator<TowerButton> iterator = mainUX.getTowerButtons().iterator();
 
@@ -139,6 +148,10 @@ public class GameplayScreen extends GameScreen {
         ScrollPane scrollPane = mainUX.getTowerScrollPane();
         if (scrollPane != null) {
             stage.addActor(scrollPane);
+        }
+
+        if (mainUX.getTowerUpgradePanel() != null) {
+            stage.addActor(mainUX.getTowerUpgradePanel());
         }
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
