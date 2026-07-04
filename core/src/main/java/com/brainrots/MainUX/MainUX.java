@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.Array;
 import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.engine.CoinManager;
-import com.brainrots.tower.TestTower;
+import com.brainrots.tower.BrainrotTower;
 import com.brainrots.tower.Tower;
 
 
@@ -26,7 +26,7 @@ public class MainUX {
 
     private TowerUpgradePanel towerUpgradePanel;
     private Texture towerBackground;
-    private Vector<TestTower> towerTypes;
+    private Vector<BrainrotTower> towerTypes;
     private Array<TowerButton> towerButtons;
     private Array<Label> priceLabels;
     private ScrollPane towerScrollPane;
@@ -47,7 +47,6 @@ public class MainUX {
         priceLabels = new Array<>();
         initialized = false;
 
-        loadTowerTypes();
         generateTowerHUDBackground();
 
         GameResourceManager rm = GameResourceManager.getGameResourceManager();
@@ -72,18 +71,14 @@ public class MainUX {
         return towerUpgradePanel;
     }
 
-    private void loadTowerTypes()
+    public void setUnlockedTowerIds(java.util.List<String> unlockedIds)
     {
-        towerTypes.add(TestTower.TOWER_TUNG);
-        towerTypes.add(TestTower.TOWER_VACA_SATURNITA);
-        towerTypes.add(TestTower.TOWER_TRIPPI_TROPPI);
-        towerTypes.add(TestTower.TOWER_TRALALERO_TRALALA);
-        towerTypes.add(TestTower.TOWER_PATAPIM);
-        towerTypes.add(TestTower.TOWER_NUCLEARO_DINOSAURO);
-        towerTypes.add(TestTower.TOWER_LIRILI_LARILA);
-        towerTypes.add(TestTower.TOWER_CAPPUCCINO);
-        towerTypes.add(TestTower.TOWER_CAPPUCCINA);
-        towerTypes.add(TestTower.TOWER_BOMBARDILO_CROCODILO);
+        towerTypes.clear();
+        for (BrainrotTower tower : BrainrotTower.values()) {
+            if (unlockedIds.contains(tower.getTowerId())) {
+                towerTypes.add(tower);
+            }
+        }
     }
 
     public void buildTowerPanel() {
@@ -101,7 +96,7 @@ public class MainUX {
         Label.LabelStyle costStyle = new Label.LabelStyle(priceFont, Color.YELLOW);
 
         for (int i = 0; i < towerTypes.size(); i++) {
-            TestTower type = towerTypes.get(i);
+            BrainrotTower type = towerTypes.get(i);
 
             TowerButton btn = new TowerButton(type, 0, 0);
             towerButtons.add(btn);

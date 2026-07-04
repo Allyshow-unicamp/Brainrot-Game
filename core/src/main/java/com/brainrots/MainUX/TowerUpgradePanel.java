@@ -183,17 +183,13 @@ public class TowerUpgradePanel extends Table {
         if (currentTower == null) return;
         nameLabel.setText(currentTower.getName());
 
-        int dmgCost = currentTower.getDamageUpgradeCost();
-        int rangeCost = currentTower.getRangeUpgradeCost();
-        int coolCost = currentTower.getCooldownUpgradeCost();
+        damageBtn.setText(currentTower.getDamageUpgradeLabel());
+        rangeBtn.setText("Range [Lv." + currentTower.getRangeUpgradeLevel() + "]  $" + currentTower.getRangeUpgradeCost());
+        cooldownBtn.setText("Rate [Lv." + currentTower.getCooldownUpgradeLevel() + "]  $" + currentTower.getCooldownUpgradeCost());
 
-        damageBtn.setText("Damage [Lv." + currentTower.getDamageUpgradeLevel() + "]  $" + dmgCost);
-        rangeBtn.setText("Range [Lv." + currentTower.getRangeUpgradeLevel() + "]  $" + rangeCost);
-        cooldownBtn.setText("Cooldown [Lv." + currentTower.getCooldownUpgradeLevel() + "]  $" + coolCost);
-
-        damageBtn.setDisabled(!coinManager.canAfford(dmgCost));
-        rangeBtn.setDisabled(!coinManager.canAfford(rangeCost));
-        cooldownBtn.setDisabled(!coinManager.canAfford(coolCost));
+        damageBtn.setDisabled(!coinManager.canAfford(currentTower.getDamageUpgradeCost()));
+        rangeBtn.setDisabled(!coinManager.canAfford(currentTower.getRangeUpgradeCost()));
+        cooldownBtn.setDisabled(!coinManager.canAfford(currentTower.getCooldownUpgradeCost()));
     }
 
     public void resizePanel(float width, float height) {

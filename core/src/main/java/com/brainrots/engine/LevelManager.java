@@ -1,7 +1,6 @@
 package com.brainrots.engine;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,11 +17,9 @@ import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
+import com.brainrots.tower.BrainrotTower;
 import com.brainrots.tower.Projectile;
-import com.brainrots.tower.TargetType;
-import com.brainrots.tower.TestTower;
 import com.brainrots.tower.Tower;
-import com.brainrots.tower.TowerTargetingSystem;
 
 public class LevelManager {
 
@@ -43,12 +40,12 @@ public class LevelManager {
 
     private MainUX mainUX;
     private CoinManager coinManager;
-    private TowerTargetingSystem targetingSystem;
     private ProjectileManager projectileManager;
     private TowerPlacementController placementController;
 
     private Tower selectedTower;
     private Texture rangeCircleTexture;
+    private Texture projectileTexture;
 
     public LevelManager(GameResourceManager resourceManager, BrainRotGame screenManager,
         int level, String mapName, OrthographicCamera gameScreen, Stage stage, MainUX mainUX){
@@ -65,10 +62,10 @@ public class LevelManager {
         this.stage = stage;
         this.mainUX = mainUX;
         this.coinManager = new CoinManager(300);
-        this.targetingSystem = new TowerTargetingSystem();
         this.projectileManager = new ProjectileManager();
         this.placementController = new TowerPlacementController(gameScreen, stage);
         this.selectedTower = null;
+        this.projectileTexture = resourceManager.getTexture(Assets.PROJECTILE_BLACK);
         createRangeCircleTexture();
         mainUX.setCoinManager(coinManager);
     }
@@ -82,10 +79,6 @@ public class LevelManager {
         pixmap.dispose();
     }
 
-    /**
-     * Retorna as coordenadas do caminho dos inimigos.
-     * @return Array de Vector2 contendo as coordenadas
-     */
     public Array<Vector2> getPath() {
         return map.getPath();
     }
@@ -106,15 +99,11 @@ public class LevelManager {
         return activeEnemies;
     }
 
-    /**
-     * Retorna a vida restante da base.
-     * @return Int representando a vida da base.
-     */
     public int getBaseHealth() {
         return base.getHealth();
     }
 
-    public void positionTowerMode(TestTower towerType)
+    public void positionTowerMode(BrainrotTower towerType)
     {
         Texture ghostTexture = resourceManager.getTexture(towerType.getTexture());
         placementController.selectTower(towerType, ghostTexture);
@@ -135,28 +124,10 @@ public class LevelManager {
     public void update(float delta) {
         handleTowerClick();
 
-        targetingSystem.searchAll(activeTowers, activeEnemies);
-
         gameTime += delta;
 
         for (Tower tower : activeTowers) {
-            float lastAttackTime = tower.getLastAttackTime();
-            float attackCooldown = tower.getAttackCooldown();
-
-            if (gameTime - lastAttackTime >= attackCooldown && tower.hasTarget()) {
-                Texture texture = resourceManager.getTexture(Assets.PROJECTILE_BLACK);
-
-                if (tower.getTargetType() == TargetType.MULTIPLE) {
-                    Array<Enemy> targets = targetingSystem.findTargets(tower, activeEnemies);
-                    for (Enemy t : targets) {
-                        projectileManager.spawn(tower.createProjectile(texture, t));
-                    }
-                } else {
-                    projectileManager.spawn(tower.createProjectile(texture, tower.getTarget()));
-                }
-
-                tower.attack(gameTime);
-            }
+            tower.update(gameTime, activeEnemies, activeTowers, coinManager, projectileManager, projectileTexture);
         }
 
         projectileManager.update(delta, activeEnemies);
@@ -231,8 +202,6 @@ public class LevelManager {
         }
     }
 
-
-
     public void clearSelectedTower() {
         selectedTower = null;
         mainUX.closeUpgradePanel();
@@ -241,15 +210,6 @@ public class LevelManager {
     private void rewardCoins(Enemy enemy)
     {
         coinManager.addCoins(enemy.giveCoinOnDeath());
-        mainUX.updateCoins(coinManager.getCoins());
-    }
-
-    public void spawnEnemy(Enemy enemy) {
-        activeEnemies.add(enemy);
-    }
-
-    public void spawnProjectile(Projectile projectile) {
-        projectileManager.spawn(projectile);
     }
 
     public void draw(SpriteBatch batch, ShapeRenderer shapeRenderer) {
@@ -288,7 +248,6 @@ public class LevelManager {
         }
         shapeRenderer.end();
     }
-
 
     private boolean won(int currentWave, int maxWaves) {
         return base.getHealth() > 0 && currentWave == maxWaves && activeEnemies.size == 0;

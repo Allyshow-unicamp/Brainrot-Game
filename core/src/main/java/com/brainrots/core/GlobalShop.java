@@ -6,24 +6,31 @@ import com.brainrots.exception.InvalidGameActionException;
 import com.brainrots.interfaces.GameSaveHandler;
 
 public class GlobalShop {
-    private HashMap<String, Integer> itemPrices;
+    private HashMap<String, ShopTowerData> shopData;
 
-    public HashMap<String, Integer> getItemPrices() {
-        return itemPrices;
+    public HashMap<String, ShopTowerData> getShopData() {
+        return shopData;
     }
 
     public GlobalShop(GameSaveHandler saveHandler) {
         try {
-            this.itemPrices = saveHandler.loadShopData();
+            this.shopData = saveHandler.loadShopData();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void purchaseTower(PlayerProfile playerProfile, String towerId) throws InvalidGameActionException {
-        int price = itemPrices.get(towerId);
+        ShopTowerData data = shopData.get(towerId);
+        if (data == null)
+            throw new InvalidGameActionException("Tower not found in the shop!");
+
+        if (playerProfile.getUnlockedTowerIds().contains(towerId))
+            throw new InvalidGameActionException("You already own this tower!");
+
+        int price = data.getPrice();
         if (playerProfile.getGlobalCoins() < price)
-            throw new InvalidGameActionException("Seu dinheiro não é suficiente para comprar essa torre!");
+            throw new InvalidGameActionException("Not enough coins to buy this tower!");
 
         playerProfile.removeGlobalCoins(price);
         playerProfile.unlockTower(towerId);

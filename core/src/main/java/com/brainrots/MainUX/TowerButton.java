@@ -7,11 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.brainrots.core.GameResourceManager;
-import com.brainrots.tower.TestTower;
+import com.brainrots.tower.BrainrotTower;
 
 public class TowerButton extends ImageButton{
 
-    private TestTower towerType;
+    private BrainrotTower towerType;
     private Texture texture;
 
     public TowerButton(Texture texture, float x, float y, Runnable onClick)
@@ -23,7 +23,7 @@ public class TowerButton extends ImageButton{
         this.texture = texture;
     }
 
-    public TowerButton(TestTower towerType, float x, float y)
+    public TowerButton(BrainrotTower towerType, float x, float y)
     {
         super(new TextureRegionDrawable(new TextureRegion(
             GameResourceManager.getGameResourceManager().getTexture(towerType.getTexture()))));
@@ -34,7 +34,7 @@ public class TowerButton extends ImageButton{
         this.texture = GameResourceManager.getGameResourceManager().getTexture(towerType.getTexture());
     }
 
-    public TestTower getTowerType(){
+    public BrainrotTower getTowerType(){
         return towerType;
     }
 

@@ -39,7 +39,7 @@ public class ProjectileManager {
     }
 
     private void applyAreaDamage(Projectile projectile, Array<Enemy> activeEnemies) {
-        int damage = projectile.getParent().getDamage();
+        int damage = projectile.getParent().getTotalDamage();
         float radius = projectile.getAoeRadius();
 
         for (Enemy enemy : activeEnemies) {
