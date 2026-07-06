@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.tower.BrainrotTower;
 
+import com.badlogic.gdx.graphics.Color;
+
 public class TowerButton extends ImageButton{
 
     private BrainrotTower towerType;
@@ -47,15 +49,27 @@ public class TowerButton extends ImageButton{
         this.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                onClick.run();
+                if (!isDisabled()) {
+                    onClick.run();
+                }
                 return super.touchDown(event, x, y, pointer, button);
             }
 
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
-                onClick.run();
+                if (!isDisabled()) {
+                    onClick.run();
+                }
             }
         });
+    }
+
+    public void setAffordable(boolean affordable) {
+        if (affordable) {
+            setColor(Color.WHITE);
+        } else {
+            setColor(0.4f, 0.4f, 0.4f, 0.6f);
+        }
     }
 }

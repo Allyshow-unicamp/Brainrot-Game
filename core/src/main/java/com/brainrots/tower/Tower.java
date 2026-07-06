@@ -16,6 +16,7 @@ public abstract class Tower extends GameObject {
 
     private String id;
     private String displayName;
+    private String description;
     protected int damage;
     protected int attackSpeed;
     protected float range;
@@ -51,6 +52,7 @@ public abstract class Tower extends GameObject {
         this.rangeUpgradeLevel = 0;
         this.cooldownUpgradeLevel = 0;
         this.bonusDamage = 0;
+        this.description = "";
     }
 
     public abstract void update(float gameTime, Array<Enemy> activeEnemies, Array<Tower> activeTowers,
@@ -107,6 +109,14 @@ public abstract class Tower extends GameObject {
         return this.displayName;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public float getTowerHeight() {
         return this.height;
     }
@@ -137,7 +147,15 @@ public abstract class Tower extends GameObject {
     }
 
     public String getDamageUpgradeLabel() {
-        return "Damage [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
+        return "Damage +10 [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
+    }
+
+    public String getRangeUpgradeLabel() {
+        return "Range +25 [Lv." + rangeUpgradeLevel + "]  $" + getRangeUpgradeCost();
+    }
+
+    public String getCooldownUpgradeLabel() {
+        return "Speed +15% [Lv." + cooldownUpgradeLevel + "]  $" + getCooldownUpgradeCost();
     }
 
     public void upgradeRange() {

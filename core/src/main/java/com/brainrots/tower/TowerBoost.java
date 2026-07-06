@@ -39,6 +39,16 @@ public class TowerBoost extends Tower {
 
     @Override
     public String getDamageUpgradeLabel() {
-        return "Boost [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
+        return "Boost +5 [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
+    }
+
+    @Override
+    public String getRangeUpgradeLabel() {
+        return "Range +25 [Lv." + rangeUpgradeLevel + "]  $" + getRangeUpgradeCost();
+    }
+
+    @Override
+    public String getCooldownUpgradeLabel() {
+        return "Speed +15% [Lv." + cooldownUpgradeLevel + "]  $" + getCooldownUpgradeCost();
     }
 }
