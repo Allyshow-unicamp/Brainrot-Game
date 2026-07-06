@@ -30,6 +30,7 @@ public class TowerUpgradePanel extends Table {
 
     private Image towerImage;
     private Label nameLabel;
+    private Label descLabel;
     private TextButton damageBtn;
     private TextButton rangeBtn;
     private TextButton cooldownBtn;
@@ -67,7 +68,9 @@ public class TowerUpgradePanel extends Table {
         TextButton.TextButtonStyle btnStyle = new TextButton.TextButtonStyle(skin.get(TextButton.TextButtonStyle.class));
         btnStyle.font = btnFont;
 
+        BitmapFont descFont = rm.createFont(Assets.UI_FONT, 0.8f);
         Label.LabelStyle nameStyle = new Label.LabelStyle(btnFont, Color.WHITE);
+        Label.LabelStyle descStyle = new Label.LabelStyle(descFont, Color.LIGHT_GRAY);
 
         ImageButton.ImageButtonStyle closeStyle = new ImageButton.ImageButtonStyle();
         closeStyle.imageUp = new TextureRegionDrawable(new TextureRegion(closeTexture));
@@ -84,6 +87,8 @@ public class TowerUpgradePanel extends Table {
 
         towerImage = new Image();
         nameLabel = new Label("", nameStyle);
+        descLabel = new Label("", descStyle);
+        descLabel.setWrap(true);
 
         damageBtn = new TextButton("", btnStyle);
         rangeBtn = new TextButton("", btnStyle);
@@ -127,6 +132,8 @@ public class TowerUpgradePanel extends Table {
         add(towerImage).size(80, 80).padTop(10).colspan(1).center();
         row();
         add(nameLabel).padTop(5).center();
+        row();
+        add(descLabel).padTop(3).padLeft(5).padRight(5).fillX().center();
         row();
         add(damageBtn).fillX().padTop(15).padLeft(5).padRight(5);
         row();
@@ -182,10 +189,11 @@ public class TowerUpgradePanel extends Table {
     public void refresh() {
         if (currentTower == null) return;
         nameLabel.setText(currentTower.getName());
+        descLabel.setText(currentTower.getDescription());
 
         damageBtn.setText(currentTower.getDamageUpgradeLabel());
-        rangeBtn.setText("Range [Lv." + currentTower.getRangeUpgradeLevel() + "]  $" + currentTower.getRangeUpgradeCost());
-        cooldownBtn.setText("Rate [Lv." + currentTower.getCooldownUpgradeLevel() + "]  $" + currentTower.getCooldownUpgradeCost());
+        rangeBtn.setText(currentTower.getRangeUpgradeLabel());
+        cooldownBtn.setText(currentTower.getCooldownUpgradeLabel());
 
         damageBtn.setDisabled(!coinManager.canAfford(currentTower.getDamageUpgradeCost()));
         rangeBtn.setDisabled(!coinManager.canAfford(currentTower.getRangeUpgradeCost()));

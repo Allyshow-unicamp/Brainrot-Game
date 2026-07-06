@@ -20,10 +20,11 @@ import com.brainrots.enemy.Enemy;
 import com.brainrots.tower.BrainrotTower;
 import com.brainrots.tower.Projectile;
 import com.brainrots.tower.Tower;
+import com.brainrots.tower.TowerCoin;
 
 public class LevelManager {
 
-    private final int maxHealth = 100;
+    private final int maxHealth = 1000;
 
     private float gameTime;
 
@@ -46,6 +47,7 @@ public class LevelManager {
     private Tower selectedTower;
     private Texture rangeCircleTexture;
     private Texture projectileTexture;
+    private float speedMultiplier;
 
     public LevelManager(GameResourceManager resourceManager, BrainRotGame screenManager,
         int level, String mapName, OrthographicCamera gameScreen, Stage stage, MainUX mainUX){
@@ -65,6 +67,7 @@ public class LevelManager {
         this.projectileManager = new ProjectileManager();
         this.placementController = new TowerPlacementController(gameScreen, stage);
         this.selectedTower = null;
+        this.speedMultiplier = 1f;
         this.projectileTexture = resourceManager.getTexture(Assets.PROJECTILE_BLACK);
         createRangeCircleTexture();
         mainUX.setCoinManager(coinManager);
@@ -121,12 +124,24 @@ public class LevelManager {
         waveManager.startNextWave();
     }
 
+    public void setSpeedMultiplier(float multiplier) {
+        this.speedMultiplier = multiplier;
+    }
+
+    public float getSpeedMultiplier() {
+        return speedMultiplier;
+    }
+
     public void update(float delta) {
+        delta *= speedMultiplier;
         handleTowerClick();
 
         gameTime += delta;
 
         for (Tower tower : activeTowers) {
+            if (tower instanceof TowerCoin && waveManager.isPausedWave()) {
+                continue;
+            }
             tower.update(gameTime, activeEnemies, activeTowers, coinManager, projectileManager, projectileTexture);
         }
 
@@ -162,7 +177,7 @@ public class LevelManager {
             screenManager.endGame(level, victory, stars);
         }
 
-        placementController.update(map.getBarrier(), activeTowers, coinManager, mainUX);
+        placementController.update(map.getBarrier(), map.getPath(), activeTowers, coinManager, mainUX);
 
         if (mainUX.isUpgradePanelOpen()) {
             mainUX.getTowerUpgradePanel().refresh();

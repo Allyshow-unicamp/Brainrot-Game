@@ -24,6 +24,9 @@ public class TowerPlacementController {
 
     private static final float DRAG_THRESHOLD = 20f;
     private static final int TOWER_SIZE = 150;
+    private static final int SAMPLE_GRID = 5;
+    private static final float VALID_THRESHOLD = 0.8f;
+    private static final float PATH_THRESHOLD = 40f;
 
     private BrainrotTower selectedTowerType;
     private Texture towerGhostTexture;
@@ -54,7 +57,7 @@ public class TowerPlacementController {
         this.dragStartScreenPos.set(Gdx.input.getX(), Gdx.input.getY());
     }
 
-    public void update(Array<Polygon> barriers, Array<Tower> activeTowers, CoinManager coinManager, MainUX mainUX) {
+    public void update(Array<Polygon> barriers, Array<Vector2> path, Array<Tower> activeTowers, CoinManager coinManager, MainUX mainUX) {
         wasMousePressed = isMousePressed;
         boolean leftDown = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
         boolean rightDown = Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
@@ -68,26 +71,21 @@ public class TowerPlacementController {
             }
         }
 
-        checkPositionTower(barriers, activeTowers, coinManager, mainUX);
+        updateGhostState(barriers, path, coinManager);
+        checkPositionTower(barriers, path, activeTowers, coinManager, mainUX);
     }
 
-    public void updateGhostState(Array<Polygon> barriers, CoinManager coinManager) {
+    public void updateGhostState(Array<Polygon> barriers, Array<Vector2> path, CoinManager coinManager) {
         if (!isIconSelected || selectedTowerType == null) return;
 
         Vector3 mousePosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         gameScreen.unproject(mousePosition);
+        Vector2 worldPos = new Vector2(mousePosition.x, mousePosition.y - TOWER_SIZE / 2f);
 
         boolean canAfford = coinManager.canAfford(selectedTowerType.getCost());
-        boolean onBarrier = false;
+        boolean areaValid = isAreaValid(worldPos, barriers, path);
 
-        for (Polygon barrier : barriers) {
-            if (barrier.contains(mousePosition.x, mousePosition.y)) {
-                onBarrier = true;
-                break;
-            }
-        }
-
-        ghostRed = onBarrier || !canAfford;
+        ghostRed = !areaValid || !canAfford;
     }
 
     public void renderGhost(SpriteBatch batch) {
@@ -101,8 +99,8 @@ public class TowerPlacementController {
                 batch.setColor(1, 1, 1, 0.4f);
             }
 
-            batch.draw(towerGhostTexture, mousePosition.x - TOWER_SIZE / 2,
-                mousePosition.y, TOWER_SIZE, TOWER_SIZE);
+            batch.draw(towerGhostTexture, mousePosition.x - TOWER_SIZE / 2f,
+                mousePosition.y - TOWER_SIZE / 2f, TOWER_SIZE, TOWER_SIZE);
 
             batch.setColor(1, 1, 1, 1.0f);
         }
@@ -119,7 +117,7 @@ public class TowerPlacementController {
         isDragging = false;
     }
 
-    private void checkPositionTower(Array<Polygon> barriers, Array<Tower> activeTowers,
+    private void checkPositionTower(Array<Polygon> barriers, Array<Vector2> path, Array<Tower> activeTowers,
                                      CoinManager coinManager, MainUX mainUX) {
         if (!isIconSelected) return;
 
@@ -135,12 +133,12 @@ public class TowerPlacementController {
 
         Vector3 currentMouseWorld = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         gameScreen.unproject(currentMouseWorld);
-        Vector2 worldPos = new Vector2(currentMouseWorld.x, currentMouseWorld.y);
+        Vector2 worldPos = new Vector2(currentMouseWorld.x, currentMouseWorld.y - TOWER_SIZE / 2f);
 
-        placeTowerAtPosition(worldPos, barriers, activeTowers, coinManager, mainUX);
+        placeTowerAtPosition(worldPos, barriers, path, activeTowers, coinManager, mainUX);
     }
 
-    private void placeTowerAtPosition(Vector2 worldPosition, Array<Polygon> barriers,
+    private void placeTowerAtPosition(Vector2 worldPosition, Array<Polygon> barriers, Array<Vector2> path,
                                        Array<Tower> activeTowers, CoinManager coinManager, MainUX mainUX) {
         if (selectedTowerType == null) return;
 
@@ -149,10 +147,8 @@ public class TowerPlacementController {
             return;
         }
 
-        for (Polygon barrier : barriers) {
-            if (barrier.contains(worldPosition)) {
-                return;
-            }
+        if (!isAreaValid(worldPosition, barriers, path)) {
+            return;
         }
 
         coinManager.subtractCoins(selectedTowerType.getCost());
@@ -166,36 +162,100 @@ public class TowerPlacementController {
         cancelPlacement();
     }
 
+    private boolean isAreaValid(Vector2 worldPos, Array<Polygon> barriers, Array<Vector2> path) {
+        float halfSize = TOWER_SIZE / 2f;
+        int samplePoints = SAMPLE_GRID;
+        int totalPoints = samplePoints * samplePoints;
+        int validPoints = 0;
+
+        for (int xi = 0; xi < samplePoints; xi++) {
+            for (int yi = 0; yi < samplePoints; yi++) {
+                float px = worldPos.x - halfSize + (xi * TOWER_SIZE / (samplePoints - 1));
+                float py = worldPos.y + (yi * TOWER_SIZE / (samplePoints - 1));
+                Vector2 point = new Vector2(px, py);
+
+                boolean inForbidden = false;
+                for (Polygon barrier : barriers) {
+                    if (barrier.contains(point)) {
+                        inForbidden = true;
+                        break;
+                    }
+                }
+                if (!inForbidden && isPointNearPath(point, path, PATH_THRESHOLD)) {
+                    inForbidden = true;
+                }
+
+                if (!inForbidden) {
+                    validPoints++;
+                }
+            }
+        }
+
+        return (float) validPoints / totalPoints >= VALID_THRESHOLD;
+    }
+
+    private boolean isPointNearPath(Vector2 point, Array<Vector2> path, float threshold) {
+        for (int i = 0; i < path.size - 1; i++) {
+            Vector2 a = path.get(i);
+            Vector2 b = path.get(i + 1);
+            float dist = distanceToLineSegment(point, a, b);
+            if (dist <= threshold) return true;
+        }
+        return false;
+    }
+
+    private float distanceToLineSegment(Vector2 p, Vector2 a, Vector2 b) {
+        float dx = b.x - a.x;
+        float dy = b.y - a.y;
+        float lengthSq = dx * dx + dy * dy;
+        if (lengthSq == 0) return p.dst(a);
+
+        float t = ((p.x - a.x) * dx + (p.y - a.y) * dy) / lengthSq;
+        t = Math.max(0, Math.min(1, t));
+
+        float projX = a.x + t * dx;
+        float projY = a.y + t * dy;
+        return p.dst(projX, projY);
+    }
+
     private Tower createTowerFromType(BrainrotTower type, Texture texture, Vector2 position) {
+        Tower tower;
         switch (type) {
             case TUNG_TUNG:
-                return new TowerProjSingle(texture, position,
+                tower = new TowerProjSingle(texture, position,
                     type.getDisplayName(), type.getDamage(), type.getAttackSpeed(),
                     type.getRange(), type.getAttackCooldown(),
                     TOWER_SIZE, TOWER_SIZE, 0);
+                break;
             case BOMBARDILO_CROCODILO:
-                return new TowerProjArea(texture, position,
+                tower = new TowerProjArea(texture, position,
                     type.getDisplayName(), type.getDamage(), type.getAttackSpeed(),
                     type.getRange(), type.getAttackCooldown(),
                     TOWER_SIZE, TOWER_SIZE, 0, type.getExtraFloat());
+                break;
             case NUCLEARO_DINOSAURO:
-                return new TowerArea(texture, position,
+                tower = new TowerArea(texture, position,
                     type.getDisplayName(), type.getDamage(),
                     type.getRange(), type.getAttackCooldown(),
                     TOWER_SIZE, TOWER_SIZE, 0);
+                break;
             case CAPPUCCINO_ASSASSINO:
-                return new TowerCoin(texture, position,
+                tower = new TowerCoin(texture, position,
                     type.getDisplayName(),
                     type.getRange(), type.getAttackCooldown(),
                     TOWER_SIZE, TOWER_SIZE, 0, type.getExtraValue());
+                break;
             case BALLERINA_CAPPUCCINA:
-                return new TowerBoost(texture, position,
+                tower = new TowerBoost(texture, position,
                     type.getDisplayName(),
                     type.getRange(), type.getAttackCooldown(),
                     TOWER_SIZE, TOWER_SIZE, 0, type.getExtraValue());
+                break;
             default:
                 return null;
         }
+        tower.setDescription(type.getDescription());
+        return tower;
     }
 
     private boolean isCursorOverUI() {

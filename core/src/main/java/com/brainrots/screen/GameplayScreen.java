@@ -8,17 +8,24 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
+import com.brainrots.MainUX.ConfirmModal;
 import com.brainrots.MainUX.MainUX;
 import com.brainrots.MainUX.TowerButton;
+import com.brainrots.MainUX.TowerInfoModal;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.engine.LevelManager;
+import com.brainrots.interfaces.ScreenManager;
+import com.brainrots.tower.BrainrotTower;
 
 
 public class GameplayScreen extends GameScreen {
@@ -84,7 +91,22 @@ public class GameplayScreen extends GameScreen {
            }
         }});
 
+        ImageButton speedControlButton = mainUX.getSpeedButton();
+
+        speedControlButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (speedControlButton.isChecked()) {
+                    levelManager.setSpeedMultiplier(2f);
+                } else {
+                    levelManager.setSpeedMultiplier(1f);
+                }
+            }
+        });
+
         stage.addActor(waveControlButton);
+        stage.addActor(speedControlButton);
+        stage.addActor(mainUX.getMenuButton());
         stage.addActor(hpLabel);
         stage.addActor(coinLabel);
         stage.addActor(waveLabel);
@@ -117,6 +139,7 @@ public class GameplayScreen extends GameScreen {
         hpLabel.setText("HP: " + levelManager.getBaseHealth());
         coinLabel.setText("Coins: " + levelManager.getCoins());
         waveLabel.setText("Current wave: " + levelManager.getCurrentWave());
+        mainUX.updateButtonStates(levelManager.getCoins());
 
         mainUX.getWaveButton().setChecked(!levelManager.isWavePaused());
 
@@ -142,7 +165,42 @@ public class GameplayScreen extends GameScreen {
         while (iterator.hasNext()) {
             TowerButton button = iterator.next();
             button.setClickEvent(() -> {
-                levelManager.positionTowerMode(button.getTowerType());
+                if (levelManager.getCoins() >= button.getTowerType().getCost()) {
+                    levelManager.positionTowerMode(button.getTowerType());
+                }
+            });
+        }
+
+        TowerInfoModal infoModal = new TowerInfoModal(uiSkin);
+        mainUX.setTowerInfoModal(infoModal);
+        infoModal.setOnCloseCallback(() -> {});
+        stage.addActor(infoModal);
+
+        ConfirmModal confirmModal = new ConfirmModal(uiSkin, "Leave Level", "Are you sure you want to return to level selection? Progress will be lost.");
+        confirmModal.setOnConfirm(() -> {
+            screenManager.switchScreen(ScreenManager.ScreenType.LEVEL_SELECTION);
+        });
+        confirmModal.setOnCancel(() -> {
+            confirmModal.hide();
+        });
+        stage.addActor(confirmModal);
+
+        mainUX.getMenuButton().addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                confirmModal.show();
+            }
+        });
+
+        Array<ImageButton> infoBtns = mainUX.getInfoButtons();
+        for (int i = 0; i < infoBtns.size && i < mainUX.getTowerButtons().size; i++) {
+            final int idx = i;
+            infoBtns.get(i).addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    BrainrotTower towerType = mainUX.getTowerButtons().get(idx).getTowerType();
+                    mainUX.getTowerInfoModal().showTower(towerType);
+                }
             });
         }
 
@@ -154,6 +212,8 @@ public class GameplayScreen extends GameScreen {
         if (mainUX.getTowerUpgradePanel() != null) {
             stage.addActor(mainUX.getTowerUpgradePanel());
         }
+
+        mainUX.updateButtonStates(levelManager.getCoins());
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
