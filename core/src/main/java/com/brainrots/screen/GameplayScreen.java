@@ -32,6 +32,10 @@ public class GameplayScreen extends GameScreen {
 
     private LevelManager levelManager;
 
+    public LevelManager getLevelManager() {
+        return levelManager;
+    }
+
     private OrthographicCamera main_camera;
 
     private Label hpLabel;

@@ -225,31 +225,31 @@ public class TowerPlacementController {
                 tower = new TowerProjSingle(texture, position,
                     type.getDisplayName(), type.getDamage(), type.getAttackSpeed(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, 0);
+                    TOWER_SIZE, TOWER_SIZE, type);
                 break;
             case BOMBARDILO_CROCODILO:
                 tower = new TowerProjArea(texture, position,
                     type.getDisplayName(), type.getDamage(), type.getAttackSpeed(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, 0, type.getExtraFloat());
+                    TOWER_SIZE, TOWER_SIZE, type, type.getExtraFloat());
                 break;
             case NUCLEARO_DINOSAURO:
                 tower = new TowerArea(texture, position,
                     type.getDisplayName(), type.getDamage(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, 0);
+                    TOWER_SIZE, TOWER_SIZE, type);
                 break;
             case CAPPUCCINO_ASSASSINO:
                 tower = new TowerCoin(texture, position,
                     type.getDisplayName(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, 0, type.getExtraValue());
+                    TOWER_SIZE, TOWER_SIZE, type, type.getExtraValue());
                 break;
             case BALLERINA_CAPPUCCINA:
                 tower = new TowerBoost(texture, position,
                     type.getDisplayName(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, 0, type.getExtraValue());
+                    TOWER_SIZE, TOWER_SIZE, type, type.getExtraValue());
                 break;
             default:
                 return null;

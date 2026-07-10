@@ -6,14 +6,27 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.brainrots.effect.StatusEffect;
 import com.brainrots.entity.GameObject;
 
+/**
+ * Representa um inimigo que percorre um caminho de waypoints.
+ *
+ * Gerencia efeitos de status (queimadura, lentidão, veneno, atordoamento)
+ * através de composição com StatusEffect. O método update() processa
+ * os efeitos ANTES do movimento, garantindo que efeitos como stun
+ * impeçam o deslocamento no mesmo frame em que são aplicados.
+ */
 public class Enemy extends GameObject {
-    
+
     protected int hp;
     protected int MAX_HP;
     protected int speed;
+    protected int originalSpeed;
     protected int rewardCoins;
+    private boolean stunned;
+    private int slowStack;
+    private Array<StatusEffect> activeEffects;
     private Array<Vector2> path;
     private int currentWaypointIndex;
 
@@ -31,9 +44,35 @@ public class Enemy extends GameObject {
         this.rewardCoins = rewardCoins;
         currentWaypointIndex = 1;
         this.speed = speed;
+        this.originalSpeed = speed;
+        this.stunned = false;
+        this.slowStack = 0;
+        this.activeEffects = new Array<>();
     }
 
+    /**
+     * Atualiza posição e processa efeitos de status.
+     *
+     * A ordem é importante:
+     * 1. processEffects() — aplica ticks de DOT, verifica expirações
+     * 2. Se não está atordoado, move-se ao longo do path
+     *
+     * Isso garante que um inimigo atordoado pare imediatamente,
+     * e que um inimigo em chamas tome dano mesmo sem se mover.
+     */
     public void update(float delta) {
+        processEffects(delta);
+        if (!stunned) {
+            move(delta);
+        }
+    }
+
+    /**
+     * Move o inimigo ao longo do caminho de waypoints.
+     * Extraído para método separado para clareza e para permitir
+     * que o stun pule este bloco.
+     */
+    private void move(float delta) {
         if (currentWaypointIndex < path.size) {
             Vector2 target = path.get(currentWaypointIndex);
             float moveStep = speed * delta;
@@ -49,6 +88,65 @@ public class Enemy extends GameObject {
         }
     }
 
+    /**
+     * Processa todos os efeitos de status ativos.
+     *
+     * Itera de trás para frente para permitir remoção segura
+     * durante a iteração. Cada efeito tem seu update() chamado,
+     * que internamente faz tick(), decrementa timer e chama
+     * onExpire() se necessário.
+     */
+    private void processEffects(float delta) {
+        for (int i = activeEffects.size - 1; i >= 0; i--) {
+            StatusEffect effect = activeEffects.get(i);
+            effect.update(this, delta);
+            if (effect.isExpired()) {
+                activeEffects.removeIndex(i);
+            }
+        }
+    }
+
+    /**
+     * Aplica um novo efeito de status ao inimigo.
+     * O efeito é adicionado à lista e seu onApply() é chamado
+     * imediatamente (ex: IceEffect reduz speed, StunEffect trava).
+     *
+     * @param effect efeito a ser aplicado (cópia independente)
+     */
+    public void addEffect(StatusEffect effect) {
+        effect.onApply(this);
+        activeEffects.add(effect);
+    }
+
+    public void setStunned(boolean stunned) {
+        this.stunned = stunned;
+    }
+
+    /**
+     * Aplica um multiplicador de slow à velocidade.
+     * Se já está sob efeito de slow, incrementa slowStack para
+     * garantir que restoreSpeed() só restaure quando o último
+     * IceEffect expirar.
+     */
+    public void applySlow(float factor) {
+        if (slowStack == 0) {
+            this.speed = Math.max(1, Math.round(this.speed * factor));
+        }
+        slowStack++;
+    }
+
+    /**
+     * Restaura a velocidade original. Decrementa slowStack e só
+     * restaura a velocidade quando a pilha chega a zero (ou seja,
+     * quando todos os IceEffects expiraram).
+     */
+    public void restoreSpeed() {
+        slowStack = Math.max(0, slowStack - 1);
+        if (slowStack == 0) {
+            this.speed = originalSpeed;
+        }
+    }
+
     public boolean takeDamage(int damage) {
         hp -= damage;
         return hp <= 0;
@@ -58,20 +156,24 @@ public class Enemy extends GameObject {
         return hp;
     }
 
-    public boolean isDead()
-    {
-        if(hp <= 0)
-            return true;
-        return false;
+    public boolean isDead() {
+        return hp <= 0;
     }
 
-    public int giveCoinOnDeath()
-    {
+    public int giveCoinOnDeath() {
         return this.rewardCoins;
     }
 
-    public void drawHealthBar(ShapeRenderer shapeRenderer)
-    {
+    /**
+     * Verifica se o inimigo ainda está em estado de receber dano
+     * ou efeitos. Útil para o LevelManager evitar processar inimigos
+     * já mortos no mesmo frame.
+     */
+    public boolean isAlive() {
+        return hp > 0;
+    }
+
+    public void drawHealthBar(ShapeRenderer shapeRenderer) {
         float barWidth = width;
         float barHeight = 6f;
 
@@ -86,5 +188,9 @@ public class Enemy extends GameObject {
 
         shapeRenderer.setColor(Color.GREEN);
         shapeRenderer.rect(barX, barY, currentBarWidth, barHeight);
+    }
+
+    public Array<StatusEffect> getActiveEffects() {
+        return activeEffects;
     }
 }

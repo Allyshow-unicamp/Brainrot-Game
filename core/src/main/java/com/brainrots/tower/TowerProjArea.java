@@ -3,6 +3,7 @@ package com.brainrots.tower;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.brainrots.effect.StatusEffect;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
@@ -12,8 +13,8 @@ public class TowerProjArea extends Tower {
     private float aoeRadius;
 
     public TowerProjArea(Texture texture, Vector2 position, String displayName, int damage, int attackSpeed,
-            float range, float attackCooldown, int width, int height, int towerID, float aoeRadius) {
-        super(texture, position, displayName, damage, attackSpeed, range, attackCooldown, width, height, towerID);
+            float range, float attackCooldown, int width, int height, BrainrotTower towerType, float aoeRadius) {
+        super(texture, position, displayName, damage, attackSpeed, range, attackCooldown, width, height, towerType);
         this.aoeRadius = aoeRadius;
     }
 
@@ -24,7 +25,8 @@ public class TowerProjArea extends Tower {
 
         Enemy target = findClosestEnemy(activeEnemies);
         if (target != null) {
-            projectileManager.spawn(new Projectile(projectileTexture, target, this, 75, 75, aoeRadius));
+            StatusEffect effect = createEffect();
+            projectileManager.spawn(new Projectile(projectileTexture, target, this, 75, 75, aoeRadius, effect));
             attack(gameTime);
         }
     }

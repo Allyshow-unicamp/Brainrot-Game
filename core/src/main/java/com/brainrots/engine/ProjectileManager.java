@@ -3,6 +3,7 @@ package com.brainrots.engine;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Array.ArrayIterator;
+import com.brainrots.effect.StatusEffect;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.tower.Projectile;
 
@@ -38,14 +39,23 @@ public class ProjectileManager {
         }
     }
 
+    /**
+     * Aplica dano em área (splash) a todos inimigos próximos ao ponto de impacto,
+     * exceto o alvo primário (que já recebeu dano direto no Projectile.update()).
+     * Também aplica o efeito de status do projétil a cada inimigo atingido.
+     */
     private void applyAreaDamage(Projectile projectile, Array<Enemy> activeEnemies) {
         int damage = projectile.getParent().getTotalDamage();
         float radius = projectile.getAoeRadius();
+        StatusEffect effect = projectile.getEffectPrototype();
 
         for (Enemy enemy : activeEnemies) {
             if (enemy == projectile.getTarget()) continue;
             if (enemy.getPosition().dst(projectile.getPosition()) <= radius) {
                 enemy.takeDamage(damage);
+                if (effect != null) {
+                    enemy.addEffect(effect.copy());
+                }
             }
         }
     }
