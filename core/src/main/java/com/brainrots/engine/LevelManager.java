@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Array.ArrayIterator;
 import com.brainrots.MainUX.MainUX;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
+import com.brainrots.core.GameBalance;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.mode.GameMode;
@@ -29,8 +30,6 @@ import com.brainrots.tower.Tower;
 import com.brainrots.tower.TowerCoin;
 
 public class LevelManager {
-
-    private final int maxHealth = 1000;
 
     private float gameTime;
 
@@ -66,13 +65,13 @@ public class LevelManager {
         this.resourceManager = resourceManager;
         this.screenManager = screenManager;
         map = new Map(mapName, resourceManager);
-        base = new Base(maxHealth, map.getLastPosition());
+        base = new Base(GameBalance.BASE_MAX_HEALTH, map.getLastPosition());
         activeEnemies = new Array<>();
         activeTowers = new Array<>();
         waveManager = new WaveManager(mapName, map.getPath());
         this.stage = stage;
         this.mainUX = mainUX;
-        this.coinManager = new CoinManager(300);
+        this.coinManager = new CoinManager(GameBalance.STARTING_COINS);
         this.projectileManager = new ProjectileManager();
         this.placementController = new TowerPlacementController(gameScreen, stage);
         this.selectedTower = null;
@@ -198,7 +197,7 @@ public class LevelManager {
         GameOutcome outcome = gameMode.evaluate(this, base, waveManager, activeEnemies);
 
         if (outcome == GameOutcome.VICTORY) {
-            int stars = levelStars(base.getHealth(), maxHealth);
+            int stars = levelStars(base.getHealth(), base.getMaxHealth());
             screenManager.endGame(level, true, stars);
         } else if (outcome == GameOutcome.DEFEAT) {
             screenManager.endGame(level, false, 0);
@@ -339,12 +338,9 @@ public class LevelManager {
      */
     private int levelStars(int hp, int maxHp) {
         float ratio = (float) hp / maxHp;
-        if (ratio < 0.25f)
-            return 0;
-        if (ratio < 0.5f)
-            return 1;
-        if (ratio < 0.75f)
-            return 2;
+        if (ratio < GameBalance.STAR_THRESHOLD_0) return 0;
+        if (ratio < GameBalance.STAR_THRESHOLD_1) return 1;
+        if (ratio < GameBalance.STAR_THRESHOLD_2) return 2;
         return 3;
     }
 }

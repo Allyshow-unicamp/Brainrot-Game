@@ -49,7 +49,7 @@ public abstract class Tower extends GameObject {
     public Tower(Texture texture, Vector2 position, String displayName, int damage, int attackSpeed, float range, float attackCooldown,
             int width, int height, BrainrotTower towerType) {
         this.id = UUID.randomUUID().toString();
-        this.textureRegion = new TextureRegion(texture);
+        this.textureRegion = texture != null ? new TextureRegion(texture) : null;
         this.position = position;
         this.width = width;
         this.height = height;

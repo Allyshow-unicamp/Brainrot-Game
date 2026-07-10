@@ -11,14 +11,14 @@
     "name": "Bombardiro Crocodilo",
     "description": "Fires an explosive projectile that damages multiple enemies in an area",
     "behaviorDescription": "Area projectile damage",
-    "price": 200
+    "price": 150
 },
 "nuclearo_dinosauro": {
     "id": "nuclearo_dinosauro",
     "name": "Nuclearo Dinosauro",
     "description": "Deals instant area damage to all enemies within range",
     "behaviorDescription": "Instant area damage",
-    "price": 150
+    "price": 100
 },
 "cappuccino_assassino": {
     "id": "cappuccino_assassino",
@@ -32,6 +32,6 @@
     "name": "Ballerina Cappuccina",
     "description": "Boosts the damage of nearby allied towers",
     "behaviorDescription": "Tower support",
-    "price": 120
+    "price": 100
 }
 }

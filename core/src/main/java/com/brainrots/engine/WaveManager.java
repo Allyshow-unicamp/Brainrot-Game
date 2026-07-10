@@ -68,6 +68,19 @@ public class WaveManager {
     }
 
     /**
+     * Construtor usado apenas para testes (evita dependência de Gdx.files).
+     */
+    public WaveManager(Array<Vector2> path, WaveGenerationStrategy strategy, int maxWaves) {
+        this.currentWave = 0;
+        this.isWaveActive = false;
+        this.activeSpawners = new Array<>();
+        this.path = path;
+        this.pausedWave = true;
+        this.strategy = strategy;
+        this.maxWaves = maxWaves;
+    }
+
+    /**
      * Troca a estratégia de geração de waves em tempo de execução.
      * Usado ao ativar o modo infinito durante o jogo.
      */

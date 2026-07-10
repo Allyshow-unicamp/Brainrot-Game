@@ -32,11 +32,11 @@ public class Enemy extends GameObject {
 
     public Enemy(Array<Vector2> path, Texture texture, int health, int speed, int width, int height, int rewardCoins) {
         this.path = path;
-        if(path != null)
+        if(path != null && path.size > 0)
             this.position = new Vector2(path.get(0));
         else
             this.position = new Vector2(0,0); //Pra criacao do prototipo
-        this.textureRegion = new TextureRegion(texture);
+        this.textureRegion = texture != null ? new TextureRegion(texture) : null;
         this.MAX_HP = health;
         this.hp = health;
         this.width = width;
@@ -188,6 +188,18 @@ public class Enemy extends GameObject {
 
         shapeRenderer.setColor(Color.GREEN);
         shapeRenderer.rect(barX, barY, currentBarWidth, barHeight);
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public int getOriginalSpeed() {
+        return originalSpeed;
+    }
+
+    public boolean isStunned() {
+        return stunned;
     }
 
     public Array<StatusEffect> getActiveEffects() {

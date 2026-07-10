@@ -13,10 +13,10 @@ public class EnemyFactory {
 
     private EnemyFactory() {
         HashMap<String, Spawnable> newMap = new HashMap<>();
-        newMap.put("67_Ball", new EnemyTemplate(Assets.ENEMY_67, 200, 200, 100, 100, 100));
-        newMap.put("6_Ball", new EnemyTemplate(Assets.ENEMY_6, 100, 200, 100, 100, 100));
-        newMap.put("7_Ball", new EnemyTemplate(Assets.ENEMY_7, 50, 300, 100, 100, 100));
-        newMap.put("6_7_Ball", new EnemyTemplate(Assets.ENEMY_6_7, 1000, 100, 100, 100, 100));
+        newMap.put("67_Ball", new EnemyTemplate(Assets.ENEMY_67, 175, 190, 100, 100, 125));
+        newMap.put("6_Ball", new EnemyTemplate(Assets.ENEMY_6, 90, 190, 100, 100, 125));
+        newMap.put("7_Ball", new EnemyTemplate(Assets.ENEMY_7, 45, 280, 100, 100, 125));
+        newMap.put("6_7_Ball", new EnemyTemplate(Assets.ENEMY_6_7, 850, 95, 100, 100, 300));
 
         this.mapOfEnemies = newMap;
     }
