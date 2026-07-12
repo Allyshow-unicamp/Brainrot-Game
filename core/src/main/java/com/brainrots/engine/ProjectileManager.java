@@ -20,24 +20,26 @@ public class ProjectileManager {
     }
 
     public void update(float delta, Array<Enemy> activeEnemies) {
-        ArrayIterator<Projectile> projIterator = activeProjectiles.iterator();
+    ArrayIterator<Projectile> projIterator = activeProjectiles.iterator();
 
-        while (projIterator.hasNext()) {
-            Projectile projectile = projIterator.next();
+    while (projIterator.hasNext()) {
+        Projectile projectile = projIterator.next();
 
-            projectile.update(delta);
+        projectile.update(delta);
 
-            if (projectile.reachedTarget()) {
-                if (projectile.isAreaOfEffect()) {
-                    applyAreaDamage(projectile, activeEnemies);
-                }
-                activeProjectiles.removeValue(projectile, false);
-            } else if (!activeEnemies.contains(projectile.getTarget(), true) ||
-             projectile.getPosition().dst(projectile.getParent().getPosition()) > projectile.getParent().getRange()) {
-                activeProjectiles.removeValue(projectile, false);
+        if (projectile.reachedTarget()) {
+            if (projectile.isAreaOfEffect()) {
+                applyAreaDamage(projectile, activeEnemies);
             }
+            projIterator.remove(); 
+        } 
+
+        //Alvo morreu
+        else if (!activeEnemies.contains(projectile.getTarget(), true)) {
+            projIterator.remove();
         }
     }
+}
 
     /**
      * Aplica dano em área (splash) a todos inimigos próximos ao ponto de impacto,

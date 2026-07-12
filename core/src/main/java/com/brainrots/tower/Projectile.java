@@ -52,23 +52,26 @@ public class Projectile extends GameObject {
     }
 
     public void update(float deltaTime) {
-        if (!reachedTarget && target != null) {
-            targetPosition.set(target.getPosition());
+    if (reachedTarget || target == null) return;
 
-            mathVector.set(targetPosition).sub(position).nor();
+    targetPosition.set(target.getPosition());
+    mathVector.set(targetPosition).sub(position);
+    float distanceToTarget = mathVector.len();
+    
+    float movementThisFrame = parent.getAttackSpeed() * deltaTime;
 
-            position.add(mathVector.scl(parent.getAttackSpeed() * deltaTime));
-
-            if (position.dst(targetPosition) < PROJECTILE_HIT_DISTANCE) {
-                target.takeDamage(parent.getTotalDamage());
-                // Aplica o efeito de status ao inimigo, clonando o protótipo
-                if (effectPrototype != null) {
-                    target.addEffect(effectPrototype.copy());
-                }
-                reachedTarget = true;
-            }
+    if (movementThisFrame >= distanceToTarget || distanceToTarget < PROJECTILE_HIT_DISTANCE) {
+        position.set(targetPosition);
+        target.takeDamage(parent.getTotalDamage());
+        if (effectPrototype != null) {
+            target.addEffect(effectPrototype.copy());
         }
+        reachedTarget = true;
+    } else {
+        mathVector.nor();
+        position.add(mathVector.scl(movementThisFrame));
     }
+}
 
     public boolean reachedTarget() {
         return reachedTarget;
