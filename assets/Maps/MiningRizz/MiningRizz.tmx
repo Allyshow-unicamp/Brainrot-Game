@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="1920" height="1080" tilewidth="1" tileheight="1" infinite="0" nextlayerid="5" nextobjectid="3">
+ <imagelayer id="2" name="Background">
+  <image source="MiningRizz.png" width="1920" height="1080"/>
+ </imagelayer>
+ <objectgroup id="3" name="Path">
+  <object id="1" x="3.0303" y="954.545">
+   <polyline points="0,0 1287.88,0 1400,-90.9091 1403.03,-366.667 1300,-484.848 509.091,-487.879 409.091,-515.152 372.727,-596.97 409.091,-693.939 518.182,-748.485 1915.15,-745.455"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Barrier">
+  <object id="2" x="3.0303" y="869.697">
+   <polygon points="0,0 1266.67,3.0303 1327.27,-30.303 1324.24,-293.939 1245.45,-330.303 493.939,-330.303 387.879,-375.758 327.273,-457.576 312.121,-536.364 351.515,-630.303 506.061,-733.333 1912.12,-730.303 1912.12,-590.909 518.182,-587.879 463.636,-542.424 487.879,-484.848 533.333,-475.758 1284.85,-469.697 1418.18,-396.97 1472.73,-290.909 1469.7,-39.3939 1421.21,66.6667 1293.94,148.485 0,139.394"/>
+  </object>
+ </objectgroup>
+</map>

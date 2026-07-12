@@ -34,7 +34,10 @@ public class GameResourceManager {
 
         /* MAPS */
         assetManager.load(Assets.MAP_67_HILLS_BG, Texture.class);
-        assetManager.load(Assets.NORMAL_COIN,Texture.class);
+        assetManager.load(Assets.MAP_SIGMA_VOLCANO_BG, Texture.class);
+        assetManager.load(Assets.MAP_WINTER_AURA_BG, Texture.class);
+        assetManager.load(Assets.MAP_MINING_RIZZ_BG, Texture.class);
+        assetManager.load(Assets.MAP_BETA_JUNGLE_BG, Texture.class);
 
         /* ENEMIES */
         assetManager.load(Assets.ENEMY_67, Texture.class);
@@ -65,6 +68,7 @@ public class GameResourceManager {
         assetManager.load(Assets.PAUSE_BUTTON, Texture.class);
         assetManager.load(Assets.UI_SKIN, Skin.class);
         assetManager.load(Assets.UI_FONT, BitmapFont.class);
+        assetManager.load(Assets.NORMAL_COIN,Texture.class);
 
         assetManager.finishLoading();
     }

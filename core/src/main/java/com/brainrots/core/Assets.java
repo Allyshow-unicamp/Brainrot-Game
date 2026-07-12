@@ -10,6 +10,23 @@ public final class Assets {
     public static final String MAP_67_HILLS_BG = "Maps/67Hills/67Hills.png";
     public static final String MAP_67_HILLS_ID = "67Hills";
 
+    public static final String MAP_SIGMA_VOLCANO_TMX = "Maps/SigmaVolcano/SigmaVolcano.tmx";
+    public static final String MAP_SIGMA_VOLCANO_BG = "Maps/SigmaVolcano/SigmaVolcano.png";
+    public static final String MAP_SIGMA_VOLCANO_ID = "SigmaVolcano";
+
+    public static final String MAP_MINING_RIZZ_TMX = "Maps/MiningRizz/MiningRizz.tmx";
+    public static final String MAP_MINING_RIZZ_BG = "Maps/MiningRizz/MiningRizz.png";
+    public static final String MAP_MINING_RIZZ_ID = "MiningRizz";
+
+    public static final String MAP_BETA_JUNGLE_TMX = "Maps/BetaJungle/BetaJungle.tmx";
+    public static final String MAP_BETA_JUNGLE_BG = "Maps/BetaJungle/BetaJungle.png";
+    public static final String MAP_BETA_JUNGLE_ID = "BetaJungle";
+
+    public static final String MAP_WINTER_AURA_TMX = "Maps/WinterAura/WinterAura.tmx";
+    public static final String MAP_WINTER_AURA_BG = "Maps/WinterAura/WinterAura.png";
+    public static final String MAP_WINTER_AURA_ID = "WinterAura";
+    
+
     /* ENEMIES */
     public static final String ENEMY_67 = "Enemies/67_Ball.png";
     public static final String ENEMY_6 = "Enemies/6_Ball.png";

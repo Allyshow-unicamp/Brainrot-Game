@@ -25,6 +25,22 @@ public class Map {
                 tiledMap = new TmxMapLoader().load(Assets.MAP_67_HILLS_TMX);
                 mapBackground = resourceManager.getTexture(Assets.MAP_67_HILLS_BG);
                 break;
+            case Assets.MAP_SIGMA_VOLCANO_ID:
+                tiledMap = new TmxMapLoader().load(Assets.MAP_SIGMA_VOLCANO_TMX);
+                mapBackground = resourceManager.getTexture(Assets.MAP_SIGMA_VOLCANO_BG);
+                break;
+            case Assets.MAP_MINING_RIZZ_ID:
+                tiledMap = new TmxMapLoader().load(Assets.MAP_MINING_RIZZ_TMX);
+                mapBackground = resourceManager.getTexture(Assets.MAP_MINING_RIZZ_BG);
+                break;
+            case Assets.MAP_BETA_JUNGLE_ID:
+                tiledMap = new TmxMapLoader().load(Assets.MAP_BETA_JUNGLE_TMX);
+                mapBackground = resourceManager.getTexture(Assets.MAP_BETA_JUNGLE_BG);
+                break;
+            case Assets.MAP_WINTER_AURA_ID:
+                tiledMap = new TmxMapLoader().load(Assets.MAP_WINTER_AURA_TMX);
+                mapBackground = resourceManager.getTexture(Assets.MAP_WINTER_AURA_BG);
+                break;
             default:
                 System.err.println("Mapa não existe");
                 return;

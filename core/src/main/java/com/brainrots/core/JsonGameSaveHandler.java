@@ -129,7 +129,11 @@ public class JsonGameSaveHandler implements GameSaveHandler {
         }
 
         HashMap<String, String>  defaultMap = new HashMap<>();
-        defaultMap.put(1 + "", "67Hills");
+        defaultMap.put(1 + "", Assets.MAP_67_HILLS_ID);
+        defaultMap.put(2 + "", Assets.MAP_WINTER_AURA_ID);
+        defaultMap.put(3 + "", Assets.MAP_SIGMA_VOLCANO_ID);
+        defaultMap.put(4 + "", Assets.MAP_MINING_RIZZ_ID);
+        defaultMap.put(5 + "", Assets.MAP_BETA_JUNGLE_ID);
 
         saveLevelData(defaultMap);
 
