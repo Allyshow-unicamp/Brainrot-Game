@@ -12,9 +12,9 @@ public class TowerProjArea extends Tower {
 
     private float aoeRadius;
 
-    public TowerProjArea(Texture texture, Vector2 position, String displayName, int damage, int attackSpeed,
+    public TowerProjArea(Texture texture,Texture synergyTexture ,Vector2 position, String displayName, int damage, int attackSpeed,
             float range, float attackCooldown, int width, int height, BrainrotTower towerType, float aoeRadius) {
-        super(texture, position, displayName, damage, attackSpeed, range, attackCooldown, width, height, towerType);
+        super(texture, synergyTexture,position, displayName, damage, attackSpeed, range, attackCooldown, width, height, towerType);
         this.aoeRadius = aoeRadius;
     }
 

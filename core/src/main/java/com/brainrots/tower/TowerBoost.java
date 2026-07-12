@@ -12,9 +12,9 @@ public class TowerBoost extends Tower {
 
     private int boostAmount;
 
-    public TowerBoost(Texture texture, Vector2 position, String displayName,
+    public TowerBoost(Texture texture,Texture synergyTexture ,Vector2 position, String displayName,
             float range, float attackCooldown, int width, int height, BrainrotTower towerType, int boostAmount) {
-        super(texture, position, displayName, 0, 0, range, attackCooldown, width, height, towerType);
+        super(texture, synergyTexture,position, displayName, 0, 0, range, attackCooldown, width, height, towerType);
         this.boostAmount = boostAmount;
     }
 

@@ -66,20 +66,22 @@ public class SynergyManager {
             boolean wasActive = activeRules.contains(rule);
             boolean isActive = rule.isActivated(towers);
 
-            if (isActive && !wasActive) {
-                // Transição inativo → ativo: aplicar boost em todas
+            if (isActive) {
+                // Regra ativa (nova ou já ativa): garantir que todas as torres
+                // elegíveis recebam o boost (cobre torres colocadas depois).
                 for (Tower tower : towers) {
                     rule.apply(tower);
                 }
-                activeRules.add(rule);
-            } else if (!isActive && wasActive) {
+                if (!wasActive) {
+                    activeRules.add(rule);
+                }
+            } else if (wasActive) {
                 // Transição ativo → inativo: remover boost de todas
                 for (Tower tower : towers) {
                     rule.remove(tower);
                 }
                 activeRules.remove(rule);
             }
-            // isActive == wasActive: não faz nada (idempotente)
         }
     }
 

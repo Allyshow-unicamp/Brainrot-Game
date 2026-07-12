@@ -35,7 +35,8 @@ public class TowerUpgradePanel extends Table {
     private TextButton rangeBtn;
     private TextButton cooldownBtn;
     private ImageButton closeButton;
-
+    private boolean sellRequest = false;
+    private Label sellPrice;
     private Texture closeTexture;
     private Runnable onCloseCallback;
 
@@ -45,6 +46,26 @@ public class TowerUpgradePanel extends Table {
         setVisible(false);
         createCloseTexture();
         buildLayout();
+    }
+
+    public boolean isSellRequested() 
+    {
+        return sellRequest;
+    }
+
+    public void clearSellRequest() 
+    {
+        sellRequest = false;
+    }
+
+    private Drawable createRedDrawable() 
+    {
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(0.8f, 0.1f, 0.1f, 1f); 
+        pixmap.fill();
+        Texture tex = new Texture(pixmap);
+        pixmap.dispose();
+        return new TextureRegionDrawable(new TextureRegion(tex));
     }
 
     private void createCloseTexture() {
@@ -100,6 +121,7 @@ public class TowerUpgradePanel extends Table {
                 if (coinManager.canAfford(cost)) {
                     currentTower.upgradeDamage();
                     coinManager.subtractCoins(cost);
+                    currentTower.addValueSpent(cost);
                     refresh();
                 }
             }
@@ -111,6 +133,7 @@ public class TowerUpgradePanel extends Table {
                 if (coinManager.canAfford(cost)) {
                     currentTower.upgradeRange();
                     coinManager.subtractCoins(cost);
+                    currentTower.addValueSpent(cost);
                     refresh();
                 }
             }
@@ -119,9 +142,11 @@ public class TowerUpgradePanel extends Table {
         setupButton(cooldownBtn, () -> {
             if (currentTower != null) {
                 int cost = currentTower.getCooldownUpgradeCost();
-                if (coinManager.canAfford(cost)) {
+                if (coinManager.canAfford(cost)) 
+                {
                     currentTower.upgradeCooldown();
                     coinManager.subtractCoins(cost);
+                    currentTower.addValueSpent(cost);
                     refresh();
                 }
             }
@@ -141,7 +166,36 @@ public class TowerUpgradePanel extends Table {
         row();
         add(cooldownBtn).fillX().padTop(5).padLeft(5).padRight(5);
         row();
+        createSellButtonSection(btnStyle, new Label.LabelStyle(descFont, Color.GOLD));
     }
+
+    private void createSellButtonSection(TextButton.TextButtonStyle baseBtnStyle, Label.LabelStyle priceStyle) {
+   
+    TextButton.TextButtonStyle sellBtnStyle = new TextButton.TextButtonStyle(baseBtnStyle);
+    sellBtnStyle.up = createRedDrawable();
+    sellBtnStyle.fontColor = Color.WHITE;
+
+    TextButton sellBtn = new TextButton("Vender", sellBtnStyle);
+    sellPrice = new Label("", priceStyle);
+    sellPrice.setColor(Color.GOLD); 
+    sellBtn.addListener(new ClickListener() {
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            if (currentTower != null) {
+                coinManager.addCoins(currentTower.getValueSpent());
+                sellRequest = true; 
+            }
+        }
+    });
+
+    Table sellContainer = new Table();
+    sellContainer.defaults().pad(4);
+    sellContainer.add(sellBtn).width(90).height(35);
+    sellContainer.add(sellPrice).left();
+
+    row();
+    add(sellContainer).fillX().padTop(25).bottom().center();
+}
 
     private void setupButton(TextButton button, Runnable action) {
         button.addListener(new ChangeListener() {
@@ -198,6 +252,7 @@ public class TowerUpgradePanel extends Table {
         damageBtn.setDisabled(!coinManager.canAfford(currentTower.getDamageUpgradeCost()));
         rangeBtn.setDisabled(!coinManager.canAfford(currentTower.getRangeUpgradeCost()));
         cooldownBtn.setDisabled(!coinManager.canAfford(currentTower.getCooldownUpgradeCost()));
+        sellPrice.setText("$" + currentTower.getValueSpent());
     }
 
     public void resizePanel(float width, float height) {

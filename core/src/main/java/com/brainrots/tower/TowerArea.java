@@ -10,9 +10,9 @@ import com.brainrots.engine.ProjectileManager;
 
 public class TowerArea extends Tower {
 
-    public TowerArea(Texture texture, Vector2 position, String displayName, int damage,
+    public TowerArea(Texture texture, Texture synergyTexture,Vector2 position, String displayName, int damage,
             float range, float attackCooldown, int width, int height, BrainrotTower towerType) {
-        super(texture, position, displayName, damage, 0, range, attackCooldown, width, height, towerType);
+        super(texture, synergyTexture,position, displayName, damage, 0, range, attackCooldown, width, height, towerType);
     }
 
     @Override

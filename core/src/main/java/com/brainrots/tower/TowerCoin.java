@@ -12,9 +12,9 @@ public class TowerCoin extends Tower {
 
     private int coinsPerTower;
 
-    public TowerCoin(Texture texture, Vector2 position, String displayName,
+    public TowerCoin(Texture texture, Texture synergyTexture,Vector2 position, String displayName,
             float range, float attackCooldown, int width, int height, BrainrotTower towerType, int coinsPerTower) {
-        super(texture, position, displayName, 0, 0, range, attackCooldown, width, height, towerType);
+        super(texture,synergyTexture ,position, displayName, 0, 0, range, attackCooldown, width, height, towerType);
         this.coinsPerTower = coinsPerTower;
     }
 

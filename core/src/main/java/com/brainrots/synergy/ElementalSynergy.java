@@ -62,6 +62,7 @@ public class ElementalSynergy implements SynergyRule {
     public void apply(Tower tower) {
         if (tower.getSynergyGroup() == group) {
             tower.addSynergyBoost(boost);
+            tower.synergyTextureSwitch();
         }
     }
 
@@ -72,6 +73,7 @@ public class ElementalSynergy implements SynergyRule {
     public void remove(Tower tower) {
         if (tower.getSynergyGroup() == group) {
             tower.removeSynergyBoost(boost);
+            tower.resetTexture();
         }
     }
 

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Array.ArrayIterator;
 import com.brainrots.MainUX.MainUX;
+import com.brainrots.MainUX.TowerUpgradePanel;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameBalance;
@@ -206,8 +207,25 @@ public class LevelManager {
         placementController.update(map.getBarrier(), map.getPath(), activeTowers, coinManager, mainUX);
 
         if (mainUX.isUpgradePanelOpen()) {
-            mainUX.getTowerUpgradePanel().refresh();
+            upgradePanelHandler();
         }
+    }
+
+    private void upgradePanelHandler()
+    {
+        TowerUpgradePanel panel = mainUX.getTowerUpgradePanel();
+        if (panel.isSellRequested())
+        {
+            Tower towerToSell = panel.getSelectedTower();
+            activeTowers.removeValue(towerToSell, true);
+            
+            panel.clearSellRequest();
+            clearSelectedTower(); 
+        } 
+        else 
+        {
+            panel.refresh();
+        }   
     }
 
     public Tower getSelectedTower() {

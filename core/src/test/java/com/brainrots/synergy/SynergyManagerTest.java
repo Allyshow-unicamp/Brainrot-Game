@@ -126,7 +126,7 @@ class SynergyManagerTest {
     private Array<com.brainrots.tower.Tower> convert(Array<TowerInfo> infos) {
         Array<com.brainrots.tower.Tower> towers = new Array<>();
         for (TowerInfo info : infos) {
-            towers.add(new com.brainrots.tower.Tower(null, null, "test", 0, 0, 0f, 0f, 0, 0, null) {
+            towers.add(new com.brainrots.tower.Tower(null,null ,null, "test", 0, 0, 0f, 0f, 0, 0, null) {
                 @Override
                 public void update(float gt, Array<com.brainrots.enemy.Enemy> ae,
                                    Array<com.brainrots.tower.Tower> at,

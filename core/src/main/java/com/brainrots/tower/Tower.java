@@ -22,6 +22,9 @@ public abstract class Tower extends GameObject {
     private String id;
     private String displayName;
     private String description;
+    private TextureRegion textureRegion;
+    protected Texture synergyTexture;
+    private Texture originalTexture;
     protected int damage;
     protected int attackSpeed;
     protected float range;
@@ -30,7 +33,7 @@ public abstract class Tower extends GameObject {
     protected int towerID;
     protected int bonusDamage;
     protected BrainrotTower towerType;
-
+    protected int valueSpent;
     protected int damageUpgradeLevel;
     protected int rangeUpgradeLevel;
     protected int cooldownUpgradeLevel;
@@ -46,10 +49,12 @@ public abstract class Tower extends GameObject {
      * Construtor completo que agora recebe o BrainrotTower em vez de apenas
      * um int towerID, permitindo acesso ao grupo de sinergia e efeito associado.
      */
-    public Tower(Texture texture, Vector2 position, String displayName, int damage, int attackSpeed, float range, float attackCooldown,
+    public Tower(Texture texture, Texture synergyTexture,Vector2 position, String displayName, int damage, int attackSpeed, float range, float attackCooldown,
             int width, int height, BrainrotTower towerType) {
         this.id = UUID.randomUUID().toString();
         this.textureRegion = texture != null ? new TextureRegion(texture) : null;
+        this.synergyTexture = synergyTexture;
+        this.originalTexture = texture;
         this.position = position;
         this.width = width;
         this.height = height;
@@ -65,6 +70,7 @@ public abstract class Tower extends GameObject {
         this.rangeUpgradeLevel = 0;
         this.cooldownUpgradeLevel = 0;
         this.bonusDamage = 0;
+        this.valueSpent = 0;
         this.description = "";
         this.activeSynergyBoosts = new ArrayList<>();
     }
@@ -77,6 +83,16 @@ public abstract class Tower extends GameObject {
         float x = position.x - width / 2f;
         float y = position.y;
         batch.draw(textureRegion, x, y, width, height);
+    }
+
+    public void addValueSpent(int amount) 
+    {
+        this.valueSpent += amount;
+    }
+
+    public int getValueSpent() 
+    {
+        return valueSpent;
     }
 
     public void attack(float gameTime) {
@@ -94,6 +110,26 @@ public abstract class Tower extends GameObject {
             multiplier *= boost.getCooldownMultiplier();
         }
         return attackCooldown * multiplier;
+    }
+
+    /**
+     * Mudar para textura de sinergia
+     */
+    public void synergyTextureSwitch()
+    {
+        if (synergyTexture != null && textureRegion.getTexture() != synergyTexture) {
+            textureRegion.setTexture(synergyTexture);
+        }
+    }
+
+    /**
+     * Restaura a textura original da torre (quando a sinergia termina).
+     */
+    public void resetTexture()
+    {
+        if (originalTexture != null && textureRegion.getTexture() != originalTexture) {
+            textureRegion.setTexture(originalTexture);
+        }
     }
 
     /**
