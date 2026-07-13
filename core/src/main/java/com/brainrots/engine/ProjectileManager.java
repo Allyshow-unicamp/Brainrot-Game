@@ -3,6 +3,7 @@ package com.brainrots.engine;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Array.ArrayIterator;
+import com.brainrots.effect.StatusEffect;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.tower.Projectile;
 
@@ -19,33 +20,44 @@ public class ProjectileManager {
     }
 
     public void update(float delta, Array<Enemy> activeEnemies) {
-        ArrayIterator<Projectile> projIterator = activeProjectiles.iterator();
+    ArrayIterator<Projectile> projIterator = activeProjectiles.iterator();
 
-        while (projIterator.hasNext()) {
-            Projectile projectile = projIterator.next();
+    while (projIterator.hasNext()) {
+        Projectile projectile = projIterator.next();
 
-            projectile.update(delta);
+        projectile.update(delta);
 
-            if (projectile.reachedTarget()) {
-                if (projectile.isAreaOfEffect()) {
-                    applyAreaDamage(projectile, activeEnemies);
-                }
-                activeProjectiles.removeValue(projectile, false);
-            } else if (!activeEnemies.contains(projectile.getTarget(), true) ||
-             projectile.getPosition().dst(projectile.getParent().getPosition()) > projectile.getParent().getRange()) {
-                activeProjectiles.removeValue(projectile, false);
+        if (projectile.reachedTarget()) {
+            if (projectile.isAreaOfEffect()) {
+                applyAreaDamage(projectile, activeEnemies);
             }
+            projIterator.remove(); 
+        } 
+
+        //Alvo morreu
+        else if (!activeEnemies.contains(projectile.getTarget(), true)) {
+            projIterator.remove();
         }
     }
+}
 
+    /**
+     * Aplica dano em área (splash) a todos inimigos próximos ao ponto de impacto,
+     * exceto o alvo primário (que já recebeu dano direto no Projectile.update()).
+     * Também aplica o efeito de status do projétil a cada inimigo atingido.
+     */
     private void applyAreaDamage(Projectile projectile, Array<Enemy> activeEnemies) {
         int damage = projectile.getParent().getTotalDamage();
         float radius = projectile.getAoeRadius();
+        StatusEffect effect = projectile.getEffectPrototype();
 
         for (Enemy enemy : activeEnemies) {
             if (enemy == projectile.getTarget()) continue;
             if (enemy.getPosition().dst(projectile.getPosition()) <= radius) {
                 enemy.takeDamage(damage);
+                if (effect != null) {
+                    enemy.addEffect(effect.copy());
+                }
             }
         }
     }

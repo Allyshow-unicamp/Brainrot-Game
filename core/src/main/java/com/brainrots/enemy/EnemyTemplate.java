@@ -27,4 +27,8 @@ public class EnemyTemplate implements Spawnable {
         Texture texture = GameResourceManager.getGameResourceManager().getTexture(texturePath);
         return new Enemy(path, texture, health, speed, width, height, rewardCoins);
     }
+
+    public int getHealth() { return health; }
+    public int getSpeed() { return speed; }
+    public int getRewardCoins() { return rewardCoins; }
 }

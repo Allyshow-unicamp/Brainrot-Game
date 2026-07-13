@@ -5,11 +5,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.brainrots.effect.StatusEffect;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
 import com.brainrots.entity.GameObject;
+import com.brainrots.synergy.SynergyBoost;
+import com.brainrots.synergy.SynergyGroup;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class Tower extends GameObject {
@@ -17,6 +22,9 @@ public abstract class Tower extends GameObject {
     private String id;
     private String displayName;
     private String description;
+    private TextureRegion textureRegion;
+    protected Texture synergyTexture;
+    private Texture originalTexture;
     protected int damage;
     protected int attackSpeed;
     protected float range;
@@ -24,20 +32,29 @@ public abstract class Tower extends GameObject {
     private float lastAttackTime;
     protected int towerID;
     protected int bonusDamage;
-
+    protected BrainrotTower towerType;
+    protected int valueSpent;
     protected int damageUpgradeLevel;
     protected int rangeUpgradeLevel;
     protected int cooldownUpgradeLevel;
+
+    private List<SynergyBoost> activeSynergyBoosts;
 
     private static final int BASE_DAMAGE_COST = 50;
     private static final int BASE_RANGE_COST = 40;
     private static final int BASE_COOLDOWN_COST = 60;
     private static final float COST_MULTIPLIER = 2f;
 
-    public Tower(Texture texture, Vector2 position, String displayName, int damage, int attackSpeed, float range, float attackCooldown,
-            int width, int height, int towerID) {
+    /**
+     * Construtor completo que agora recebe o BrainrotTower em vez de apenas
+     * um int towerID, permitindo acesso ao grupo de sinergia e efeito associado.
+     */
+    public Tower(Texture texture, Texture synergyTexture,Vector2 position, String displayName, int damage, int attackSpeed, float range, float attackCooldown,
+            int width, int height, BrainrotTower towerType) {
         this.id = UUID.randomUUID().toString();
-        this.textureRegion = new TextureRegion(texture);
+        this.textureRegion = texture != null ? new TextureRegion(texture) : null;
+        this.synergyTexture = synergyTexture;
+        this.originalTexture = texture;
         this.position = position;
         this.width = width;
         this.height = height;
@@ -47,12 +64,15 @@ public abstract class Tower extends GameObject {
         this.range = range;
         this.attackCooldown = attackCooldown;
         this.lastAttackTime = 0;
-        this.towerID = towerID;
+        this.towerType = towerType;
+        this.towerID = towerType != null ? towerType.ordinal() : 0;
         this.damageUpgradeLevel = 0;
         this.rangeUpgradeLevel = 0;
         this.cooldownUpgradeLevel = 0;
         this.bonusDamage = 0;
+        this.valueSpent = 0;
         this.description = "";
+        this.activeSynergyBoosts = new ArrayList<>();
     }
 
     public abstract void update(float gameTime, Array<Enemy> activeEnemies, Array<Tower> activeTowers,
@@ -65,6 +85,16 @@ public abstract class Tower extends GameObject {
         batch.draw(textureRegion, x, y, width, height);
     }
 
+    public void addValueSpent(int amount) 
+    {
+        this.valueSpent += amount;
+    }
+
+    public int getValueSpent() 
+    {
+        return valueSpent;
+    }
+
     public void attack(float gameTime) {
         lastAttackTime = gameTime;
     }
@@ -74,11 +104,50 @@ public abstract class Tower extends GameObject {
     }
 
     public float getAttackCooldown() {
-        return attackCooldown;
+        // Aplica multiplicador de cooldown das sinergias ativas
+        float multiplier = 1f;
+        for (SynergyBoost boost : activeSynergyBoosts) {
+            multiplier *= boost.getCooldownMultiplier();
+        }
+        return attackCooldown * multiplier;
     }
 
+    /**
+     * Mudar para textura de sinergia
+     */
+    public void synergyTextureSwitch()
+    {
+        if (synergyTexture != null && textureRegion.getTexture() != synergyTexture) {
+            textureRegion.setTexture(synergyTexture);
+        }
+    }
+
+    /**
+     * Restaura a textura original da torre (quando a sinergia termina).
+     */
+    public void resetTexture()
+    {
+        if (originalTexture != null && textureRegion.getTexture() != originalTexture) {
+            textureRegion.setTexture(originalTexture);
+        }
+    }
+
+    /**
+     * Calcula o dano total incluindo:
+     * - Dano base da torre (damage)
+     * - Bônus de upgrades e TowerBoost (bonusDamage)
+     * - Multiplicadores de sinergias ativas
+     *
+     * Os multiplicadores de sinergia são compostos (multiplicados entre si),
+     * permitindo que múltiplas sinergias stack sem conflito.
+     */
     public int getTotalDamage() {
-        return damage + bonusDamage;
+        float base = damage + bonusDamage;
+        float multiplier = 1f;
+        for (SynergyBoost boost : activeSynergyBoosts) {
+            multiplier *= boost.getDamageMultiplier();
+        }
+        return Math.round(base * multiplier);
     }
 
     public void addBonusDamage(int amount) {
@@ -97,8 +166,16 @@ public abstract class Tower extends GameObject {
         return attackSpeed;
     }
 
+    /**
+     * Retorna o alcance incluindo multiplicadores de sinergia.
+     */
     public float getRange() {
-        return range;
+        float baseRange = range;
+        float multiplier = 1f;
+        for (SynergyBoost boost : activeSynergyBoosts) {
+            multiplier *= boost.getRangeMultiplier();
+        }
+        return baseRange * multiplier;
     }
 
     public void setPosition(Vector2 newPosition) {
@@ -166,5 +243,46 @@ public abstract class Tower extends GameObject {
     public void upgradeCooldown() {
         this.attackCooldown = Math.max(0.1f, this.attackCooldown * 0.85f);
         this.cooldownUpgradeLevel++;
+    }
+
+    // ==================== EFEITOS ====================
+
+    /**
+     * Cria uma cópia do efeito de status que esta torre aplica.
+     * Por padrão, delega para BrainrotTower.createEffectPrototype().
+     * Torres que não causam dano (TowerCoin, TowerBoost) devem sobrescrever
+     * retornando null.
+     */
+    public StatusEffect createEffect() {
+        return towerType != null ? towerType.createEffectPrototype() : null;
+    }
+
+    // ==================== SINERGIAS ====================
+
+    public SynergyGroup getSynergyGroup() {
+        return towerType != null ? towerType.getSynergyGroup() : SynergyGroup.PHYSICAL;
+    }
+
+    /**
+     * Adiciona um boost de sinergia a esta torre.
+     * Chamado pelo SynergyManager quando uma sinergia é ativada.
+     * Os boosts são acumulativos (multiplicativos entre si).
+     */
+    public void addSynergyBoost(SynergyBoost boost) {
+        if (!activeSynergyBoosts.contains(boost)) {
+            activeSynergyBoosts.add(boost);
+        }
+    }
+
+    /**
+     * Remove um boost de sinergia.
+     * Chamado pelo SynergyManager quando uma sinergia é desativada.
+     */
+    public void removeSynergyBoost(SynergyBoost boost) {
+        activeSynergyBoosts.remove(boost);
+    }
+
+    public BrainrotTower getTowerType() {
+        return towerType;
     }
 }

@@ -60,6 +60,13 @@ public class GameResourceManager {
         assetManager.load(Assets.TOWER_CAPPUCCINA, Texture.class);
         assetManager.load(Assets.TOWER_BOMBARDILO_CROCODILO, Texture.class);
 
+        /*Synergy */
+        assetManager.load(Assets.TOWER_BALLERINA, Texture.class);
+        assetManager.load(Assets.TUNG_SYNERGY,Texture.class);
+        assetManager.load(Assets.NUCLEARO_SYNERGY,Texture.class);
+        assetManager.load(Assets.CAPPUCCINO_SYNERGY,Texture.class);
+        assetManager.load(Assets.BOMBARDILO_SYNERGY,Texture.class);
+
         /* SOUNDS */
         assetManager.load(Assets.MUSIC_GAME, Music.class);
         

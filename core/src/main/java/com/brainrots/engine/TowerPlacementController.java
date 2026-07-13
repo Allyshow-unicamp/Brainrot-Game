@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.MainUX.MainUX;
+import com.brainrots.core.GameResourceManager;
 import com.brainrots.tower.BrainrotTower;
 import com.brainrots.tower.Tower;
 import com.brainrots.tower.TowerArea;
@@ -127,6 +128,12 @@ public class TowerPlacementController {
             Gdx.input.isButtonPressed(Input.Buttons.RIGHT);
         boolean dragEnd = isDragging && wasMousePressed && !isMousePressed;
 
+        if(rightClick)
+        {
+            cancelPlacement();
+            return;
+        }
+        
         if (!leftClick && !rightClick && !dragEnd) return;
 
         if (isCursorOverUI()) return;
@@ -219,37 +226,42 @@ public class TowerPlacementController {
     }
 
     private Tower createTowerFromType(BrainrotTower type, Texture texture, Vector2 position) {
+        Texture synergyTexture = null;
+        if (type.getSynergyTexture() != null) {
+            synergyTexture = GameResourceManager.getGameResourceManager().getTexture(type.getSynergyTexture());
+        }
+
         Tower tower;
         switch (type) {
             case TUNG_TUNG:
-                tower = new TowerProjSingle(texture, position,
+                tower = new TowerProjSingle(texture,synergyTexture ,position,
                     type.getDisplayName(), type.getDamage(), type.getAttackSpeed(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, 0);
+                    TOWER_SIZE, TOWER_SIZE, type);
                 break;
             case BOMBARDILO_CROCODILO:
-                tower = new TowerProjArea(texture, position,
+                tower = new TowerProjArea(texture,synergyTexture ,position,
                     type.getDisplayName(), type.getDamage(), type.getAttackSpeed(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, 0, type.getExtraFloat());
+                    TOWER_SIZE, TOWER_SIZE, type, type.getExtraFloat());
                 break;
             case NUCLEARO_DINOSAURO:
-                tower = new TowerArea(texture, position,
+                tower = new TowerArea(texture,synergyTexture ,position,
                     type.getDisplayName(), type.getDamage(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, 0);
+                    TOWER_SIZE, TOWER_SIZE, type);
                 break;
             case CAPPUCCINO_ASSASSINO:
-                tower = new TowerCoin(texture, position,
+                tower = new TowerCoin(texture, synergyTexture,position,
                     type.getDisplayName(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, 0, type.getExtraValue());
+                    TOWER_SIZE, TOWER_SIZE, type, type.getExtraValue());
                 break;
             case BALLERINA_CAPPUCCINA:
-                tower = new TowerBoost(texture, position,
+                tower = new TowerBoost(texture, synergyTexture, position,
                     type.getDisplayName(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, 0, type.getExtraValue());
+                    TOWER_SIZE, TOWER_SIZE, type, type.getExtraValue());
                 break;
             default:
                 return null;

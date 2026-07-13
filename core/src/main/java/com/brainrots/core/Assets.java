@@ -46,6 +46,12 @@ public final class Assets {
     public static final String TOWER_LIRILI_LARILA = "Towers/lirili-larila.png";
     public static final String TOWER_BOMBARDILO_CROCODILO = "Towers/bombardiro-crocodilo.png";
 
+    /*Synergy-Texture */
+    public static final String TOWER_BALLERINA = "Towers/ballerina-synergy.png";
+    public static final String CAPPUCCINO_SYNERGY = "Towers/cappuccino-synergy.png";
+    public static final String NUCLEARO_SYNERGY = "Towers/nuclearo-synergy.png";
+    public static final String BOMBARDILO_SYNERGY = "Towers/bombardiro-synergy.png";
+    public static final String TUNG_SYNERGY = "Towers/tung-tung-synergy.png";
 
     /* HUD */
     public static final String NORMAL_COIN = "CCoins/coins.png";

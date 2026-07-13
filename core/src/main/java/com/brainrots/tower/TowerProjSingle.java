@@ -3,15 +3,16 @@ package com.brainrots.tower;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.brainrots.effect.StatusEffect;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
 
 public class TowerProjSingle extends Tower {
 
-    public TowerProjSingle(Texture texture, Vector2 position, String displayName, int damage, int attackSpeed,
-            float range, float attackCooldown, int width, int height, int towerID) {
-        super(texture, position, displayName, damage, attackSpeed, range, attackCooldown, width, height, towerID);
+    public TowerProjSingle(Texture texture,Texture synergyTexture ,Vector2 position, String displayName, int damage, int attackSpeed,
+            float range, float attackCooldown, int width, int height, BrainrotTower towerType) {
+        super(texture, synergyTexture,position, displayName, damage, attackSpeed, range, attackCooldown, width, height, towerType);
     }
 
     @Override
@@ -21,7 +22,8 @@ public class TowerProjSingle extends Tower {
 
         Enemy target = findClosestEnemy(activeEnemies);
         if (target != null) {
-            projectileManager.spawn(new Projectile(projectileTexture, target, this, 75, 75, 0f));
+            StatusEffect effect = createEffect();
+            projectileManager.spawn(new Projectile(projectileTexture, target, this, 75, 75, 0f, effect));
             attack(gameTime);
         }
     }

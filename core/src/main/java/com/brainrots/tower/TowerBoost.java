@@ -3,6 +3,7 @@ package com.brainrots.tower;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.brainrots.effect.StatusEffect;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
@@ -11,9 +12,9 @@ public class TowerBoost extends Tower {
 
     private int boostAmount;
 
-    public TowerBoost(Texture texture, Vector2 position, String displayName,
-            float range, float attackCooldown, int width, int height, int towerID, int boostAmount) {
-        super(texture, position, displayName, 0, 0, range, attackCooldown, width, height, towerID);
+    public TowerBoost(Texture texture,Texture synergyTexture ,Vector2 position, String displayName,
+            float range, float attackCooldown, int width, int height, BrainrotTower towerType, int boostAmount) {
+        super(texture, synergyTexture,position, displayName, 0, 0, range, attackCooldown, width, height, towerType);
         this.boostAmount = boostAmount;
     }
 
@@ -29,6 +30,14 @@ public class TowerBoost extends Tower {
             }
         }
         attack(gameTime);
+    }
+
+    /**
+     * TowerBoost não causa dano, portanto não aplica efeitos de status.
+     */
+    @Override
+    public StatusEffect createEffect() {
+        return null;
     }
 
     @Override
