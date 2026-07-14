@@ -52,6 +52,9 @@ public class EndGameScreen extends GameScreen {
         if(won){
             Label titleLabel = new Label("Victory", createLabelStyle(4.0f, Color.YELLOW));
             table.add(titleLabel).pad(60).row();
+        } else{
+            Label titleLabel = new Label("Defeat", createLabelStyle(4.0f, Color.YELLOW));
+            table.add(titleLabel).pad(60).row();
         }
 
 
