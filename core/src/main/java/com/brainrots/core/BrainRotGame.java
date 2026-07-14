@@ -3,6 +3,7 @@ package com.brainrots.core;
 import java.nio.file.Paths;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -101,10 +102,19 @@ public class BrainRotGame extends Game implements ScreenManager {
     }
 
     /**
+     * Finaliza o programa limpando a memória.
+     */
+    public void endProgram(){
+        Gdx.app.exit();
+    }
+
+    /**
      * Inicializa o jogo.
      */
     @Override
     public void create() {
+
+        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 
         loadPlayerProfile();
 

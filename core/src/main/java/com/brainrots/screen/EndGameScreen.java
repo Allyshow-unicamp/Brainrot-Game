@@ -1,6 +1,7 @@
 package com.brainrots.screen;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.interfaces.GameSaveHandler;
 import com.brainrots.interfaces.ScreenManager.ScreenType;
@@ -18,11 +20,14 @@ import com.brainrots.exception.PersistanceException;
 public class EndGameScreen extends GameScreen {
 
     private int level;
+    private boolean won;
 
     public EndGameScreen(SpriteBatch batch, BrainRotGame screenManager,
             ShapeRenderer shapeRenderer, int level, boolean won, int stars, GameSaveHandler gameSaveHandler) {
         super(batch, screenManager, shapeRenderer);
         this.level = level;
+
+        this.won = won;
 
         if (won) {
             try {
@@ -44,9 +49,11 @@ public class EndGameScreen extends GameScreen {
 
         Table table = createFullScreenTable();
 
-        Label titleLabel = new Label(
-                won ? "Victory" : "Defeat", createLabelStyle(4.0f, Color.YELLOW));
-        table.add(titleLabel).pad(60).row();
+        if(won){
+            Label titleLabel = new Label("Victory", createLabelStyle(4.0f, Color.YELLOW));
+            table.add(titleLabel).pad(60).row();
+        }
+
 
         if (won) {
             LabelStyle starsStyle = createLabelStyle(2.0f, Color.WHITE);
@@ -122,6 +129,23 @@ public class EndGameScreen extends GameScreen {
 
     @Override
     protected void drawScreen(float delta) {
+
+        if(!won){
+            batch.begin();
+
+            Texture texture = resourceManager.getTexture(Assets.DEFEAT_SCREEN);
+
+            batch.draw(texture, 0, 0);
+            batch.end();
+        } else {
+            batch.begin();
+
+            Texture texture = resourceManager.getTexture(Assets.VICTORY_SCREEN);
+
+            batch.draw(texture, 0, 0);
+            batch.end();
+        }
+
         drawWithStageHelper(delta);
     }
 }

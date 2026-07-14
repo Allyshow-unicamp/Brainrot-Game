@@ -1,6 +1,8 @@
 package com.brainrots.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.interfaces.ScreenManager.ScreenType;
 
@@ -39,11 +42,22 @@ public class MainMenuScreen extends GameScreen {
 
         TextButton storeButton = new TextButton("Store", buttons.style);
         table.add(storeButton).size(200, 60);
+        table.row();
 
         storeButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 screenManager.switchScreen(ScreenType.GLOBAL_SHOP);
+            }
+        });
+
+        TextButton exitButton = new TextButton("Exit", buttons.style);
+        table.add(exitButton).size(200, 60);
+
+        exitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                screenManager.endProgram();
             }
         });
 
@@ -57,6 +71,12 @@ public class MainMenuScreen extends GameScreen {
 
     @Override
     protected void drawScreen(float delta) {
+        batch.begin();
+
+        Texture texture = resourceManager.getTexture(Assets.MENU_SCREEN);
+
+        batch.draw(texture, 0, 0);
+        batch.end();
         drawWithStageHelper(delta);
     }
 }

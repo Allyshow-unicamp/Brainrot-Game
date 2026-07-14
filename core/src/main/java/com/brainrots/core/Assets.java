@@ -28,11 +28,16 @@ public final class Assets {
     
 
     /* ENEMIES */
-    public static final String ENEMY_67 = "Enemies/67_Ball.png";
-    public static final String ENEMY_6 = "Enemies/6_Ball.png";
-    public static final String ENEMY_7 = "Enemies/7_Ball.png";
-    public static final String ENEMY_6_7 = "Enemies/6+7_Ball.png";
+    public static final String ENEMY_RED = "Enemies/red.png";
+    public static final String ENEMY_ORANGE = "Enemies/orange.png";
+    public static final String ENEMY_WHITE = "Enemies/white.png";
+    public static final String ENEMY_GREEN = "Enemies/green.png";
+    public static final String ENEMY_BLUE = "Enemies/blue.png";
+
+    /* PROJECTILES */
     public static final String PROJECTILE_BLACK = "Projectiles/black.png";
+    public static final String PROJECTILE_FIRE = "Projectiles/fire_projectile.png";
+    public static final String PROJECTILE_WATER = "Projectiles/water_projectile.png";
 
     /* TOWERS */
     public static final String TOWER_TUNG = "Towers/tung-tung-tung-sahur.png";
@@ -59,6 +64,13 @@ public final class Assets {
     public static final String PLAY_BUTTON = "UI/play_button.png";
     public static final String UI_SKIN = "UI/uiskin.json";
     public static final String UI_FONT = "UI/default.fnt";
+    public static final String FOWARD_BUTTON_1 = "UI/foward_button_1.png";
+    public static final String FOWARD_BUTTON_2 = "UI/foward_button_2.png";
+    public static final String HOME_BUTTON = "UI/home_button.png";
+    public static final String DEFEAT_SCREEN = "UI/defeat_image.jpg";
+    public static final String VICTORY_SCREEN = "UI/victory_image.jpg";
+    public static final String MENU_SCREEN = "UI/menu_image.png";
+    public static final String SELECTION_SCREEN = "UI/selection_image.png";
 
     /* SOUNDS */
     public static final String MUSIC_GAME = "Soundtracks/game_song.mp3";

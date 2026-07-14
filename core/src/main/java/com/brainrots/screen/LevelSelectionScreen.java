@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -103,6 +104,12 @@ public class LevelSelectionScreen extends GameScreen {
 
     @Override
     protected void drawScreen(float delta) {
+        batch.begin();
+
+        Texture texture = resourceManager.getTexture(Assets.SELECTION_SCREEN);
+
+        batch.draw(texture, 0, 0);
+        batch.end();
         drawWithStageHelper(delta);
     }
 }

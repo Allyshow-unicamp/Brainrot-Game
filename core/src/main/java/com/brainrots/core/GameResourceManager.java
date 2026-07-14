@@ -40,13 +40,16 @@ public class GameResourceManager {
         assetManager.load(Assets.MAP_BETA_JUNGLE_BG, Texture.class);
 
         /* ENEMIES */
-        assetManager.load(Assets.ENEMY_67, Texture.class);
-        assetManager.load(Assets.ENEMY_6, Texture.class);
-        assetManager.load(Assets.ENEMY_7, Texture.class);
-        assetManager.load(Assets.ENEMY_6_7, Texture.class);
+        assetManager.load(Assets.ENEMY_BLUE, Texture.class);
+        assetManager.load(Assets.ENEMY_RED, Texture.class);
+        assetManager.load(Assets.ENEMY_ORANGE, Texture.class);
+        assetManager.load(Assets.ENEMY_WHITE, Texture.class);
+        assetManager.load(Assets.ENEMY_GREEN, Texture.class);
 
         /* PROJECTILES */
         assetManager.load(Assets.PROJECTILE_BLACK, Texture.class);
+        assetManager.load(Assets.PROJECTILE_FIRE, Texture.class);
+        assetManager.load(Assets.PROJECTILE_WATER, Texture.class);
 
         /* TOWERS */
         assetManager.load(Assets.TOWER_TUNG, Texture.class);
@@ -73,9 +76,16 @@ public class GameResourceManager {
         /* HUD */
         assetManager.load(Assets.PLAY_BUTTON, Texture.class);
         assetManager.load(Assets.PAUSE_BUTTON, Texture.class);
+        assetManager.load(Assets.FOWARD_BUTTON_1, Texture.class);
+        assetManager.load(Assets.FOWARD_BUTTON_2, Texture.class);
+        assetManager.load(Assets.HOME_BUTTON, Texture.class);
         assetManager.load(Assets.UI_SKIN, Skin.class);
         assetManager.load(Assets.UI_FONT, BitmapFont.class);
         assetManager.load(Assets.NORMAL_COIN,Texture.class);
+        assetManager.load(Assets.DEFEAT_SCREEN, Texture.class);
+        assetManager.load(Assets.VICTORY_SCREEN, Texture.class);
+        assetManager.load(Assets.MENU_SCREEN, Texture.class);
+        assetManager.load(Assets.SELECTION_SCREEN, Texture.class);
 
         assetManager.finishLoading();
     }

@@ -52,7 +52,6 @@ public class LevelManager {
 
     private Tower selectedTower;
     private Texture rangeCircleTexture;
-    private Texture projectileTexture;
     private float speedMultiplier;
 
     private SynergyManager synergyManager;
@@ -77,7 +76,6 @@ public class LevelManager {
         this.placementController = new TowerPlacementController(gameScreen, stage);
         this.selectedTower = null;
         this.speedMultiplier = 1f;
-        this.projectileTexture = resourceManager.getTexture(Assets.PROJECTILE_BLACK);
         createRangeCircleTexture();
         mainUX.setCoinManager(coinManager);
 
@@ -161,6 +159,15 @@ public class LevelManager {
         for (Tower tower : activeTowers) {
             if (tower instanceof TowerCoin && waveManager.isPausedWave()) {
                 continue;
+            }
+            Texture projectileTexture;
+
+            if(tower.getTowerType() == BrainrotTower.TUNG_TUNG){
+                projectileTexture = resourceManager.getTexture(Assets.PROJECTILE_WATER);
+            } else if(tower.getTowerType() == BrainrotTower.BOMBARDILO_CROCODILO){
+                projectileTexture = resourceManager.getTexture(Assets.PROJECTILE_FIRE);
+            } else {
+                projectileTexture = resourceManager.getTexture(Assets.PROJECTILE_BLACK);
             }
             tower.update(gameTime, activeEnemies, activeTowers, coinManager, projectileManager, projectileTexture);
         }

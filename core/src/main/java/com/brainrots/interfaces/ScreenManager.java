@@ -10,4 +10,6 @@ public interface ScreenManager {
     }
 
     void switchScreen(ScreenType type);
+
+    void endProgram();
 }

@@ -1,37 +1,41 @@
 {
 "tung_tung": {
-    "id": "tung_tung",
-    "name": "Tung Tung Tung Sahur",
-    "description": "Basic tower that fires projectiles at a single enemy",
-    "behaviorDescription": "Projectile damage",
-    "price": 0
-},
-"bombardiro_crocodilo": {
-    "id": "bombardiro_crocodilo",
-    "name": "Bombardiro Crocodilo",
-    "description": "Fires an explosive projectile that damages multiple enemies in an area",
-    "behaviorDescription": "Area projectile damage",
-    "price": 150
-},
-"nuclearo_dinosauro": {
-    "id": "nuclearo_dinosauro",
-    "name": "Nuclearo Dinosauro",
-    "description": "Deals instant area damage to all enemies within range",
-    "behaviorDescription": "Instant area damage",
-    "price": 100
-},
-"cappuccino_assassino": {
-    "id": "cappuccino_assassino",
-    "name": "Cappuccino Assassino",
-    "description": "Generates coins each turn based on nearby allied towers",
-    "behaviorDescription": "Coin generator",
-    "price": 100
+	"class": "com.brainrots.core.ShopTowerData",
+	"id": "tung_tung",
+	"name": "Tung Tung Tung Sahur",
+	"description": "Basic tower that fires projectiles at a single enemy",
+	"behaviorDescription": "Projectile damage"
 },
 "ballerina_cappuccina": {
-    "id": "ballerina_cappuccina",
-    "name": "Ballerina Cappuccina",
-    "description": "Boosts the damage of nearby allied towers",
-    "behaviorDescription": "Tower support",
-    "price": 100
+	"class": "com.brainrots.core.ShopTowerData",
+	"id": "ballerina_cappuccina",
+	"name": "Ballerina Cappuccina",
+	"description": "Boosts the damage of nearby allied towers",
+	"behaviorDescription": "Tower support",
+	"price": 120
+},
+"cappuccino_assassino": {
+	"class": "com.brainrots.core.ShopTowerData",
+	"id": "cappuccino_assassino",
+	"name": "Cappuccino Assassino",
+	"description": "Generates coins each turn based on nearby allied towers",
+	"behaviorDescription": "Coin generator",
+	"price": 100
+},
+"bombardiro_crocodilo": {
+	"class": "com.brainrots.core.ShopTowerData",
+	"id": "bombardiro_crocodilo",
+	"name": "Bombardiro Crocodilo",
+	"description": "Fires an explosive projectile that damages multiple enemies in an area",
+	"behaviorDescription": "Area projectile damage",
+	"price": 200
+},
+"nuclearo_dinosauro": {
+	"class": "com.brainrots.core.ShopTowerData",
+	"id": "nuclearo_dinosauro",
+	"name": "Nuclearo Dinosauro",
+	"description": "Deals instant area damage to all enemies within range",
+	"behaviorDescription": "Instant area damage",
+	"price": 150
 }
 }

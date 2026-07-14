@@ -9,13 +9,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.core.Assets;
@@ -39,9 +37,6 @@ public class MainUX {
     private ImageButton waveButton;
     private ImageButton speedButton;
     private ImageButton menuButton;
-    private Texture speedTexture;
-    private Texture speedActiveTexture;
-    private Texture menuTexture;
     private SpriteBatch batch;
     private boolean initialized;
     private float screenWidth;
@@ -68,29 +63,16 @@ public class MainUX {
         waveButton = new ImageButton(style);
         waveButton.setSize(64, 64);
 
-        createSpeedButtonTexture();
         ImageButton.ImageButtonStyle speedStyle = new ImageButton.ImageButtonStyle();
-        speedStyle.imageUp = new TextureRegionDrawable(new TextureRegion(speedTexture));
-        speedStyle.imageChecked = new TextureRegionDrawable(new TextureRegion(speedActiveTexture));
+        speedStyle.imageUp = new TextureRegionDrawable(rm.getTexture(Assets.FOWARD_BUTTON_2));
+        speedStyle.imageChecked = new TextureRegionDrawable(rm.getTexture(Assets.FOWARD_BUTTON_1));
         speedButton = new ImageButton(speedStyle);
         speedButton.setSize(64, 64);
 
-        createMenuButtonTexture();
         ImageButton.ImageButtonStyle menuStyle = new ImageButton.ImageButtonStyle();
-        menuStyle.imageUp = new TextureRegionDrawable(new TextureRegion(menuTexture));
+        menuStyle.imageUp = new TextureRegionDrawable(rm.getTexture(Assets.HOME_BUTTON));
         menuButton = new ImageButton(menuStyle);
         menuButton.setSize(64, 64);
-    }
-
-    private void createSpeedButtonTexture() {
-        int s = 64;
-        speedTexture = createCircleTexture(s, 0, 0.5f, 0);
-        speedActiveTexture = createCircleTexture(s, 0, 1f, 0);
-    }
-
-    private void createMenuButtonTexture() {
-        int s = 64;
-        menuTexture = createCircleTexture(s, 0.6f, 0.3f, 0);
     }
 
     private Texture createCircleTexture(int size, float r, float g, float b) {
@@ -221,7 +203,7 @@ public class MainUX {
         speedButton.setPosition(width - 2 * (waveBtnSize + gap) - 15, 15);
 
         menuButton.setSize(waveBtnSize, waveBtnSize);
-        menuButton.setPosition(width - 3 * (waveBtnSize + gap) - 15, 15);
+        menuButton.setPosition(width - 3 * (waveBtnSize + gap) - 30, 15);
     }
 
     private void generateTowerHUDBackground(){
