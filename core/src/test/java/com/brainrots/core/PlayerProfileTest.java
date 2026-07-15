@@ -85,26 +85,26 @@ class PlayerProfileTest {
 
     @Test
     void unlockTowerAddsTowerId() {
-        profile.unlockTower("bombardiro_crocodilo");
-        assertTrue(profile.isTowerUnlocked("bombardiro_crocodilo"));
+        profile.unlockTower("2_bombardiro_crocodilo");
+        assertTrue(profile.isTowerUnlocked("2_bombardiro_crocodilo"));
     }
 
     @Test
     void unlockTowerDoesNotDuplicate() {
-        profile.unlockTower("bombardiro_crocodilo");
-        profile.unlockTower("bombardiro_crocodilo");
+        profile.unlockTower("2_bombardiro_crocodilo");
+        profile.unlockTower("2_bombardiro_crocodilo");
         assertEquals(1, profile.getUnlockedTowerIds().size());
     }
 
     @Test
     void isTowerUnlockedReturnsFalseWhenNotUnlocked() {
-        assertFalse(profile.isTowerUnlocked("nuclearo_dinosauro"));
+        assertFalse(profile.isTowerUnlocked("5_nuclearo_dinosauro"));
     }
 
     @Test
     void isTowerUnlockedReturnsTrueWhenUnlocked() {
-        profile.unlockTower("nuclearo_dinosauro");
-        assertTrue(profile.isTowerUnlocked("nuclearo_dinosauro"));
+        profile.unlockTower("5_nuclearo_dinosauro");
+        assertTrue(profile.isTowerUnlocked("5_nuclearo_dinosauro"));
     }
 
     @Test
@@ -113,7 +113,7 @@ class PlayerProfileTest {
         List<String> ids = p.getUnlockedTowerIds();
         assertNotNull(ids);
         assertEquals(1, ids.size());
-        assertEquals("tung_tung", ids.get(0));
+        assertEquals("1_tung_tung", ids.get(0));
     }
 
     @Test
@@ -139,13 +139,13 @@ class PlayerProfileTest {
         HashMap<String, Integer> stars = new HashMap<>();
         stars.put("67Hills", 3);
         List<String> unlocked = new ArrayList<>();
-        unlocked.add("tung_tung");
-        unlocked.add("bombardiro_crocodilo");
+        unlocked.add("1_tung_tung");
+        unlocked.add("2_bombardiro_crocodilo");
 
         PlayerProfile p = new PlayerProfile(1000, stars, unlocked);
         assertEquals(1000, p.getGlobalCoins());
         assertEquals(3, p.getLevelStars().get("67Hills"));
-        assertTrue(p.isTowerUnlocked("tung_tung"));
-        assertTrue(p.isTowerUnlocked("bombardiro_crocodilo"));
+        assertTrue(p.isTowerUnlocked("1_tung_tung"));
+        assertTrue(p.isTowerUnlocked("2_bombardiro_crocodilo"));
     }
 }

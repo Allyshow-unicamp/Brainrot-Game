@@ -20,7 +20,7 @@ class GlobalShopTest {
     @BeforeEach
     void setUp() {
         List<String> unlocked = new ArrayList<>();
-        unlocked.add("tung_tung");
+        unlocked.add("1_tung_tung");
         profile = new PlayerProfile(1000, new HashMap<>(), unlocked);
     }
 
@@ -62,11 +62,11 @@ class GlobalShopTest {
     @Test
     void purchaseTowerThrowsWhenAlreadyOwned() {
         HashMap<String, ShopTowerData> data = new HashMap<>();
-        data.put("tung_tung", new ShopTowerData("tung_tung", "Tung", "desc", "beh", 150));
+        data.put("1_tung_tung", new ShopTowerData("1_tung_tung", "Tung", "desc", "beh", 150));
         GlobalShop shop = createShopWithTowers(data);
 
         InvalidGameActionException ex = assertThrows(InvalidGameActionException.class,
-            () -> shop.purchaseTower(profile, "tung_tung"));
+            () -> shop.purchaseTower(profile, "1_tung_tung"));
         assertTrue(ex.getMessage().contains("already own"));
     }
 

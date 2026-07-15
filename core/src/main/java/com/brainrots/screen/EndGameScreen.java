@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
+import com.brainrots.core.GameBalance;
 import com.brainrots.interfaces.GameSaveHandler;
 import com.brainrots.interfaces.ScreenManager.ScreenType;
 import com.brainrots.core.PlayerProfile;
@@ -36,7 +37,7 @@ public class EndGameScreen extends GameScreen {
                     playerProfile.setStars(String.valueOf(level), stars);
                 }
 
-                int coinReward = calculateCoinReward(stars);
+                int coinReward = calculateCoinReward(stars, level);
                 playerProfile.addGlobalCoins(coinReward);
 
                 gameSaveHandler.saveProfile(playerProfile);
@@ -61,7 +62,7 @@ public class EndGameScreen extends GameScreen {
             Label starsLabel = new Label(stars + "/3 Stars", starsStyle);
             table.add(starsLabel).pad(20).row();
 
-            int coinReward = calculateCoinReward(stars);
+            int coinReward = calculateCoinReward(stars, level);
             Label coinsLabel = new Label("+" + coinReward + " Coins", starsStyle);
             coinsLabel.setColor(Color.YELLOW);
             table.add(coinsLabel).pad(20).row();
@@ -82,11 +83,11 @@ public class EndGameScreen extends GameScreen {
         stage.addActor(table);
     }
 
-    private int calculateCoinReward(int stars) {
+    private int calculateCoinReward(int stars, int level) {
         switch (stars) {
-            case 1: return 50;
-            case 2: return 100;
-            case 3: return 200;
+            case 1: return GameBalance.COINS_1_STAR * level;
+            case 2: return GameBalance.COINS_2_STAR * level;
+            case 3: return GameBalance.COINS_3_STAR * level;
             default: return 0;
         }
     }

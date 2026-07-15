@@ -29,6 +29,7 @@ import com.brainrots.tower.BrainrotTower;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /** Tela de loja global. Permite desbloquear torres permanentemente com moedas. */
 public class GlobalShopScreen extends GameScreen {
@@ -79,7 +80,9 @@ public class GlobalShopScreen extends GameScreen {
         HashMap<String, ShopTowerData> shopData = globalShop.getShopData();
         List<String> unlockedIds = playerProfile.getUnlockedTowerIds();
 
-        for (Map.Entry<String, ShopTowerData> entry : shopData.entrySet()) {
+        TreeMap<String, ShopTowerData> sortedShop = new TreeMap<>(shopData);
+
+        for (Map.Entry<String, ShopTowerData> entry : sortedShop.entrySet()) {
             ShopTowerData data = entry.getValue();
             boolean alreadyOwned = unlockedIds.contains(data.getId());
 

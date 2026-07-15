@@ -33,7 +33,7 @@ public class PlayerProfile {
     public List<String> getUnlockedTowerIds() {
         if (unlockedTowerIds == null) {
             unlockedTowerIds = new ArrayList<>();
-            unlockedTowerIds.add("tung_tung");
+            unlockedTowerIds.add("1_tung_tung");
         }
         return unlockedTowerIds;
     }

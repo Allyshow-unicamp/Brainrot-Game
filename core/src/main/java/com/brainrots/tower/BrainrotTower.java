@@ -9,19 +9,19 @@ import com.brainrots.synergy.SynergyGroup;
 /** Enum que define os 5 tipos de torre com seus stats, texturas, grupo de sinergia e efeito. */
 public enum BrainrotTower {
 
-    TUNG_TUNG("tung_tung", "Tung Tung Tung Sahur", Assets.TOWER_TUNG, Assets.TUNG_SYNERGY , GameBalance.TOWER_TUNG_DAMAGE, GameBalance.TOWER_TUNG_PROJ_SPEED, GameBalance.TOWER_TUNG_RANGE, GameBalance.TOWER_TUNG_COOLDOWN, 150, 150, GameBalance.TOWER_TUNG_COST, 0, 0f,
+    TUNG_TUNG("1_tung_tung", "Tung Tung Tung Sahur", Assets.TOWER_TUNG, Assets.TUNG_SYNERGY , GameBalance.TOWER_TUNG_DAMAGE, GameBalance.TOWER_TUNG_PROJ_SPEED, GameBalance.TOWER_TUNG_RANGE, GameBalance.TOWER_TUNG_COOLDOWN, 150, 150, GameBalance.TOWER_TUNG_COST, 0, 0f,
         "Fires projectiles at a single enemy. Low cost, ideal for early game.",
         SynergyGroup.PHYSICAL, null),
-    BOMBARDILO_CROCODILO("bombardiro_crocodilo", "Bombardiro Crocodilo", Assets.TOWER_BOMBARDILO_CROCODILO,Assets.BOMBARDILO_SYNERGY ,GameBalance.TOWER_BOMB_DAMAGE, GameBalance.TOWER_BOMB_PROJ_SPEED, GameBalance.TOWER_BOMB_RANGE, GameBalance.TOWER_BOMB_COOLDOWN, 150, 150, GameBalance.TOWER_BOMB_COST, 0, GameBalance.TOWER_BOMB_AOE,
+    BOMBARDILO_CROCODILO("2_bombardiro_crocodilo", "Bombardiro Crocodilo", Assets.TOWER_BOMBARDILO_CROCODILO,Assets.BOMBARDILO_SYNERGY ,GameBalance.TOWER_BOMB_DAMAGE, GameBalance.TOWER_BOMB_PROJ_SPEED, GameBalance.TOWER_BOMB_RANGE, GameBalance.TOWER_BOMB_COOLDOWN, 150, 150, GameBalance.TOWER_BOMB_COST, 0, GameBalance.TOWER_BOMB_AOE,
         "Fires explosive projectiles that damage multiple enemies in an area and applies fire damage over time.",
         SynergyGroup.FIRE, new FireEffect(GameBalance.FIRE_DURATION, GameBalance.FIRE_DAMAGE_PER_TICK)),
-    NUCLEARO_DINOSAURO("nuclearo_dinosauro", "Nuclearo Dinosauro", Assets.TOWER_NUCLEARO_DINOSAURO, Assets.NUCLEARO_SYNERGY, GameBalance.TOWER_NUC_DAMAGE, 0, GameBalance.TOWER_NUC_RANGE, GameBalance.TOWER_NUC_COOLDOWN, 150, 150, GameBalance.TOWER_NUC_COST, 0, 0f,
+    NUCLEARO_DINOSAURO("5_nuclearo_dinosauro", "Nuclearo Dinosauro", Assets.TOWER_NUCLEARO_DINOSAURO, Assets.NUCLEARO_SYNERGY, GameBalance.TOWER_NUC_DAMAGE, 0, GameBalance.TOWER_NUC_RANGE, GameBalance.TOWER_NUC_COOLDOWN, 150, 150, GameBalance.TOWER_NUC_COST, 0, 0f,
         "Deals instant damage to all enemies within range and applies fire damage over time.",
         SynergyGroup.FIRE, new FireEffect(GameBalance.NUKE_FIRE_DURATION, GameBalance.NUKE_FIRE_DAMAGE_PER_TICK)),
-    CAPPUCCINO_ASSASSINO("cappuccino_assassino", "Cappuccino Assassino", Assets.TOWER_CAPPUCCINO, Assets.CAPPUCCINO_SYNERGY, 0, 0, GameBalance.TOWER_COIN_RANGE, GameBalance.TOWER_COIN_COOLDOWN, 150, 150, GameBalance.TOWER_COIN_COST, GameBalance.TOWER_COIN_PER_TOWER, 0f,
+    CAPPUCCINO_ASSASSINO("3_cappuccino_assassino", "Cappuccino Assassino", Assets.TOWER_CAPPUCCINO, Assets.CAPPUCCINO_SYNERGY, 0, 0, GameBalance.TOWER_COIN_RANGE, GameBalance.TOWER_COIN_COOLDOWN, 150, 150, GameBalance.TOWER_COIN_COST, GameBalance.TOWER_COIN_PER_TOWER, 0f,
         "Generates coins for each nearby allied tower. Does not deal damage.",
         SynergyGroup.SUPPORT, null),
-    BALLERINA_CAPPUCCINA("ballerina_cappuccina", "Ballerina Cappuccina", Assets.TOWER_CAPPUCCINA, Assets.TOWER_BALLERINA, 0, 0, GameBalance.TOWER_BOOST_RANGE, GameBalance.TOWER_BOOST_COOLDOWN, 150, 150, GameBalance.TOWER_BOOST_COST, GameBalance.TOWER_BOOST_AMOUNT, 0f,
+    BALLERINA_CAPPUCCINA("4_ballerina_cappuccina", "Ballerina Cappuccina", Assets.TOWER_CAPPUCCINA, Assets.TOWER_BALLERINA, 0, 0, GameBalance.TOWER_BOOST_RANGE, GameBalance.TOWER_BOOST_COOLDOWN, 150, 150, GameBalance.TOWER_BOOST_COST, GameBalance.TOWER_BOOST_AMOUNT, 0f,
         "Boosts the damage of nearby allied towers. Does not deal damage.",
         SynergyGroup.SUPPORT, null);
 

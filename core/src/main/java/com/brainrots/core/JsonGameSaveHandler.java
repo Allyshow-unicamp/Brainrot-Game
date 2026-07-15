@@ -25,55 +25,55 @@ public class JsonGameSaveHandler implements GameSaveHandler {
     }
 
     @Override
-    public void saveProfile(PlayerProfile playerProfile) {
-        Json json = new Json();
-        json.setOutputType(OutputType.json);
-        String jsonString = json.prettyPrint(playerProfile);
+    public void saveProfile(PlayerProfile playerProfile) throws PersistanceException {
+        try {
+            Json json = new Json();
+            json.setOutputType(OutputType.json);
+            String jsonString = json.prettyPrint(playerProfile);
 
-        FileHandle file = Gdx.files.local(profileSaveFileName);
-        file.writeString(jsonString, false);
+            FileHandle file = Gdx.files.local(profileSaveFileName);
+            file.writeString(jsonString, false);
+        } catch (Exception e) {
+            throw new PersistanceException("Error while saving profile");
+        }
     }
 
     @Override
-    public PlayerProfile loadProfile() {
-        FileHandle file = Gdx.files.local(profileSaveFileName);
+    public PlayerProfile loadProfile() throws PersistanceException {
+        try {
+            FileHandle file = Gdx.files.local(profileSaveFileName);
 
-        if (file.exists() && file != null) {
-            Json json = new Json();
-            PlayerProfile profile = json.fromJson(PlayerProfile.class, file);
-            return profile;
+            if (file.exists() && file != null) {
+                Json json = new Json();
+                PlayerProfile profile = json.fromJson(PlayerProfile.class, file);
+                return profile;
+            }
+
+            HashMap<String, Integer> defaultMap = new HashMap<>();
+            for (int i = 1; i <= 5; i++) {
+                defaultMap.put(i + "", 0);
+            }
+
+            ArrayList<String> defaultUnlocked = new ArrayList<>();
+            defaultUnlocked.add("1_tung_tung");
+
+            return new PlayerProfile(0, defaultMap, defaultUnlocked);
+        } catch (Exception e) {
+            throw new PersistanceException("Error while loading profile");
         }
-
-        HashMap<String, Integer> defaultMap = new HashMap<>();
-        for (int i = 1; i <= 5; i++) {
-            defaultMap.put(i + "", 0);
-        }
-
-        ArrayList<String> defaultUnlocked = new ArrayList<>();
-        defaultUnlocked.add("tung_tung");
-
-        return new PlayerProfile(0, defaultMap, defaultUnlocked);
-    }
-
-    private void saveShopData(HashMap<String, ShopTowerData> shopData) throws PersistanceException {
-        Json json = new Json();
-        json.setOutputType(OutputType.json);
-        String jsonString = json.prettyPrint(shopData);
-
-        FileHandle file = Gdx.files.local(shopSaveFileName);
-        file.writeString(jsonString, false);
     }
 
     @Override
     public HashMap<String, ShopTowerData> loadShopData() throws PersistanceException {
-        FileHandle file = Gdx.files.local(shopSaveFileName);
+        try {
+            FileHandle file = Gdx.files.local(shopSaveFileName);
 
-        if (file.exists()) {
-            try {
+            if (file.exists()) {
+
                 JsonReader reader = new JsonReader();
                 JsonValue root = reader.parse(file);
                 if (root.child != null && root.child.has("class")) {
-                    return createDefaultShopData();
+                    throw new PersistanceException("Error while reading Shop Data");
                 }
                 HashMap<String, ShopTowerData> result = new HashMap<>();
                 for (JsonValue entry = root.child; entry != null; entry = entry.next) {
@@ -85,59 +85,49 @@ public class JsonGameSaveHandler implements GameSaveHandler {
                     result.put(id, new ShopTowerData(id, name, description, behaviorDescription, price));
                 }
                 return result;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return createDefaultShopData();
             }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PersistanceException("Error while reading shop data");
         }
-
-        HashMap<String, ShopTowerData> defaultMap = createDefaultShopData();
-        saveShopData(defaultMap);
-        return defaultMap;
-    }
-
-    private HashMap<String, ShopTowerData> createDefaultShopData() {
-        HashMap<String, ShopTowerData> defaultMap = new HashMap<>();
-        defaultMap.put("tung_tung", new ShopTowerData("tung_tung", "Tung Tung Tung Sahur",
-                "Basic tower that fires projectiles at a single enemy", "Projectile damage", 0));
-        defaultMap.put("bombardiro_crocodilo", new ShopTowerData("bombardiro_crocodilo", "Bombardiro Crocodilo",
-                "Fires an explosive projectile that damages multiple enemies in an area", "Area projectile damage", 200));
-        defaultMap.put("nuclearo_dinosauro", new ShopTowerData("nuclearo_dinosauro", "Nuclearo Dinosauro",
-                "Deals instant area damage to all enemies within range", "Instant area damage", 150));
-        defaultMap.put("cappuccino_assassino", new ShopTowerData("cappuccino_assassino", "Cappuccino Assassino",
-                "Generates coins each turn based on nearby allied towers", "Coin generator", 100));
-        defaultMap.put("ballerina_cappuccina", new ShopTowerData("ballerina_cappuccina", "Ballerina Cappuccina",
-                "Boosts the damage of nearby allied towers", "Tower support", 120));
-        return defaultMap;
     }
 
     private void saveLevelData(HashMap<String, String> levelNames) throws PersistanceException {
-        Json json = new Json();
-        json.setOutputType(OutputType.json);
-        String jsonString = json.prettyPrint(levelNames);
+        try {
+            Json json = new Json();
+            json.setOutputType(OutputType.json);
+            String jsonString = json.prettyPrint(levelNames);
 
-        FileHandle file = Gdx.files.local(levelSaveFileName);
-        file.writeString(jsonString, false);
+            FileHandle file = Gdx.files.local(levelSaveFileName);
+            file.writeString(jsonString, false);
+        } catch (Exception e) {
+            throw new PersistanceException("Error while saving level data");
+        }
     }
 
     @Override
     public HashMap<String, String> loadLevelData() throws PersistanceException {
-        FileHandle file = Gdx.files.local(levelSaveFileName);
+        try {
+            FileHandle file = Gdx.files.local(levelSaveFileName);
 
-        if (file.exists()) {
-            Json json = new Json();
-            return json.fromJson(HashMap.class, file);
+            if (file.exists()) {
+                Json json = new Json();
+                return json.fromJson(HashMap.class, file);
+            }
+
+            HashMap<String, String> defaultMap = new HashMap<>();
+            defaultMap.put(1 + "", Assets.MAP_67_HILLS_ID);
+            defaultMap.put(2 + "", Assets.MAP_WINTER_AURA_ID);
+            defaultMap.put(3 + "", Assets.MAP_SIGMA_VOLCANO_ID);
+            defaultMap.put(4 + "", Assets.MAP_MINING_RIZZ_ID);
+            defaultMap.put(5 + "", Assets.MAP_BETA_JUNGLE_ID);
+
+            saveLevelData(defaultMap);
+
+            return defaultMap;
+        } catch (Exception e) {
+            throw new PersistanceException("Error while loading level data");
         }
-
-        HashMap<String, String>  defaultMap = new HashMap<>();
-        defaultMap.put(1 + "", Assets.MAP_67_HILLS_ID);
-        defaultMap.put(2 + "", Assets.MAP_WINTER_AURA_ID);
-        defaultMap.put(3 + "", Assets.MAP_SIGMA_VOLCANO_ID);
-        defaultMap.put(4 + "", Assets.MAP_MINING_RIZZ_ID);
-        defaultMap.put(5 + "", Assets.MAP_BETA_JUNGLE_ID);
-
-        saveLevelData(defaultMap);
-
-        return defaultMap;
     }
 }

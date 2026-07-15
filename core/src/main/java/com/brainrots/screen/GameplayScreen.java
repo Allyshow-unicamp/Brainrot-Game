@@ -52,6 +52,7 @@ public class GameplayScreen extends GameScreen {
     private Actor currentConfirmModal;
     private ScrollPane currentScrollPane;
     private Actor currentUpgradePanel;
+    private ChangeListener menuButtonListener;
 
     public GameplayScreen(SpriteBatch batch, BrainRotGame screenManager,
          ShapeRenderer shapeRenderer, int level, String levelName) {
@@ -207,13 +208,16 @@ public class GameplayScreen extends GameScreen {
         currentConfirmModal = confirmModal;
         stage.addActor(confirmModal);
 
-        mainUX.getMenuButton().clearListeners();
-        mainUX.getMenuButton().addListener(new ChangeListener() {
+        if (menuButtonListener != null) {
+            mainUX.getMenuButton().removeListener(menuButtonListener);
+        }
+        menuButtonListener = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 confirmModal.show();
             }
-        });
+        };
+        mainUX.getMenuButton().addListener(menuButtonListener);
 
         Array<ImageButton> infoBtns = mainUX.getInfoButtons();
         for (int i = 0; i < infoBtns.size && i < mainUX.getTowerButtons().size; i++) {

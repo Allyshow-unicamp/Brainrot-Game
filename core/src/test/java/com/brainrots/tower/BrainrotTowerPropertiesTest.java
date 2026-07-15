@@ -13,7 +13,7 @@ class BrainrotTowerPropertiesTest {
     @Test
     void tungTungHasCorrectProperties() {
         BrainrotTower t = BrainrotTower.TUNG_TUNG;
-        assertEquals("tung_tung", t.getTowerId());
+        assertEquals("1_tung_tung", t.getTowerId());
         assertEquals("Tung Tung Tung Sahur", t.getDisplayName());
         assertEquals(GameBalance.TOWER_TUNG_DAMAGE, t.getDamage());
         assertEquals(GameBalance.TOWER_TUNG_COST, t.getCost());
@@ -26,7 +26,7 @@ class BrainrotTowerPropertiesTest {
     @Test
     void bombardiroHasCorrectProperties() {
         BrainrotTower t = BrainrotTower.BOMBARDILO_CROCODILO;
-        assertEquals("bombardiro_crocodilo", t.getTowerId());
+        assertEquals("2_bombardiro_crocodilo", t.getTowerId());
         assertEquals(GameBalance.TOWER_BOMB_DAMAGE, t.getDamage());
         assertEquals(GameBalance.TOWER_BOMB_COST, t.getCost());
         assertEquals(GameBalance.TOWER_BOMB_RANGE, t.getRange(), 0.001f);
@@ -36,7 +36,7 @@ class BrainrotTowerPropertiesTest {
     @Test
     void nuclearoHasCorrectProperties() {
         BrainrotTower t = BrainrotTower.NUCLEARO_DINOSAURO;
-        assertEquals("nuclearo_dinosauro", t.getTowerId());
+        assertEquals("5_nuclearo_dinosauro", t.getTowerId());
         assertEquals(GameBalance.TOWER_NUC_DAMAGE, t.getDamage());
         assertEquals(GameBalance.TOWER_NUC_COST, t.getCost());
         assertEquals(SynergyGroup.FIRE, t.getSynergyGroup());
@@ -45,7 +45,7 @@ class BrainrotTowerPropertiesTest {
     @Test
     void cappuccinoHasCorrectProperties() {
         BrainrotTower t = BrainrotTower.CAPPUCCINO_ASSASSINO;
-        assertEquals("cappuccino_assassino", t.getTowerId());
+        assertEquals("3_cappuccino_assassino", t.getTowerId());
         assertEquals(0, t.getDamage());
         assertEquals(GameBalance.TOWER_COIN_COST, t.getCost());
         assertEquals(SynergyGroup.SUPPORT, t.getSynergyGroup());
@@ -54,7 +54,7 @@ class BrainrotTowerPropertiesTest {
     @Test
     void ballerinaHasCorrectProperties() {
         BrainrotTower t = BrainrotTower.BALLERINA_CAPPUCCINA;
-        assertEquals("ballerina_cappuccina", t.getTowerId());
+        assertEquals("4_ballerina_cappuccina", t.getTowerId());
         assertEquals(0, t.getDamage());
         assertEquals(GameBalance.TOWER_BOOST_COST, t.getCost());
         assertEquals(SynergyGroup.SUPPORT, t.getSynergyGroup());

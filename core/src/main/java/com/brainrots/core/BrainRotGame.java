@@ -42,7 +42,7 @@ public class BrainRotGame extends Game implements ScreenManager {
     private void playMenuSound(){
         Music backgroundMusic = resourceManager.getSound(Assets.MUSIC_GAME);
         backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(0.5f);
+        backgroundMusic.setVolume(GameBalance.VOLUME);
         backgroundMusic.play();
     }
 

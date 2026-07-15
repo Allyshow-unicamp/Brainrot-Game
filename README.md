@@ -43,7 +43,7 @@ Uma horda de criaturas coloridas (bolas vermelhas, azuis, verdes, laranjas e bra
 - **MiningRizz** — Minas subterrâneas
 - **BetaJungle** — Selva exuberante
 
-Cada mapa possui um layout único de caminhos, barreiras e 10 ondas progressivas de inimigos.
+Cada mapa possui um layout único de caminhos, barreiras e ondas progressivas de inimigos.
 
 ---
 
@@ -230,10 +230,10 @@ core/src/main/java/com/brainrots/
 
 ```
 assets/
-├── Maps/                 # 5 mapas (cada um com .tmx, .png, waves.json)
-├── Towers/               # 11 sprites (5 base + 5 sinergia + 1 castelo)
-├── Enemies/              # 5 tipos (red, blue, green, orange, white)
-├── Projectiles/          # 3 tipos de projéteis
+├── Maps/                 # mapas (cada um com .tmx, .png, waves.json)
+├── Towers/               # sprites das torres
+├── Enemies/              # inimigos (red, blue, green, orange, white)
+├── Projectiles/          # projéteis
 ├── CCoins/               # Sprite de moedas
 ├── UI/                   # Fontes, botões, modais, skin
 ├── Soundtracks/          # Trilha sonora (game_song.mp3)
@@ -254,7 +254,7 @@ assets/
 - **Efeitos de status**: fogo DOT (dano por tempo) aplicável por projéteis.
 - **Controle de velocidade**: 1x e 2x.
 - **Controle de ondas**: pausa e resume manual da geração de inimigos.
-- **10 ondas por nível** com dificuldade progressiva, definidas em JSON.
+- **Ondas por nível** com dificuldade progressiva, definidas em JSON.
 
 ### 4.2 Inimigos
 
@@ -268,8 +268,8 @@ assets/
 
 ### 4.3 Sistema de estrelas e progressão
 
-- **1-3 estrelas** por nível com base na vida restante da base (thresholds: 33% e 66%).
-- **Recompensas em moedas**: 50/100/200 moedas para 1/2/3 estrelas.
+- **1-3 estrelas** por nível com base na vida restante da base.
+- **Recompensas em moedas**: moedas dependendo do número estrelas.
 - **Desbloqueio sequencial**: nível N+1 só é acessível após completar o nível N.
 - **Loja global**: moedas acumuladas podem ser usadas para desbloquear torres permanentemente entre níveis.
 - **Perfil persistente**: dados salvos em JSON (moedas, estrelas, torres desbloqueadas).
@@ -289,8 +289,8 @@ assets/
 
 Cada um dos 5 mapas possui:
 - Arquivo **TiledMap** (`.tmx`) com layers de caminho (Polyline), barreiras (Polygon) e fundo (Image).
-- Background em PNG (1920x1080).
-- Arquivo `waves.json` definindo as 10 ondas com tipos, quantidades, intervalos e tempos de spawn.
+- Background em PNG.
+- Arquivo `waves.json` definindo as ondas com tipos, quantidades, intervalos e tempos de spawn.
 
 ---
 
@@ -307,10 +307,10 @@ A seção a seguir compara as funcionalidades propostas nas atividades iniciais 
 | Comprar torres com moedas | Sidebar em `MainUX` com botões de compra, `CoinManager.canAfford()` / `subtractCoins()` | **Implementado** |
 | Posicionar torre fora do caminho | `TowerPlacementController` com validação de área via grid sampling e detecção de barreiras/caminho | **Implementado** |
 | Melhorar torres com moedas | `TowerUpgradePanel` com 3 eixos de upgrade (dano, alcance, cooldown) | **Implementado** |
-| Ganhar dinheiro ao finalizar mapas | `EndGameScreen` concede 50/100/200 moedas globais para 1/2/3 estrelas | **Implementado** |
+| Ganhar dinheiro ao finalizar mapas | `EndGameScreen` concede moedas globais dependendo do número de estrelas | **Implementado** |
 | Comprar novas torres na loja | `GlobalShopScreen` + `GlobalShop` para desbloqueio permanente com moedas globais | **Implementado** |
-| Sistema de combinações/sinergias | `SynergyManager` + `ElementalSynergy` com 4 grupos (FIRE, ICE, PHYSICAL, SUPPORT) | **Implementado** |
-| Estrelas por desempenho (0-3) | `Base.java` calcula estrelas com base no HP restante (thresholds 33%/66%) | **Implementado** |
+| Sistema de combinações/sinergias | `SynergyManager` + `ElementalSynergy` (FIRE, ICE, PHYSICAL, SUPPORT) | **Implementado** |
+| Estrelas por desempenho | `Base.java` calcula estrelas com base no HP restante | **Implementado** |
 | Desbloqueio sequencial de níveis | `LevelSelectionScreen` libera nível N+1 ao completar N com pelo menos 1 estrela | **Implementado** |
 
 ### 5.2 Funcionalidades adaptadas ou removidas
@@ -387,7 +387,7 @@ IA generativa foi utilizada ao longo do desenvolvimento nas seguintes áreas:
 - **Posicionamento de torres** (`TowerPlacementController`): Algoritmo de grid sampling para validação de área, cálculo de distância ponto-segmento, ghost preview com feedback visual, detecção de drag vs click e factory method de criação de torres.
 - **Sistema de sinergias** (`SynergyManager`, `ElementalSynergy`): Modelagem do padrão Observer com avaliação contínua, detecção de transição de estado entre frames, design de classe genérica reutilizável, Value Object imutável para multiplicadores e integração visual de troca de texturas.
 - **Documentação**: Javadoc consistente em português, este README e comentários de arquitetura explicando padrões de design.
-- **Casos de teste**: 34 testes unitários com JUnit 5, incluindo *test doubles* manuais para contornar limitações de mocking do libGDX.
+- **Casos de teste**: testes unitários com JUnit 5, incluindo *test doubles* manuais para contornar limitações de mocking do libGDX.
 - **Correção de bugs**: Concorrência na remoção de entidades, renderização Scene2D, persistência JSON, memory leaks e balanceamento.
 - **Código e refatoração**: Boilerplate Gradle multi-módulo, enums com dados, factory methods e configuração cross-platform (`StartupHelper`).
 

@@ -8,8 +8,8 @@ class ShopTowerDataTest {
 
     @Test
     void constructorSetsAllFields() {
-        ShopTowerData data = new ShopTowerData("tung_tung", "Tung Tung", "A tower", "Shoots", 150);
-        assertEquals("tung_tung", data.getId());
+        ShopTowerData data = new ShopTowerData("1_tung_tung", "Tung Tung", "A tower", "Shoots", 150);
+        assertEquals("1_tung_tung", data.getId());
         assertEquals("Tung Tung", data.getName());
         assertEquals("A tower", data.getDescription());
         assertEquals("Shoots", data.getBehaviorDescription());

@@ -19,7 +19,7 @@ public class FiniteWaveStrategy implements WaveGenerationStrategy {
 
     @Override
     public boolean hasNextWave(int currentWave) {
-        return currentWave < allWaves.size;
+        return currentWave <= allWaves.size;
     }
 
     @Override
