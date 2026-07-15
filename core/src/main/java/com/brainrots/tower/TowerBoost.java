@@ -7,6 +7,7 @@ import com.brainrots.effect.StatusEffect;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
+import com.brainrots.core.GameBalance;
 
 public class TowerBoost extends Tower {
 
@@ -42,22 +43,12 @@ public class TowerBoost extends Tower {
 
     @Override
     public void upgradeDamage() {
-        this.boostAmount += 5;
+        this.boostAmount += GameBalance.TOWER_BOOST_UPGRADE_AMOUNT;
         this.damageUpgradeLevel++;
     }
 
     @Override
     public String getDamageUpgradeLabel() {
-        return "Boost +5 [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
-    }
-
-    @Override
-    public String getRangeUpgradeLabel() {
-        return "Range +25 [Lv." + rangeUpgradeLevel + "]  $" + getRangeUpgradeCost();
-    }
-
-    @Override
-    public String getCooldownUpgradeLabel() {
-        return "Speed +15% [Lv." + cooldownUpgradeLevel + "]  $" + getCooldownUpgradeCost();
+        return "Boost +" + GameBalance.TOWER_BOOST_UPGRADE_AMOUNT + " [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
     }
 }

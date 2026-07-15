@@ -28,7 +28,6 @@ public class Base {
 
     public int calculateStars() {
         float ratio = (float) health / (float) maxHealth;
-        if (ratio < GameBalance.STAR_THRESHOLD_0) return 0;
         if (ratio < GameBalance.STAR_THRESHOLD_1) return 1;
         if (ratio < GameBalance.STAR_THRESHOLD_2) return 2;
         return 3;

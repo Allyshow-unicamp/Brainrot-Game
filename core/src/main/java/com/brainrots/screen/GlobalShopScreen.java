@@ -17,12 +17,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.brainrots.core.Assets;
 import com.brainrots.core.BrainRotGame;
+import com.brainrots.exception.InvalidGameActionException;
+import com.brainrots.exception.PersistanceException;
 import com.brainrots.interfaces.GameSaveHandler;
 import com.brainrots.interfaces.ScreenManager.ScreenType;
 import com.brainrots.core.GlobalShop;
 import com.brainrots.core.PlayerProfile;
 import com.brainrots.core.ShopTowerData;
-import com.brainrots.exception.InvalidGameActionException;
 import com.brainrots.tower.BrainrotTower;
 
 import java.util.HashMap;
@@ -119,7 +120,7 @@ public class GlobalShopScreen extends GameScreen {
                             globalShop.purchaseTower(playerProfile, towerId);
                             saveHandler.saveProfile(playerProfile);
                             rebuildUI();
-                        } catch (Exception e) {
+                        } catch (InvalidGameActionException | PersistanceException e) {
                             e.printStackTrace();
                         }
                     }

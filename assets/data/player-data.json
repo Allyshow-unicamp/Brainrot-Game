@@ -1,14 +1,17 @@
 {
-"globalCoins": 200,
+"globalCoins": 700,
 "levelStars": {
 	"1": 3,
 	"2": 3,
-	"3": 0,
-	"4": 0,
-	"5": 0
+	"3": 3,
+	"4": 3,
+	"5": 3
 },
 "unlockedTowerIds": [
 	"tung_tung",
-	"bombardiro_crocodilo"
+	"ballerina_cappuccina",
+	"cappuccino_assassino",
+	"bombardiro_crocodilo",
+	"nuclearo_dinosauro"
 ]
 }

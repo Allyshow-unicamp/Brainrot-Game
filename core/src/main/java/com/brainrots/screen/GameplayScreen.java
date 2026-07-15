@@ -46,6 +46,12 @@ public class GameplayScreen extends GameScreen {
 
     private MainUX mainUX;
 
+    // Atores transientes adicionados em show() — removidos antes de re-adicionar
+    private Actor currentInfoModal;
+    private Actor currentConfirmModal;
+    private ScrollPane currentScrollPane;
+    private Actor currentUpgradePanel;
+
     public GameplayScreen(SpriteBatch batch, BrainRotGame screenManager,
          ShapeRenderer shapeRenderer, int level, String levelName) {
         super(batch, screenManager, shapeRenderer);
@@ -161,6 +167,10 @@ public class GameplayScreen extends GameScreen {
 
         Gdx.input.setInputProcessor(stage);
 
+        // Remove atores transientes da vez anterior (não limpa o stage inteiro
+        // para preservar botões HUD e seus listeners definidos em initializeHud)
+        removeTransientActors();
+
         mainUX.setUnlockedTowerIds(screenManager.getPlayerProfile().getUnlockedTowerIds());
         mainUX.buildTowerPanel();
         Skin uiSkin = resourceManager.getSkin(Assets.UI_SKIN);
@@ -183,6 +193,7 @@ public class GameplayScreen extends GameScreen {
         TowerInfoModal infoModal = new TowerInfoModal(uiSkin);
         mainUX.setTowerInfoModal(infoModal);
         infoModal.setOnCloseCallback(() -> {});
+        currentInfoModal = infoModal;
         stage.addActor(infoModal);
 
         ConfirmModal confirmModal = new ConfirmModal(uiSkin, "Leave Level", "Are you sure you want to return to level selection? Progress will be lost.");
@@ -192,8 +203,10 @@ public class GameplayScreen extends GameScreen {
         confirmModal.setOnCancel(() -> {
             confirmModal.hide();
         });
+        currentConfirmModal = confirmModal;
         stage.addActor(confirmModal);
 
+        mainUX.getMenuButton().clearListeners();
         mainUX.getMenuButton().addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -204,6 +217,7 @@ public class GameplayScreen extends GameScreen {
         Array<ImageButton> infoBtns = mainUX.getInfoButtons();
         for (int i = 0; i < infoBtns.size && i < mainUX.getTowerButtons().size; i++) {
             final int idx = i;
+            infoBtns.get(i).clearListeners();
             infoBtns.get(i).addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -215,16 +229,37 @@ public class GameplayScreen extends GameScreen {
 
         ScrollPane scrollPane = mainUX.getTowerScrollPane();
         if (scrollPane != null) {
+            currentScrollPane = scrollPane;
             stage.addActor(scrollPane);
         }
 
         if (mainUX.getTowerUpgradePanel() != null) {
+            currentUpgradePanel = mainUX.getTowerUpgradePanel();
             stage.addActor(mainUX.getTowerUpgradePanel());
         }
 
         mainUX.updateButtonStates(levelManager.getCoins());
 
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+    private void removeTransientActors() {
+        if (currentInfoModal != null) {
+            currentInfoModal.remove();
+            currentInfoModal = null;
+        }
+        if (currentConfirmModal != null) {
+            currentConfirmModal.remove();
+            currentConfirmModal = null;
+        }
+        if (currentScrollPane != null) {
+            currentScrollPane.remove();
+            currentScrollPane = null;
+        }
+        if (currentUpgradePanel != null) {
+            currentUpgradePanel.remove();
+            currentUpgradePanel = null;
+        }
     }
 
 }

@@ -7,12 +7,24 @@ import com.brainrots.effect.StatusEffect;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
+import com.brainrots.core.GameBalance;
 
 public class TowerArea extends Tower {
 
     public TowerArea(Texture texture, Texture synergyTexture,Vector2 position, String displayName, int damage,
             float range, float attackCooldown, int width, int height, BrainrotTower towerType) {
         super(texture, synergyTexture,position, displayName, damage, 0, range, attackCooldown, width, height, towerType);
+    }
+
+    @Override
+    public void upgradeRange() {
+        this.range += GameBalance.TOWER_AREA_RANGE_UPGRADE;
+        this.rangeUpgradeLevel++;
+    }
+
+    @Override
+    public String getRangeUpgradeLabel() {
+        return "Range +" + GameBalance.TOWER_AREA_RANGE_UPGRADE + " [Lv." + rangeUpgradeLevel + "]  $" + getRangeUpgradeCost();
     }
 
     @Override

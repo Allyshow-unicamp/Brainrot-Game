@@ -34,6 +34,7 @@ public final class EnemySpawner {
         return false;
     }
     
+    /* Aguarda spawnTime inicial, depois spawna a cada spawnInterval até count chegar a 0 */
     public boolean shouldSpawn(float delta){
         timer += delta;
 

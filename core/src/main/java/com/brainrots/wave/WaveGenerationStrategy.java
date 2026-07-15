@@ -1,4 +1,4 @@
-package com.brainrots.engine;
+package com.brainrots.wave;
 
 /**
  * Interface para estratégia de geração de waves (Strategy Pattern).
@@ -7,11 +7,6 @@ package com.brainrots.engine;
  * de waves sem modificar sua própria estrutura. O WaveManager
  * simplesmente delega para a estratégia a decisão de como gerar
  * a próxima wave.
- *
- * Duas implementações iniciais:
- * - FiniteWaveStrategy: lê de um arquivo JSON com waves pré-definidas
- * - InfiniteWaveStrategy: gera waves proceduralmente com dificuldade
- *   escalável, sempre retornando hasNextWave() = true
  */
 public interface WaveGenerationStrategy {
 

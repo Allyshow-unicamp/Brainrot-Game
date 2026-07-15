@@ -19,9 +19,9 @@ import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameBalance;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
-import com.brainrots.engine.mode.GameMode;
-import com.brainrots.engine.mode.GameOutcome;
-import com.brainrots.engine.mode.StandardMode;
+import com.brainrots.mode.GameMode;
+import com.brainrots.mode.GameOutcome;
+import com.brainrots.mode.StandardMode;
 import com.brainrots.synergy.ElementalSynergy;
 import com.brainrots.synergy.SynergyBoost;
 import com.brainrots.synergy.SynergyGroup;
@@ -29,6 +29,7 @@ import com.brainrots.synergy.SynergyManager;
 import com.brainrots.tower.BrainrotTower;
 import com.brainrots.tower.Tower;
 import com.brainrots.tower.TowerCoin;
+import com.brainrots.wave.WaveManager;
 
 public class LevelManager {
 
@@ -75,16 +76,16 @@ public class LevelManager {
         this.projectileManager = new ProjectileManager();
         this.placementController = new TowerPlacementController(gameScreen, stage);
         this.selectedTower = null;
-        this.speedMultiplier = 1f;
+        this.speedMultiplier = GameBalance.DEFAULT_SPEED_MULTIPLIER;
         createRangeCircleTexture();
         mainUX.setCoinManager(coinManager);
 
         // Inicializa o gerenciador de sinergias com regras padrão
         this.synergyManager = new SynergyManager();
-        synergyManager.addRule(new ElementalSynergy(SynergyGroup.FIRE, 3, new SynergyBoost(1.15f)));
-        synergyManager.addRule(new ElementalSynergy(SynergyGroup.ICE, 3, new SynergyBoost(1.15f)));
-        synergyManager.addRule(new ElementalSynergy(SynergyGroup.PHYSICAL, 3, new SynergyBoost(1.10f)));
-        synergyManager.addRule(new ElementalSynergy(SynergyGroup.SUPPORT, 3, new SynergyBoost(1.0f, 2.0f, 1.0f)));
+        synergyManager.addRule(new ElementalSynergy(SynergyGroup.FIRE, GameBalance.FIRE_SYNERGY_THRESHOLD, new SynergyBoost(GameBalance.FIRE_SYNERGY_DAMAGE_MULT)));
+        synergyManager.addRule(new ElementalSynergy(SynergyGroup.ICE, GameBalance.ICE_SYNERGY_THRESHOLD, new SynergyBoost(GameBalance.ICE_SYNERGY_DAMAGE_MULT)));
+        synergyManager.addRule(new ElementalSynergy(SynergyGroup.PHYSICAL, GameBalance.PHYSICAL_SYNERGY_THRESHOLD, new SynergyBoost(GameBalance.PHYSICAL_SYNERGY_DAMAGE_MULT)));
+        synergyManager.addRule(new ElementalSynergy(SynergyGroup.SUPPORT, GameBalance.SUPPORT_SYNERGY_THRESHOLD, new SynergyBoost(GameBalance.SUPPORT_SYNERGY_DAMAGE_MULT, GameBalance.SUPPORT_SYNERGY_RANGE_MULT, GameBalance.SUPPORT_SYNERGY_COOLDOWN_MULT)));
 
         // Modo de jogo padrão (State Pattern)
         this.gameMode = new StandardMode();
@@ -135,6 +136,10 @@ public class LevelManager {
 
     public int getCurrentWave() {
         return waveManager.getCurrentWave();
+    }
+
+    public int getMaxWaves() {
+        return waveManager.getMaxWaves();
     }
 
     public void startNextWave() {
@@ -195,6 +200,7 @@ public class LevelManager {
 
             if (enemy.getPosition().dst(base.getPosition()) < 5.0f) {
                 base.takeDamage(enemy.getHp());
+                activeEnemies.removeValue(enemy, false);
                 if (!base.hasHealth()) {
                     screenManager.endGame(level, false, 0);
                 }
@@ -225,20 +231,21 @@ public class LevelManager {
         {
             Tower towerToSell = panel.getSelectedTower();
             activeTowers.removeValue(towerToSell, true);
-            
+
             panel.clearSellRequest();
-            clearSelectedTower(); 
-        } 
-        else 
+            clearSelectedTower();
+        }
+        else
         {
             panel.refresh();
-        }   
+        }
     }
 
     public Tower getSelectedTower() {
         return selectedTower;
     }
 
+    /* Só seleciona torre se o clique não foi em ator UI (evita conflito stage/game) */
     private void handleTowerClick() {
         if (!Gdx.input.justTouched()) return;
 
@@ -315,12 +322,6 @@ public class LevelManager {
         shapeRenderer.end();
     }
 
-    // ==================== MODO DE JOGO (STATE) ====================
-
-    /**
-     * Troca o modo de jogo em tempo de execução.
-     * Usado para ativar o modo infinito após a vitória.
-     */
     public void setGameMode(GameMode mode) {
         this.gameMode = mode;
         mode.onEnter(this);
@@ -330,40 +331,16 @@ public class LevelManager {
         return gameMode;
     }
 
-    /**
-     * Retorna o sufixo do modo atual para exibição no HUD.
-     * Ex: "" para StandardMode, " ∞" para InfiniteMode.
-     */
     public String getGameModeSuffix() {
         return gameMode.getHudSuffix();
     }
 
-    // ==================== SINERGIAS ====================
-
     public SynergyManager getSynergyManager() {
         return synergyManager;
     }
-
-    // ==================== WAVE STRATEGY ====================
-
-    /**
-     * Troca a estratégia de geração de waves.
-     * Usado ao ativar o modo infinito para injetar InfiniteWaveStrategy.
-     */
-    public void setWaveStrategy(WaveGenerationStrategy strategy) {
-        waveManager.setStrategy(strategy);
-    }
-
-    // ==================== VITÓRIA (REMOVIDA) ====================
-
-    /**
-     * A lógica de vitória foi movida para GameMode (State Pattern).
-     * LevelManager.Won() foi removido — a avaliação agora é feita por
-     * gameMode.evaluate() no update().
-     */
+    /* Estrelas baseadas na % de HP restante: <33%=1, <66%=2, >=66%=3 */
     private int levelStars(int hp, int maxHp) {
         float ratio = (float) hp / maxHp;
-        if (ratio < GameBalance.STAR_THRESHOLD_0) return 0;
         if (ratio < GameBalance.STAR_THRESHOLD_1) return 1;
         if (ratio < GameBalance.STAR_THRESHOLD_2) return 2;
         return 3;

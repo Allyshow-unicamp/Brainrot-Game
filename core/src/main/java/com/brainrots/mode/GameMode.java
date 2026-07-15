@@ -1,9 +1,9 @@
-package com.brainrots.engine.mode;
+package com.brainrots.mode;
 
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.engine.Base;
 import com.brainrots.engine.LevelManager;
-import com.brainrots.engine.WaveManager;
+import com.brainrots.wave.WaveManager;
 import com.brainrots.enemy.Enemy;
 
 /**
@@ -15,7 +15,7 @@ import com.brainrots.enemy.Enemy;
  * - Comportamento ao ativar o modo (onEnter)
  * - Texto exibido no HUD (getHudSuffix)
  *
- * Vantagens sobre flags booleanas (isInfiniteMode) e condicionais:
+ * Vantagens sobre flags booleanas e condicionais:
  * - As regras de cada modo estão isoladas em sua própria classe
  * - Novo modo = nova classe, sem modificar LevelManager (OCP)
  * - LevelManager delega para GameMode sem saber detalhes internos
@@ -40,7 +40,6 @@ public interface GameMode {
 
     /**
      * Sufixo exibido no HUD ao lado do número da wave.
-     * StandardMode retorna "", InfiniteMode retorna " ∞".
      */
     String getHudSuffix();
 }

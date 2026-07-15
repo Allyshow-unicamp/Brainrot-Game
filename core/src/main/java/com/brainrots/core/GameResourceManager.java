@@ -7,9 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-/*
-* Classe que gerencia os recursos do jogo.
-*/
+/** Gerencia assets do jogo (singleton). */
 public class GameResourceManager {
 
     private AssetManager assetManager;
@@ -27,9 +25,6 @@ public class GameResourceManager {
         return resourceManager;
     }
 
-    /**
-     * Carrega todos os assets do jogo.
-     */
     public void loadAssets() {
 
         /* MAPS */
@@ -72,7 +67,7 @@ public class GameResourceManager {
 
         /* SOUNDS */
         assetManager.load(Assets.MUSIC_GAME, Music.class);
-        
+
         /* HUD */
         assetManager.load(Assets.PLAY_BUTTON, Texture.class);
         assetManager.load(Assets.PAUSE_BUTTON, Texture.class);
@@ -90,11 +85,6 @@ public class GameResourceManager {
         assetManager.finishLoading();
     }
 
-    /**
-     * Obtem uma textura já carregada.
-     * @param name Caminho da textura.
-     * @return Retorna a textura ou null.
-     */
     public Texture getTexture(String name) {
         if (assetManager.isLoaded(name, Texture.class)) {
             return assetManager.get(name, Texture.class);
@@ -102,11 +92,6 @@ public class GameResourceManager {
         return null;
     }
 
-    /**
-     * Obtem o audio já carregado.
-     * @param name Caminho do audio.
-     * @return Retorna o audio ou null.
-     */
     public Music getSound(String name) {
         if (assetManager.isLoaded(name, Music.class)) {
             return assetManager.get(name, Music.class);
@@ -114,11 +99,6 @@ public class GameResourceManager {
         return null;
     }
 
-    /**
-     * Obtem uma pele já carregada.
-     * @param name Caminho da pele.
-     * @return Retorna a pele ou null.
-     */
     public Skin getSkin(String name) {
         if (assetManager.isLoaded(name, Skin.class)) {
             return assetManager.get(name, Skin.class);
@@ -126,11 +106,6 @@ public class GameResourceManager {
         return null;
     }
 
-    /**
-     * Obtem uma fonte já carregada.
-     * @param name Caminho da fonte.
-     * @return Retorna a fonte ou null.
-     */
     public BitmapFont getFont(String name) {
         if (assetManager.isLoaded(name, BitmapFont.class)) {
             return assetManager.get(name, BitmapFont.class);

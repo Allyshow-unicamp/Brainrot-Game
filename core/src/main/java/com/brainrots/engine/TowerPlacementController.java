@@ -20,15 +20,9 @@ import com.brainrots.tower.TowerBoost;
 import com.brainrots.tower.TowerCoin;
 import com.brainrots.tower.TowerProjArea;
 import com.brainrots.tower.TowerProjSingle;
+import com.brainrots.core.GameBalance;
 
 public class TowerPlacementController {
-
-    private static final float DRAG_THRESHOLD = 20f;
-    private static final int TOWER_SIZE = 150;
-    private static final int SAMPLE_GRID = 5;
-    private static final float VALID_THRESHOLD = 0.8f;
-    private static final float PATH_THRESHOLD = 40f;
-
     private BrainrotTower selectedTowerType;
     private Texture towerGhostTexture;
     private boolean isIconSelected;
@@ -67,7 +61,7 @@ public class TowerPlacementController {
         if (isIconSelected) {
             float dx = Gdx.input.getX() - dragStartScreenPos.x;
             float dy = Gdx.input.getY() - dragStartScreenPos.y;
-            if (dx * dx + dy * dy > DRAG_THRESHOLD * DRAG_THRESHOLD) {
+            if (dx * dx + dy * dy > GameBalance.DRAG_THRESHOLD * GameBalance.DRAG_THRESHOLD) {
                 isDragging = true;
             }
         }
@@ -81,7 +75,7 @@ public class TowerPlacementController {
 
         Vector3 mousePosition = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         gameScreen.unproject(mousePosition);
-        Vector2 worldPos = new Vector2(mousePosition.x, mousePosition.y - TOWER_SIZE / 2f);
+        Vector2 worldPos = new Vector2(mousePosition.x, mousePosition.y - GameBalance.TOWER_SIZE / 2f);
 
         boolean canAfford = coinManager.canAfford(selectedTowerType.getCost());
         boolean areaValid = isAreaValid(worldPos, barriers, path);
@@ -100,8 +94,8 @@ public class TowerPlacementController {
                 batch.setColor(1, 1, 1, 0.4f);
             }
 
-            batch.draw(towerGhostTexture, mousePosition.x - TOWER_SIZE / 2f,
-                mousePosition.y - TOWER_SIZE / 2f, TOWER_SIZE, TOWER_SIZE);
+            batch.draw(towerGhostTexture, mousePosition.x - GameBalance.TOWER_SIZE / 2f,
+                mousePosition.y - GameBalance.TOWER_SIZE / 2f, GameBalance.TOWER_SIZE, GameBalance.TOWER_SIZE);
 
             batch.setColor(1, 1, 1, 1.0f);
         }
@@ -118,6 +112,7 @@ public class TowerPlacementController {
         isDragging = false;
     }
 
+    /* Posiciona torre ao soltar drag (ou clicar) em área válida; right-click cancela */
     private void checkPositionTower(Array<Polygon> barriers, Array<Vector2> path, Array<Tower> activeTowers,
                                      CoinManager coinManager, MainUX mainUX) {
         if (!isIconSelected) return;
@@ -133,14 +128,14 @@ public class TowerPlacementController {
             cancelPlacement();
             return;
         }
-        
+
         if (!leftClick && !rightClick && !dragEnd) return;
 
         if (isCursorOverUI()) return;
 
         Vector3 currentMouseWorld = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         gameScreen.unproject(currentMouseWorld);
-        Vector2 worldPos = new Vector2(currentMouseWorld.x, currentMouseWorld.y - TOWER_SIZE / 2f);
+        Vector2 worldPos = new Vector2(currentMouseWorld.x, currentMouseWorld.y - GameBalance.TOWER_SIZE / 2f);
 
         placeTowerAtPosition(worldPos, barriers, path, activeTowers, coinManager, mainUX);
     }
@@ -169,16 +164,17 @@ public class TowerPlacementController {
         cancelPlacement();
     }
 
+    /* Amostra pontos numa grade sobre a área da torre: se >= 67% estiverem válidos, posição é aceita */
     private boolean isAreaValid(Vector2 worldPos, Array<Polygon> barriers, Array<Vector2> path) {
-        float halfSize = TOWER_SIZE / 2f;
-        int samplePoints = SAMPLE_GRID;
+        float halfSize = GameBalance.TOWER_SIZE / 2f;
+        int samplePoints = GameBalance.SAMPLE_GRID;
         int totalPoints = samplePoints * samplePoints;
         int validPoints = 0;
 
         for (int xi = 0; xi < samplePoints; xi++) {
             for (int yi = 0; yi < samplePoints; yi++) {
-                float px = worldPos.x - halfSize + (xi * TOWER_SIZE / (samplePoints - 1));
-                float py = worldPos.y + (yi * TOWER_SIZE / (samplePoints - 1));
+                float px = worldPos.x - halfSize + (xi * GameBalance.TOWER_SIZE / (samplePoints - 1));
+                float py = worldPos.y + (yi * GameBalance.TOWER_SIZE / (samplePoints - 1));
                 Vector2 point = new Vector2(px, py);
 
                 boolean inForbidden = false;
@@ -188,7 +184,7 @@ public class TowerPlacementController {
                         break;
                     }
                 }
-                if (!inForbidden && isPointNearPath(point, path, PATH_THRESHOLD)) {
+                if (!inForbidden && isPointNearPath(point, path, GameBalance.PATH_THRESHOLD)) {
                     inForbidden = true;
                 }
 
@@ -198,7 +194,7 @@ public class TowerPlacementController {
             }
         }
 
-        return (float) validPoints / totalPoints >= VALID_THRESHOLD;
+        return (float) validPoints / totalPoints >= GameBalance.VALID_THRESHOLD;
     }
 
     private boolean isPointNearPath(Vector2 point, Array<Vector2> path, float threshold) {
@@ -211,6 +207,7 @@ public class TowerPlacementController {
         return false;
     }
 
+    /* Projeta ponto p no segmento a-b e retorna a distância (usa t clampado entre 0 e 1) */
     private float distanceToLineSegment(Vector2 p, Vector2 a, Vector2 b) {
         float dx = b.x - a.x;
         float dy = b.y - a.y;
@@ -237,31 +234,31 @@ public class TowerPlacementController {
                 tower = new TowerProjSingle(texture,synergyTexture ,position,
                     type.getDisplayName(), type.getDamage(), type.getAttackSpeed(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, type);
+                    GameBalance.TOWER_SIZE, GameBalance.TOWER_SIZE, type);
                 break;
             case BOMBARDILO_CROCODILO:
                 tower = new TowerProjArea(texture,synergyTexture ,position,
                     type.getDisplayName(), type.getDamage(), type.getAttackSpeed(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, type, type.getExtraFloat());
+                    GameBalance.TOWER_SIZE, GameBalance.TOWER_SIZE, type, type.getExtraFloat());
                 break;
             case NUCLEARO_DINOSAURO:
                 tower = new TowerArea(texture,synergyTexture ,position,
                     type.getDisplayName(), type.getDamage(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, type);
+                    GameBalance.TOWER_SIZE, GameBalance.TOWER_SIZE, type);
                 break;
             case CAPPUCCINO_ASSASSINO:
                 tower = new TowerCoin(texture, synergyTexture,position,
                     type.getDisplayName(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, type, type.getExtraValue());
+                    GameBalance.TOWER_SIZE, GameBalance.TOWER_SIZE, type, type.getExtraValue());
                 break;
             case BALLERINA_CAPPUCCINA:
                 tower = new TowerBoost(texture, synergyTexture, position,
                     type.getDisplayName(),
                     type.getRange(), type.getAttackCooldown(),
-                    TOWER_SIZE, TOWER_SIZE, type, type.getExtraValue());
+                    GameBalance.TOWER_SIZE, GameBalance.TOWER_SIZE, type, type.getExtraValue());
                 break;
             default:
                 return null;

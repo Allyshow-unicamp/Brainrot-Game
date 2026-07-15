@@ -3,6 +3,7 @@ package com.brainrots.core;
 import java.util.HashMap;
 
 import com.brainrots.exception.InvalidGameActionException;
+import com.brainrots.exception.PersistanceException;
 import com.brainrots.interfaces.GameSaveHandler;
 
 public class GlobalShop {
@@ -15,7 +16,7 @@ public class GlobalShop {
     public GlobalShop(GameSaveHandler saveHandler) {
         try {
             this.shopData = saveHandler.loadShopData();
-        } catch (Exception e) {
+        } catch (PersistanceException e) {
             e.printStackTrace();
         }
     }

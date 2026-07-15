@@ -19,14 +19,11 @@ import com.brainrots.exception.PersistanceException;
 
 public class EndGameScreen extends GameScreen {
 
-    private int level;
     private boolean won;
 
     public EndGameScreen(SpriteBatch batch, BrainRotGame screenManager,
             ShapeRenderer shapeRenderer, int level, boolean won, int stars, GameSaveHandler gameSaveHandler) {
         super(batch, screenManager, shapeRenderer);
-        this.level = level;
-
         this.won = won;
 
         if (won) {
@@ -81,39 +78,7 @@ public class EndGameScreen extends GameScreen {
             }
         });
 
-        // Botão "Modo Infinito" — disponível apenas na vitória
-        if (won) {
-            table.row().padTop(20);
-            TextButton infiniteButton = new TextButton("Infinite Mode", buttons.style);
-            table.add(infiniteButton).size(250, 60);
-
-            infiniteButton.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    // Obtém o nome do nível a partir do LevelManager
-                    // (usamos o número do nível para lookup)
-                    String levelName = getLevelName(level);
-                    if (levelName != null) {
-                        screenManager.switchToInfiniteMode(level, levelName);
-                    }
-                }
-            });
-        }
-
         stage.addActor(table);
-    }
-
-    /**
-     * Recupera o nome do mapa associado a um número de nível.
-     * Como LevelSelectionScreen usa levelHashMap, replicamos a lógica
-     * básica aqui: nível 1 = "67Hills". Para níveis futuros, este método
-     * deve ser expandido.
-     */
-    private String getLevelName(int level) {
-        switch (level) {
-            case 1: return "67Hills";
-            default: return null;
-        }
     }
 
     private int calculateCoinReward(int stars) {
@@ -127,7 +92,7 @@ public class EndGameScreen extends GameScreen {
 
     @Override
     protected void initializeHud() {
-        
+
     }
 
     @Override

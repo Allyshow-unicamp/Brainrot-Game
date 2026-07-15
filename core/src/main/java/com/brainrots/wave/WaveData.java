@@ -1,4 +1,4 @@
-package com.brainrots.engine;
+package com.brainrots.wave;
 
 import com.badlogic.gdx.utils.Array;
 
@@ -7,8 +7,7 @@ import com.badlogic.gdx.utils.Array;
  *
  * Usado como valor de retorno (Value Object) das estratégias de geração
  * de waves (WaveGenerationStrategy). Desacopla o WaveManager do formato
- * de origem dos dados (JSON para FiniteWaveStrategy, geração procedural
- * para InfiniteWaveStrategy).
+ * de origem dos dados (JSON para FiniteWaveStrategy).
  *
  * SpawnGroup é uma classe interna pública que representa um tipo de
  * inimigo com sua quantidade, intervalo entre spawns e delay inicial.

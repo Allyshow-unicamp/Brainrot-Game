@@ -9,14 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.brainrots.effect.StatusEffect;
 import com.brainrots.entity.GameObject;
 
-/**
- * Representa um inimigo que percorre um caminho de waypoints.
- *
- * Gerencia efeitos de status (queimadura, lentidão, veneno, atordoamento)
- * através de composição com StatusEffect. O método update() processa
- * os efeitos ANTES do movimento, garantindo que efeitos como stun
- * impeçam o deslocamento no mesmo frame em que são aplicados.
- */
+/** Inimigo que percorre waypoints e gerencia efeitos de status via composição. */
 public class Enemy extends GameObject {
 
     protected int hp;
@@ -50,16 +43,7 @@ public class Enemy extends GameObject {
         this.activeEffects = new Array<>();
     }
 
-    /**
-     * Atualiza posição e processa efeitos de status.
-     *
-     * A ordem é importante:
-     * 1. processEffects() — aplica ticks de DOT, verifica expirações
-     * 2. Se não está atordoado, move-se ao longo do path
-     *
-     * Isso garante que um inimigo atordoado pare imediatamente,
-     * e que um inimigo em chamas tome dano mesmo sem se mover.
-     */
+    /* Processa efeitos antes do movimento para que stun trave no mesmo frame */
     public void update(float delta) {
         processEffects(delta);
         if (!stunned) {
@@ -67,11 +51,6 @@ public class Enemy extends GameObject {
         }
     }
 
-    /**
-     * Move o inimigo ao longo do caminho de waypoints.
-     * Extraído para método separado para clareza e para permitir
-     * que o stun pule este bloco.
-     */
     private void move(float delta) {
         if (currentWaypointIndex < path.size) {
             Vector2 target = path.get(currentWaypointIndex);
@@ -88,14 +67,7 @@ public class Enemy extends GameObject {
         }
     }
 
-    /**
-     * Processa todos os efeitos de status ativos.
-     *
-     * Itera de trás para frente para permitir remoção segura
-     * durante a iteração. Cada efeito tem seu update() chamado,
-     * que internamente faz tick(), decrementa timer e chama
-     * onExpire() se necessário.
-     */
+    /* Itera ao contrário para remoção segura durante iteração */
     private void processEffects(float delta) {
         for (int i = activeEffects.size - 1; i >= 0; i--) {
             StatusEffect effect = activeEffects.get(i);
@@ -106,13 +78,6 @@ public class Enemy extends GameObject {
         }
     }
 
-    /**
-     * Aplica um novo efeito de status ao inimigo.
-     * O efeito é adicionado à lista e seu onApply() é chamado
-     * imediatamente (ex: IceEffect reduz speed, StunEffect trava).
-     *
-     * @param effect efeito a ser aplicado (cópia independente)
-     */
     public void addEffect(StatusEffect effect) {
         effect.onApply(this);
         activeEffects.add(effect);
@@ -122,12 +87,7 @@ public class Enemy extends GameObject {
         this.stunned = stunned;
     }
 
-    /**
-     * Aplica um multiplicador de slow à velocidade.
-     * Se já está sob efeito de slow, incrementa slowStack para
-     * garantir que restoreSpeed() só restaure quando o último
-     * IceEffect expirar.
-     */
+    /* Usa slowStack para garantir que restore só ocorra quando o último efeito expirar */
     public void applySlow(float factor) {
         if (slowStack == 0) {
             this.speed = Math.max(1, Math.round(this.speed * factor));
@@ -135,11 +95,6 @@ public class Enemy extends GameObject {
         slowStack++;
     }
 
-    /**
-     * Restaura a velocidade original. Decrementa slowStack e só
-     * restaura a velocidade quando a pilha chega a zero (ou seja,
-     * quando todos os IceEffects expiraram).
-     */
     public void restoreSpeed() {
         slowStack = Math.max(0, slowStack - 1);
         if (slowStack == 0) {
@@ -164,11 +119,6 @@ public class Enemy extends GameObject {
         return this.rewardCoins;
     }
 
-    /**
-     * Verifica se o inimigo ainda está em estado de receber dano
-     * ou efeitos. Útil para o LevelManager evitar processar inimigos
-     * já mortos no mesmo frame.
-     */
     public boolean isAlive() {
         return hp > 0;
     }
