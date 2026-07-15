@@ -26,7 +26,7 @@ public class TowerPlacementController {
     private static final float DRAG_THRESHOLD = 20f;
     private static final int TOWER_SIZE = 150;
     private static final int SAMPLE_GRID = 5;
-    private static final float VALID_THRESHOLD = 0.8f;
+    private static final float VALID_THRESHOLD = 0.67f;
     private static final float PATH_THRESHOLD = 40f;
 
     private BrainrotTower selectedTowerType;
@@ -133,7 +133,7 @@ public class TowerPlacementController {
             cancelPlacement();
             return;
         }
-        
+
         if (!leftClick && !rightClick && !dragEnd) return;
 
         if (isCursorOverUI()) return;

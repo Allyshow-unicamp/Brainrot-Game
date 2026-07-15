@@ -1,10 +1,10 @@
-package com.brainrots.engine.mode;
+package com.brainrots.mode;
 
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.engine.Base;
-import com.brainrots.engine.InfiniteWaveStrategy;
 import com.brainrots.engine.LevelManager;
-import com.brainrots.engine.WaveManager;
+import com.brainrots.wave.InfiniteWaveStrategy;
+import com.brainrots.wave.WaveManager;
 import com.brainrots.enemy.Enemy;
 
 /**

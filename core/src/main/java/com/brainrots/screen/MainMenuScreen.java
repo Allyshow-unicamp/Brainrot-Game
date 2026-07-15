@@ -71,12 +71,6 @@ public class MainMenuScreen extends GameScreen {
 
     @Override
     protected void drawScreen(float delta) {
-        batch.begin();
-
-        Texture texture = resourceManager.getTexture(Assets.MENU_SCREEN);
-
-        batch.draw(texture, 0, 0);
-        batch.end();
         drawWithStageHelper(delta);
     }
 }

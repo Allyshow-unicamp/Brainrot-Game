@@ -1,4 +1,4 @@
-package com.brainrots.engine.mode;
+package com.brainrots.mode;
 
 /**
  * Resultado da avaliação do GameMode a cada frame.

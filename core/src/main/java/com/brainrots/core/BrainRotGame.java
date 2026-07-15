@@ -160,7 +160,7 @@ public class BrainRotGame extends Game implements ScreenManager {
      */
     public void switchToInfiniteMode(int level, String levelName) {
         GameplayScreen gameplayScreen = new GameplayScreen(batch, this, shapeRenderer, level, levelName);
-        gameplayScreen.getLevelManager().setGameMode(new com.brainrots.engine.mode.InfiniteMode());
+        gameplayScreen.getLevelManager().setGameMode(new com.brainrots.mode.InfiniteMode());
         setScreen(gameplayScreen);
     }
 }

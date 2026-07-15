@@ -19,9 +19,9 @@ import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameBalance;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.enemy.Enemy;
-import com.brainrots.engine.mode.GameMode;
-import com.brainrots.engine.mode.GameOutcome;
-import com.brainrots.engine.mode.StandardMode;
+import com.brainrots.mode.GameMode;
+import com.brainrots.mode.GameOutcome;
+import com.brainrots.mode.StandardMode;
 import com.brainrots.synergy.ElementalSynergy;
 import com.brainrots.synergy.SynergyBoost;
 import com.brainrots.synergy.SynergyGroup;
@@ -29,6 +29,8 @@ import com.brainrots.synergy.SynergyManager;
 import com.brainrots.tower.BrainrotTower;
 import com.brainrots.tower.Tower;
 import com.brainrots.tower.TowerCoin;
+import com.brainrots.wave.WaveGenerationStrategy;
+import com.brainrots.wave.WaveManager;
 
 public class LevelManager {
 
@@ -75,7 +77,7 @@ public class LevelManager {
         this.projectileManager = new ProjectileManager();
         this.placementController = new TowerPlacementController(gameScreen, stage);
         this.selectedTower = null;
-        this.speedMultiplier = 1f;
+        this.speedMultiplier = 0.75f;
         createRangeCircleTexture();
         mainUX.setCoinManager(coinManager);
 
@@ -195,6 +197,7 @@ public class LevelManager {
 
             if (enemy.getPosition().dst(base.getPosition()) < 5.0f) {
                 base.takeDamage(enemy.getHp());
+                activeEnemies.removeValue(enemy, false);
                 if (!base.hasHealth()) {
                     screenManager.endGame(level, false, 0);
                 }
@@ -225,14 +228,14 @@ public class LevelManager {
         {
             Tower towerToSell = panel.getSelectedTower();
             activeTowers.removeValue(towerToSell, true);
-            
+
             panel.clearSellRequest();
-            clearSelectedTower(); 
-        } 
-        else 
+            clearSelectedTower();
+        }
+        else
         {
             panel.refresh();
-        }   
+        }
     }
 
     public Tower getSelectedTower() {

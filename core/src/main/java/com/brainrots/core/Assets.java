@@ -25,7 +25,7 @@ public final class Assets {
     public static final String MAP_WINTER_AURA_TMX = "Maps/WinterAura/WinterAura.tmx";
     public static final String MAP_WINTER_AURA_BG = "Maps/WinterAura/WinterAura.png";
     public static final String MAP_WINTER_AURA_ID = "WinterAura";
-    
+
 
     /* ENEMIES */
     public static final String ENEMY_RED = "Enemies/red.png";

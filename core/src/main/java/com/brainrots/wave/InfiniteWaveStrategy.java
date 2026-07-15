@@ -1,4 +1,4 @@
-package com.brainrots.engine;
+package com.brainrots.wave;
 
 import com.badlogic.gdx.math.MathUtils;
 
@@ -22,8 +22,8 @@ public class InfiniteWaveStrategy implements WaveGenerationStrategy {
     private static final float COUNT_SCALE = 0.10f;
     private static final int BOSS_INTERVAL = 5;
 
-    private static final String[] ENEMY_TYPES = {"6_Ball", "7_Ball", "67_Ball"};
-    private static final String[] BOSS_TYPES = {"6_7_Ball"};
+    private static final String[] ENEMY_TYPES = {"red", "green", "blue"};
+    private static final String[] BOSS_TYPES = {"white", "orange"};
 
     private int baseWave;
 

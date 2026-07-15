@@ -12,7 +12,7 @@
 	"name": "Ballerina Cappuccina",
 	"description": "Boosts the damage of nearby allied towers",
 	"behaviorDescription": "Tower support",
-	"price": 120
+	"price": 200
 },
 "cappuccino_assassino": {
 	"class": "com.brainrots.core.ShopTowerData",
@@ -20,7 +20,7 @@
 	"name": "Cappuccino Assassino",
 	"description": "Generates coins each turn based on nearby allied towers",
 	"behaviorDescription": "Coin generator",
-	"price": 100
+	"price": 150
 },
 "bombardiro_crocodilo": {
 	"class": "com.brainrots.core.ShopTowerData",
@@ -28,7 +28,7 @@
 	"name": "Bombardiro Crocodilo",
 	"description": "Fires an explosive projectile that damages multiple enemies in an area",
 	"behaviorDescription": "Area projectile damage",
-	"price": 200
+	"price": 100
 },
 "nuclearo_dinosauro": {
 	"class": "com.brainrots.core.ShopTowerData",

@@ -48,20 +48,20 @@ public class TowerUpgradePanel extends Table {
         buildLayout();
     }
 
-    public boolean isSellRequested() 
+    public boolean isSellRequested()
     {
         return sellRequest;
     }
 
-    public void clearSellRequest() 
+    public void clearSellRequest()
     {
         sellRequest = false;
     }
 
-    private Drawable createRedDrawable() 
+    private Drawable createRedDrawable()
     {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(0.8f, 0.1f, 0.1f, 1f); 
+        pixmap.setColor(0.8f, 0.1f, 0.1f, 1f);
         pixmap.fill();
         Texture tex = new Texture(pixmap);
         pixmap.dispose();
@@ -142,7 +142,7 @@ public class TowerUpgradePanel extends Table {
         setupButton(cooldownBtn, () -> {
             if (currentTower != null) {
                 int cost = currentTower.getCooldownUpgradeCost();
-                if (coinManager.canAfford(cost)) 
+                if (coinManager.canAfford(cost))
                 {
                     currentTower.upgradeCooldown();
                     coinManager.subtractCoins(cost);
@@ -170,20 +170,20 @@ public class TowerUpgradePanel extends Table {
     }
 
     private void createSellButtonSection(TextButton.TextButtonStyle baseBtnStyle, Label.LabelStyle priceStyle) {
-   
+
     TextButton.TextButtonStyle sellBtnStyle = new TextButton.TextButtonStyle(baseBtnStyle);
     sellBtnStyle.up = createRedDrawable();
     sellBtnStyle.fontColor = Color.WHITE;
 
-    TextButton sellBtn = new TextButton("Vender", sellBtnStyle);
+    TextButton sellBtn = new TextButton("Sell", sellBtnStyle);
     sellPrice = new Label("", priceStyle);
-    sellPrice.setColor(Color.GOLD); 
+    sellPrice.setColor(Color.GOLD);
     sellBtn.addListener(new ClickListener() {
         @Override
         public void clicked(InputEvent event, float x, float y) {
             if (currentTower != null) {
                 coinManager.addCoins(currentTower.getValueSpent());
-                sellRequest = true; 
+                sellRequest = true;
             }
         }
     });

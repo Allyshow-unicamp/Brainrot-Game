@@ -1,4 +1,4 @@
-package com.brainrots.engine;
+package com.brainrots.wave;
 
 /**
  * Interface para estratégia de geração de waves (Strategy Pattern).

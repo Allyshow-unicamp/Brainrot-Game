@@ -41,8 +41,8 @@ public abstract class Tower extends GameObject {
     private List<SynergyBoost> activeSynergyBoosts;
 
     private static final int BASE_DAMAGE_COST = 50;
-    private static final int BASE_RANGE_COST = 40;
-    private static final int BASE_COOLDOWN_COST = 60;
+    private static final int BASE_RANGE_COST = 25;
+    private static final int BASE_COOLDOWN_COST = 50;
     private static final float COST_MULTIPLIER = 2f;
 
     /**
@@ -85,12 +85,12 @@ public abstract class Tower extends GameObject {
         batch.draw(textureRegion, x, y, width, height);
     }
 
-    public void addValueSpent(int amount) 
+    public void addValueSpent(int amount)
     {
         this.valueSpent += amount;
     }
 
-    public int getValueSpent() 
+    public int getValueSpent()
     {
         return valueSpent;
     }
@@ -219,7 +219,7 @@ public abstract class Tower extends GameObject {
     }
 
     public void upgradeDamage() {
-        this.damage += 10;
+        this.damage += 30;
         this.damageUpgradeLevel++;
     }
 
@@ -236,7 +236,7 @@ public abstract class Tower extends GameObject {
     }
 
     public void upgradeRange() {
-        this.range += 25;
+        this.range += 50;
         this.rangeUpgradeLevel++;
     }
 

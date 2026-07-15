@@ -72,7 +72,7 @@ public class GameResourceManager {
 
         /* SOUNDS */
         assetManager.load(Assets.MUSIC_GAME, Music.class);
-        
+
         /* HUD */
         assetManager.load(Assets.PLAY_BUTTON, Texture.class);
         assetManager.load(Assets.PAUSE_BUTTON, Texture.class);

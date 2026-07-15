@@ -1,4 +1,4 @@
-package com.brainrots.engine;
+package com.brainrots.wave;
 
 import java.nio.file.Paths;
 

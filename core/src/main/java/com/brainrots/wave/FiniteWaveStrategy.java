@@ -1,4 +1,4 @@
-package com.brainrots.engine;
+package com.brainrots.wave;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonReader;

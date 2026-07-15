@@ -4,7 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.engine.Base;
-import com.brainrots.engine.WaveManager;
+import com.brainrots.mode.GameOutcome;
+import com.brainrots.mode.InfiniteMode;
+import com.brainrots.mode.StandardMode;
+import com.brainrots.wave.WaveManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -108,12 +111,12 @@ class GameModeTest {
     private WaveManager createWaveManager(int currentWave, int maxWaves) {
         Array<com.badlogic.gdx.math.Vector2> emptyPath = new Array<>();
         WaveManager wm = new WaveManager(emptyPath,
-            new com.brainrots.engine.WaveGenerationStrategy() {
+            new com.brainrots.wave.WaveGenerationStrategy() {
                 @Override
                 public boolean hasNextWave(int cw) { return cw < maxWaves; }
                 @Override
-                public com.brainrots.engine.WaveData generateNextWave(int cw) {
-                    return new com.brainrots.engine.WaveData();
+                public com.brainrots.wave.WaveData generateNextWave(int cw) {
+                    return new com.brainrots.wave.WaveData();
                 }
             },
             maxWaves
