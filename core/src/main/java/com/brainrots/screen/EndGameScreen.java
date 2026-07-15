@@ -81,20 +81,6 @@ public class EndGameScreen extends GameScreen {
         stage.addActor(table);
     }
 
-    /**
-     * Recupera o nome do mapa associado a um número de nível.
-     */
-    private String getLevelName(int level) {
-        switch (level) {
-            case 1: return "67Hills";
-            case 2: return "WinterAura";
-            case 3: return "SigmaVolcano";
-            case 4: return "MiningRizz";
-            case 5: return "BetaJungle";
-            default: return null;
-        }
-    }
-
     private int calculateCoinReward(int stars) {
         switch (stars) {
             case 1: return 50;

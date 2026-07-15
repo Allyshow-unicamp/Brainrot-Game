@@ -2,34 +2,18 @@ package com.brainrots.effect;
 
 import com.brainrots.enemy.Enemy;
 
-/**
- * Efeito de fogo: causa dano ao longo do tempo (Damage Over Time - DOT).
- *
- * A cada tick (frame), aplica damagePerTick ao inimigo. Diferente de
- * PoisonEffect, que pode ter mecânicas distintas no futuro (ex: dano
- * acumulativo ou escalonado).
- *
- * O dano é aplicado independentemente do ataque da torre — ou seja,
- * um inimigo em chamas continua tomando dano mesmo depois que a torre
- * muda de alvo.
- */
+/** Dano ao longo do tempo (DOT). Aplica dano por tick independentemente do ataque da torre. */
 public class FireEffect extends StatusEffect {
 
     private int damagePerTick;
 
-    /**
-     * @param duration       duração total do efeito em segundos
-     * @param damagePerTick  dano causado a cada frame (tick)
-     */
     public FireEffect(float duration, int damagePerTick) {
         super(duration);
         this.damagePerTick = damagePerTick;
     }
 
     @Override
-    public void onApply(Enemy enemy) {
-        // FireEffect não precisa de configuração inicial no inimigo.
-    }
+    public void onApply(Enemy enemy) {}
 
     @Override
     public void tick(Enemy enemy, float delta) {
@@ -37,9 +21,7 @@ public class FireEffect extends StatusEffect {
     }
 
     @Override
-    public void onExpire(Enemy enemy) {
-        // Nada a limpar — o DOT não altera estado permanente do inimigo.
-    }
+    public void onExpire(Enemy enemy) {}
 
     @Override
     public StatusEffect copy() {

@@ -5,10 +5,5 @@ import com.badlogic.gdx.utils.Array;
 
 
 public interface Spawnable {
-
-    /**
-     * Metodo para chamar o construtor
-     * <p>Acompanha o EneyFactory, que eh o invoker dos enemies</p>
-     */
-    public Enemy spawn(Array<Vector2> path);
+    Enemy spawn(Array<Vector2> path);
 }

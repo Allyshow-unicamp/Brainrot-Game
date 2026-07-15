@@ -1,74 +1,75 @@
 {
   "1": {
     "enemies": [
-      { "type": "red", "count": 10, "spawnInterval": 0.5, "spawnTime": 2 }
+      { "type": "red", "count": 12, "spawnInterval": 0.45, "spawnTime": 2 }
     ]
   },
 
   "2": {
     "enemies": [
-      { "type": "red", "count": 12, "spawnInterval": 0.4, "spawnTime": 2 },
-      { "type": "green", "count": 6, "spawnInterval": 0.25, "spawnTime": 8 }
+      { "type": "red", "count": 15, "spawnInterval": 0.35, "spawnTime": 2 },
+      { "type": "green", "count": 8, "spawnInterval": 0.2, "spawnTime": 7 }
     ]
   },
 
   "3": {
     "enemies": [
-      { "type": "red", "count": 15, "spawnInterval": 0.3, "spawnTime": 2 },
-      { "type": "blue", "count": 3, "spawnInterval": 1.25, "spawnTime": 6 }
+      { "type": "red", "count": 18, "spawnInterval": 0.25, "spawnTime": 2 },
+      { "type": "blue", "count": 4, "spawnInterval": 1.0, "spawnTime": 5 }
     ]
   },
 
   "4": {
     "enemies": [
-      { "type": "green", "count": 25, "spawnInterval": 0.125, "spawnTime": 2 }
+      { "type": "green", "count": 25, "spawnInterval": 0.1, "spawnTime": 2 }
     ]
   },
 
   "5": {
     "enemies": [
-      { "type": "blue", "count": 6, "spawnInterval": 1.0, "spawnTime": 2 },
-      { "type": "red", "count": 15, "spawnInterval": 0.25, "spawnTime": 5 },
-      { "type": "green", "count": 10, "spawnInterval": 0.15, "spawnTime": 10 }
+      { "type": "orange", "count": 1, "spawnInterval": 0.5, "spawnTime": 2 },
+      { "type": "red", "count": 18, "spawnInterval": 0.2, "spawnTime": 5 },
+      { "type": "green", "count": 10, "spawnInterval": 0.12, "spawnTime": 10 }
     ]
   },
 
   "6": {
     "enemies": [
-      { "type": "orange", "count": 1, "spawnInterval": 0.5, "spawnTime": 2 },
-      { "type": "red", "count": 20, "spawnInterval": 0.25, "spawnTime": 5 }
+      { "type": "orange", "count": 2, "spawnInterval": 1.2, "spawnTime": 2 },
+      { "type": "blue", "count": 8, "spawnInterval": 0.6, "spawnTime": 5 }
     ]
   },
 
   "7": {
     "enemies": [
-      { "type": "blue", "count": 10, "spawnInterval": 0.75, "spawnTime": 2 },
-      { "type": "green", "count": 20, "spawnInterval": 0.1, "spawnTime": 8 }
+      { "type": "blue", "count": 12, "spawnInterval": 0.6, "spawnTime": 2 },
+      { "type": "green", "count": 18, "spawnInterval": 0.08, "spawnTime": 8 }
     ]
   },
 
   "8": {
     "enemies": [
-      { "type": "orange", "count": 3, "spawnInterval": 1.5, "spawnTime": 2 },
-      { "type": "blue", "count": 8, "spawnInterval": 0.75, "spawnTime": 6 }
+      { "type": "white", "count": 1, "spawnInterval": 2.0, "spawnTime": 2 },
+      { "type": "orange", "count": 2, "spawnInterval": 1.2, "spawnTime": 5 },
+      { "type": "blue", "count": 6, "spawnInterval": 0.75, "spawnTime": 10 }
     ]
   },
 
   "9": {
     "enemies": [
-      { "type": "white", "count": 2, "spawnInterval": 2.0, "spawnTime": 2 },
-      { "type": "green", "count": 20, "spawnInterval": 0.1, "spawnTime": 5 },
-      { "type": "red", "count": 20, "spawnInterval": 0.2, "spawnTime": 10 }
+      { "type": "white", "count": 2, "spawnInterval": 1.8, "spawnTime": 2 },
+      { "type": "green", "count": 20, "spawnInterval": 0.08, "spawnTime": 5 },
+      { "type": "red", "count": 20, "spawnInterval": 0.15, "spawnTime": 10 }
     ]
   },
 
   "10": {
     "enemies": [
-      { "type": "orange", "count": 4, "spawnInterval": 1.5, "spawnTime": 2 },
-      { "type": "blue", "count": 12, "spawnInterval": 0.75, "spawnTime": 6 },
-      { "type": "white", "count": 5, "spawnInterval": 1.25, "spawnTime": 12 },
-      { "type": "red", "count": 30, "spawnInterval": 0.15, "spawnTime": 16 },
-      { "type": "green", "count": 40, "spawnInterval": 0.075, "spawnTime": 20 }
+      { "type": "orange", "count": 4, "spawnInterval": 1.2, "spawnTime": 2 },
+      { "type": "blue", "count": 12, "spawnInterval": 0.6, "spawnTime": 6 },
+      { "type": "white", "count": 3, "spawnInterval": 1.25, "spawnTime": 12 },
+      { "type": "red", "count": 25, "spawnInterval": 0.12, "spawnTime": 16 },
+      { "type": "green", "count": 30, "spawnInterval": 0.06, "spawnTime": 20 }
     ]
   }
 }

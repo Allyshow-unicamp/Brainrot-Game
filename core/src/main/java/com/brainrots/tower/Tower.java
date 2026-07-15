@@ -93,7 +93,6 @@ public abstract class Tower extends GameObject {
     }
 
     public float getAttackCooldown() {
-        // Aplica multiplicador de cooldown das sinergias ativas
         float multiplier = 1f;
         for (SynergyBoost boost : activeSynergyBoosts) {
             multiplier *= boost.getCooldownMultiplier();
@@ -101,9 +100,6 @@ public abstract class Tower extends GameObject {
         return attackCooldown * multiplier;
     }
 
-    /**
-     * Mudar para textura de sinergia
-     */
     public void synergyTextureSwitch()
     {
         if (synergyTexture != null && textureRegion.getTexture() != synergyTexture) {
@@ -111,9 +107,6 @@ public abstract class Tower extends GameObject {
         }
     }
 
-    /**
-     * Restaura a textura original da torre (quando a sinergia termina).
-     */
     public void resetTexture()
     {
         if (originalTexture != null && textureRegion.getTexture() != originalTexture) {
@@ -121,15 +114,7 @@ public abstract class Tower extends GameObject {
         }
     }
 
-    /**
-     * Calcula o dano total incluindo:
-     * - Dano base da torre (damage)
-     * - Bônus de upgrades e TowerBoost (bonusDamage)
-     * - Multiplicadores de sinergias ativas
-     *
-     * Os multiplicadores de sinergia são compostos (multiplicados entre si),
-     * permitindo que múltiplas sinergias stack sem conflito.
-     */
+    /* Dano base + bônus de upgrades/boost * multiplicadores de sinergia (compostos) */
     public int getTotalDamage() {
         float base = damage + bonusDamage;
         float multiplier = 1f;
@@ -155,9 +140,6 @@ public abstract class Tower extends GameObject {
         return attackSpeed;
     }
 
-    /**
-     * Retorna o alcance incluindo multiplicadores de sinergia.
-     */
     public float getRange() {
         float baseRange = range;
         float multiplier = 1f;
@@ -234,39 +216,21 @@ public abstract class Tower extends GameObject {
         return "Speed +" + GameBalance.UPGRADE_COOLDOWN + "% [Lv." + cooldownUpgradeLevel + "]  $" + getCooldownUpgradeCost();
     }
 
-    // ==================== EFEITOS ====================
-
-    /**
-     * Cria uma cópia do efeito de status que esta torre aplica.
-     * Por padrão, delega para BrainrotTower.createEffectPrototype().
-     * Torres que não causam dano (TowerCoin, TowerBoost) devem sobrescrever
-     * retornando null.
-     */
+    /* Torres sem dano (TowerCoin, TowerBoost) sobrescrevem retornando null */
     public StatusEffect createEffect() {
         return towerType != null ? towerType.createEffectPrototype() : null;
     }
-
-    // ==================== SINERGIAS ====================
 
     public SynergyGroup getSynergyGroup() {
         return towerType != null ? towerType.getSynergyGroup() : SynergyGroup.PHYSICAL;
     }
 
-    /**
-     * Adiciona um boost de sinergia a esta torre.
-     * Chamado pelo SynergyManager quando uma sinergia é ativada.
-     * Os boosts são acumulativos (multiplicativos entre si).
-     */
     public void addSynergyBoost(SynergyBoost boost) {
         if (!activeSynergyBoosts.contains(boost)) {
             activeSynergyBoosts.add(boost);
         }
     }
 
-    /**
-     * Remove um boost de sinergia.
-     * Chamado pelo SynergyManager quando uma sinergia é desativada.
-     */
     public void removeSynergyBoost(SynergyBoost boost) {
         activeSynergyBoosts.remove(boost);
     }

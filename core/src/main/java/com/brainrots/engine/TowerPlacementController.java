@@ -112,6 +112,7 @@ public class TowerPlacementController {
         isDragging = false;
     }
 
+    /* Posiciona torre ao soltar drag (ou clicar) em área válida; right-click cancela */
     private void checkPositionTower(Array<Polygon> barriers, Array<Vector2> path, Array<Tower> activeTowers,
                                      CoinManager coinManager, MainUX mainUX) {
         if (!isIconSelected) return;
@@ -163,6 +164,7 @@ public class TowerPlacementController {
         cancelPlacement();
     }
 
+    /* Amostra pontos numa grade sobre a área da torre: se >= 67% estiverem válidos, posição é aceita */
     private boolean isAreaValid(Vector2 worldPos, Array<Polygon> barriers, Array<Vector2> path) {
         float halfSize = GameBalance.TOWER_SIZE / 2f;
         int samplePoints = GameBalance.SAMPLE_GRID;
@@ -205,6 +207,7 @@ public class TowerPlacementController {
         return false;
     }
 
+    /* Projeta ponto p no segmento a-b e retorna a distância (usa t clampado entre 0 e 1) */
     private float distanceToLineSegment(Vector2 p, Vector2 a, Vector2 b) {
         float dx = b.x - a.x;
         float dy = b.y - a.y;

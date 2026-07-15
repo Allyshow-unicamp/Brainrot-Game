@@ -41,11 +41,7 @@ public class ProjectileManager {
     }
 }
 
-    /**
-     * Aplica dano em área (splash) a todos inimigos próximos ao ponto de impacto,
-     * exceto o alvo primário (que já recebeu dano direto no Projectile.update()).
-     * Também aplica o efeito de status do projétil a cada inimigo atingido.
-     */
+    /* Dano splash: atinge inimigos próximos ao impacto, exceto o alvo primário */
     private void applyAreaDamage(Projectile projectile, Array<Enemy> activeEnemies) {
         int damage = projectile.getParent().getTotalDamage();
         float radius = projectile.getAoeRadius();

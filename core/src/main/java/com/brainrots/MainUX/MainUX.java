@@ -1,7 +1,5 @@
 package com.brainrots.MainUX;
 
-import java.util.Vector;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,7 +26,7 @@ public class MainUX {
     private TowerUpgradePanel towerUpgradePanel;
     private TowerInfoModal towerInfoModal;
     private Texture towerBackground;
-    private Vector<BrainrotTower> towerTypes;
+    private java.util.Vector<BrainrotTower> towerTypes;
     private Array<TowerButton> towerButtons;
     private Array<Label> priceLabels;
     private Array<ImageButton> infoButtons;
@@ -45,7 +43,7 @@ public class MainUX {
 
     public MainUX(int width, int height, SpriteBatch batch)
     {
-        towerTypes = new Vector<>();
+        towerTypes = new java.util.Vector<>();
 
         this.batch = batch;
         towerButtons = new Array<>();
@@ -77,6 +75,10 @@ public class MainUX {
 
     public void setCoinManager(CoinManager coinManager) {
         this.coinManager = coinManager;
+    }
+
+    public void updateCoins(int coins) {
+        // TODO: update coin display label
     }
 
     public void setTowerInfoModal(TowerInfoModal modal) {
@@ -269,9 +271,5 @@ public class MainUX {
         return towerUpgradePanel != null && towerUpgradePanel.isOpen();
     }
 
-    public void updateCoins(int newCoinCount) {
-    }
 
-    public void clear() {
-    }
 }

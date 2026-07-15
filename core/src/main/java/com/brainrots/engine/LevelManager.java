@@ -245,6 +245,7 @@ public class LevelManager {
         return selectedTower;
     }
 
+    /* Só seleciona torre se o clique não foi em ator UI (evita conflito stage/game) */
     private void handleTowerClick() {
         if (!Gdx.input.justTouched()) return;
 
@@ -321,11 +322,6 @@ public class LevelManager {
         shapeRenderer.end();
     }
 
-    // ==================== MODO DE JOGO (STATE) ====================
-
-    /**
-     * Troca o modo de jogo em tempo de execução.
-     */
     public void setGameMode(GameMode mode) {
         this.gameMode = mode;
         mode.onEnter(this);
@@ -335,28 +331,14 @@ public class LevelManager {
         return gameMode;
     }
 
-    /**
-     * Retorna o sufixo do modo atual para exibição no HUD.
-     */
     public String getGameModeSuffix() {
         return gameMode.getHudSuffix();
     }
 
-    // ==================== SINERGIAS ====================
-
     public SynergyManager getSynergyManager() {
         return synergyManager;
     }
-
-    // ==================== WAVE STRATEGY ====================
-
-    // ==================== VITÓRIA (REMOVIDA) ====================
-
-    /**
-     * A lógica de vitória foi movida para GameMode (State Pattern).
-     * LevelManager.Won() foi removido — a avaliação agora é feita por
-     * gameMode.evaluate() no update().
-     */
+    /* Estrelas baseadas na % de HP restante: <33%=1, <66%=2, >=66%=3 */
     private int levelStars(int hp, int maxHp) {
         float ratio = (float) hp / maxHp;
         if (ratio < GameBalance.STAR_THRESHOLD_1) return 1;
