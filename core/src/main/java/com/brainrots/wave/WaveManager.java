@@ -15,10 +15,8 @@ import com.brainrots.enemy.EnemySpawner;
 /**
  * Gerencia a progressão de waves durante o jogo.
  *
- * Agora delega a geração dos dados de cada wave para uma
- * WaveGenerationStrategy (Strategy Pattern), permitindo alternar
- * entre waves pré-definidas (FiniteWaveStrategy) e waves infinitas
- * procedurais (InfiniteWaveStrategy) sem modificar esta classe.
+ * Delega a geração dos dados de cada wave para uma
+ * WaveGenerationStrategy (Strategy Pattern).
  */
 public class WaveManager {
 
@@ -41,7 +39,6 @@ public class WaveManager {
 
     /**
      * Construtor que aceita uma estratégia personalizada.
-     * Usado para injetar InfiniteWaveStrategy no modo infinito.
      *
      * @param levelName nome do mapa (para fallback de maxWaves)
      * @param path      caminho de waypoints do mapa
@@ -56,8 +53,6 @@ public class WaveManager {
         this.strategy = strategy;
 
         // Calcula maxWaves a partir do JSON para compatibilidade com o HUD
-        // A InfiniteWaveStrategy sempre retorna hasNextWave() = true,
-        // então este valor é usado apenas para exibição.
         String jsonPath = Paths.get(LEVELS_DIR, levelName, "waves.json").toString();
         try {
             JsonValue allWaves = new JsonReader().parse(Gdx.files.internal(jsonPath));
@@ -82,7 +77,6 @@ public class WaveManager {
 
     /**
      * Troca a estratégia de geração de waves em tempo de execução.
-     * Usado ao ativar o modo infinito durante o jogo.
      */
     public void setStrategy(WaveGenerationStrategy strategy) {
         this.strategy = strategy;
@@ -127,6 +121,10 @@ public class WaveManager {
 
     public boolean isPausedWave() {
         return pausedWave;
+    }
+
+    public boolean isWaveActive() {
+        return isWaveActive;
     }
 
     public void update(float delta, Array<Enemy> activeEnemies) {

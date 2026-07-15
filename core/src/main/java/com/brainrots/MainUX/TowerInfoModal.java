@@ -21,7 +21,6 @@ import com.brainrots.tower.BrainrotTower;
 public class TowerInfoModal extends Table {
 
     private Runnable onCloseCallback;
-    private Skin skin;
     private Table contentTable;
     private Texture closeTexture;
     private Image towerImage;
@@ -36,7 +35,6 @@ public class TowerInfoModal extends Table {
     private Label cooldownUpgradeLabel;
 
     public TowerInfoModal(Skin skin) {
-        this.skin = skin;
         setFillParent(true);
         setBackground(createOverlayDrawable());
 

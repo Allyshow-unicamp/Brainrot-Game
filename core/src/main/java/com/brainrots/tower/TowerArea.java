@@ -3,15 +3,13 @@ package com.brainrots.tower;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.brainrots.core.GameBalance;
 import com.brainrots.effect.StatusEffect;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
+import com.brainrots.core.GameBalance;
 
 public class TowerArea extends Tower {
-
-    private final int RANGE = 5;
 
     public TowerArea(Texture texture, Texture synergyTexture,Vector2 position, String displayName, int damage,
             float range, float attackCooldown, int width, int height, BrainrotTower towerType) {
@@ -20,13 +18,13 @@ public class TowerArea extends Tower {
 
     @Override
     public void upgradeRange() {
-        this.range += RANGE;
+        this.range += GameBalance.TOWER_AREA_RANGE_UPGRADE;
         this.rangeUpgradeLevel++;
     }
 
     @Override
     public String getRangeUpgradeLabel() {
-        return "Range +" + RANGE + " [Lv." + rangeUpgradeLevel + "]  $" + getRangeUpgradeCost();
+        return "Range +" + GameBalance.TOWER_AREA_RANGE_UPGRADE + " [Lv." + rangeUpgradeLevel + "]  $" + getRangeUpgradeCost();
     }
 
     @Override

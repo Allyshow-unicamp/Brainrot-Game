@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.engine.Base;
 import com.brainrots.mode.GameOutcome;
-import com.brainrots.mode.InfiniteMode;
 import com.brainrots.mode.StandardMode;
 import com.brainrots.wave.WaveManager;
 
@@ -13,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
- * Testes para StandardMode e InfiniteMode.
+ * Testes para StandardMode.
  * Usam WaveManager e Base reais para testar a lógica de avaliação,
  * sem depender de mocking de libGDX.
  *
@@ -25,12 +24,10 @@ import org.junit.jupiter.api.Test;
 class GameModeTest {
 
     private StandardMode standardMode;
-    private InfiniteMode infiniteMode;
 
     @BeforeEach
     void setUp() {
         standardMode = new StandardMode();
-        infiniteMode = new InfiniteMode();
     }
 
     @Test
@@ -77,26 +74,6 @@ class GameModeTest {
         Base aliveBase = new Base(100, null);
         assertEquals(GameOutcome.NONE,
             standardMode.evaluate(null, aliveBase, createWaveManager(4, 5), new Array<>()));
-    }
-
-    @Test
-    void infiniteModeNeverVictory() {
-        Base aliveBase = new Base(100, null);
-        assertEquals(GameOutcome.NONE,
-            infiniteMode.evaluate(null, aliveBase, createWaveManager(10, 5), new Array<>()));
-    }
-
-    @Test
-    void infiniteModeDefeatsWhenBaseIsDead() {
-        Base deadBase = new Base(100, null);
-        deadBase.takeDamage(100);
-        assertEquals(GameOutcome.DEFEAT,
-            infiniteMode.evaluate(null, deadBase, null, new Array<>()));
-    }
-
-    @Test
-    void infiniteModeHudSuffix() {
-        assertEquals(" \u221E", infiniteMode.getHudSuffix());
     }
 
     @Test

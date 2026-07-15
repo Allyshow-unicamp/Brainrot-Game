@@ -2,7 +2,6 @@ package com.brainrots.tower;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,7 +19,6 @@ import com.brainrots.synergy.SynergyGroup;
 
 public abstract class Tower extends GameObject {
 
-    private String id;
     private String displayName;
     private String description;
     private TextureRegion textureRegion;
@@ -41,18 +39,8 @@ public abstract class Tower extends GameObject {
 
     private List<SynergyBoost> activeSynergyBoosts;
 
-    private static final int BASE_DAMAGE_COST = 50;
-    private static final int BASE_RANGE_COST = 25;
-    private static final int BASE_COOLDOWN_COST = 50;
-    private static final float COST_MULTIPLIER = 2f;
-
-    /**
-     * Construtor completo que agora recebe o BrainrotTower em vez de apenas
-     * um int towerID, permitindo acesso ao grupo de sinergia e efeito associado.
-     */
     public Tower(Texture texture, Texture synergyTexture,Vector2 position, String displayName, int damage, int attackSpeed, float range, float attackCooldown,
             int width, int height, BrainrotTower towerType) {
-        this.id = UUID.randomUUID().toString();
         this.textureRegion = texture != null ? new TextureRegion(texture) : null;
         this.synergyTexture = synergyTexture;
         this.originalTexture = texture;
@@ -208,15 +196,15 @@ public abstract class Tower extends GameObject {
     public int getCooldownUpgradeLevel() { return cooldownUpgradeLevel; }
 
     public int getDamageUpgradeCost() {
-        return (int)(BASE_DAMAGE_COST * Math.pow(COST_MULTIPLIER, damageUpgradeLevel));
+        return (int)(GameBalance.UPGRADE_BASE_DAMAGE_COST * Math.pow(GameBalance.UPGRADE_COST_MULTIPLIER, damageUpgradeLevel));
     }
 
     public int getRangeUpgradeCost() {
-        return (int)(BASE_RANGE_COST * Math.pow(COST_MULTIPLIER, rangeUpgradeLevel));
+        return (int)(GameBalance.UPGRADE_BASE_RANGE_COST * Math.pow(GameBalance.UPGRADE_COST_MULTIPLIER, rangeUpgradeLevel));
     }
 
     public int getCooldownUpgradeCost() {
-        return (int)(BASE_COOLDOWN_COST * Math.pow(COST_MULTIPLIER, cooldownUpgradeLevel));
+        return (int)(GameBalance.UPGRADE_BASE_COOLDOWN_COST * Math.pow(GameBalance.UPGRADE_COST_MULTIPLIER, cooldownUpgradeLevel));
     }
 
     public void upgradeDamage() {

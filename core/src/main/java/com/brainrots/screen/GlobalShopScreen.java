@@ -22,7 +22,6 @@ import com.brainrots.interfaces.ScreenManager.ScreenType;
 import com.brainrots.core.GlobalShop;
 import com.brainrots.core.PlayerProfile;
 import com.brainrots.core.ShopTowerData;
-import com.brainrots.exception.InvalidGameActionException;
 import com.brainrots.tower.BrainrotTower;
 
 import java.util.HashMap;

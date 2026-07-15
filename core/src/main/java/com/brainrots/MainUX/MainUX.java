@@ -75,15 +75,6 @@ public class MainUX {
         menuButton.setSize(64, 64);
     }
 
-    private Texture createCircleTexture(int size, float r, float g, float b) {
-        Pixmap pixmap = new Pixmap(size, size, Pixmap.Format.RGBA8888);
-        pixmap.setColor(r, g, b, 1);
-        pixmap.fillCircle(size / 2, size / 2, size / 2 - 2);
-        Texture tex = new Texture(pixmap);
-        pixmap.dispose();
-        return tex;
-    }
-
     public void setCoinManager(CoinManager coinManager) {
         this.coinManager = coinManager;
     }

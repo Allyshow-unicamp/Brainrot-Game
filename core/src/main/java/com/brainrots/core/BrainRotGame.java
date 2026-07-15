@@ -147,20 +147,4 @@ public class BrainRotGame extends Game implements ScreenManager {
     public void endGame(int level, boolean won, int stars) {
         setScreen(new EndGameScreen(batch, this, shapeRenderer, level, won, stars, gameSaveHandler));
     }
-
-    /**
-     * Inicia o modo infinito para o nível especificado.
-     * Cria um novo GameplayScreen configurado com InfiniteMode.
-     * A estratégia de waves começa como FiniteWaveStrategy (waves pré-definidas)
-     * e o InfiniteMode troca para InfiniteWaveStrategy automaticamente quando
-     * as waves finitas terminam.
-     *
-     * @param level     número do nível
-     * @param levelName nome do mapa (ex: "67Hills")
-     */
-    public void switchToInfiniteMode(int level, String levelName) {
-        GameplayScreen gameplayScreen = new GameplayScreen(batch, this, shapeRenderer, level, levelName);
-        gameplayScreen.getLevelManager().setGameMode(new com.brainrots.mode.InfiniteMode());
-        setScreen(gameplayScreen);
-    }
 }
