@@ -64,8 +64,8 @@ public class MainUX {
         waveButton.setSize(64, 64);
 
         ImageButton.ImageButtonStyle speedStyle = new ImageButton.ImageButtonStyle();
-        speedStyle.imageUp = new TextureRegionDrawable(rm.getTexture(Assets.FOWARD_BUTTON_2));
-        speedStyle.imageChecked = new TextureRegionDrawable(rm.getTexture(Assets.FOWARD_BUTTON_1));
+        speedStyle.imageUp = new TextureRegionDrawable(rm.getTexture(Assets.FOWARD_BUTTON_1));
+        speedStyle.imageChecked = new TextureRegionDrawable(rm.getTexture(Assets.FOWARD_BUTTON_2));
         speedButton = new ImageButton(speedStyle);
         speedButton.setSize(64, 64);
 

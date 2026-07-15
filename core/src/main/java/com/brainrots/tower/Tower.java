@@ -1,10 +1,15 @@
 package com.brainrots.tower;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.brainrots.core.GameBalance;
 import com.brainrots.effect.StatusEffect;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.CoinManager;
@@ -12,10 +17,6 @@ import com.brainrots.engine.ProjectileManager;
 import com.brainrots.entity.GameObject;
 import com.brainrots.synergy.SynergyBoost;
 import com.brainrots.synergy.SynergyGroup;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public abstract class Tower extends GameObject {
 
@@ -219,30 +220,30 @@ public abstract class Tower extends GameObject {
     }
 
     public void upgradeDamage() {
-        this.damage += 30;
+        this.damage += GameBalance.UPGRADE_DAMAGE;
         this.damageUpgradeLevel++;
     }
 
-    public String getDamageUpgradeLabel() {
-        return "Damage +10 [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
-    }
-
-    public String getRangeUpgradeLabel() {
-        return "Range +25 [Lv." + rangeUpgradeLevel + "]  $" + getRangeUpgradeCost();
-    }
-
-    public String getCooldownUpgradeLabel() {
-        return "Speed +15% [Lv." + cooldownUpgradeLevel + "]  $" + getCooldownUpgradeCost();
-    }
-
     public void upgradeRange() {
-        this.range += 50;
+        this.range += GameBalance.UPGRADE_RANGE;
         this.rangeUpgradeLevel++;
     }
 
     public void upgradeCooldown() {
-        this.attackCooldown = Math.max(0.1f, this.attackCooldown * 0.85f);
+        this.attackCooldown = Math.max(0.1f, this.attackCooldown * GameBalance.UPGRADE_COOLDOWN);
         this.cooldownUpgradeLevel++;
+    }
+
+    public String getDamageUpgradeLabel() {
+        return "Damage +" + GameBalance.UPGRADE_DAMAGE + " [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
+    }
+
+    public String getRangeUpgradeLabel() {
+        return "Range +" + GameBalance.UPGRADE_RANGE + " [Lv." + rangeUpgradeLevel + "]  $" + getRangeUpgradeCost();
+    }
+
+    public String getCooldownUpgradeLabel() {
+        return "Speed +" + GameBalance.UPGRADE_COOLDOWN + "% [Lv." + cooldownUpgradeLevel + "]  $" + getCooldownUpgradeCost();
     }
 
     // ==================== EFEITOS ====================

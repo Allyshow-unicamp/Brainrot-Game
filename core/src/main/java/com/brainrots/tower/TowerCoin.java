@@ -10,6 +10,8 @@ import com.brainrots.engine.ProjectileManager;
 
 public class TowerCoin extends Tower {
 
+    private final int COINS = 3;
+
     private int coinsPerTower;
 
     public TowerCoin(Texture texture, Texture synergyTexture,Vector2 position, String displayName,
@@ -46,22 +48,12 @@ public class TowerCoin extends Tower {
 
     @Override
     public void upgradeDamage() {
-        this.coinsPerTower += 3;
+        this.coinsPerTower += COINS;
         this.damageUpgradeLevel++;
     }
 
     @Override
     public String getDamageUpgradeLabel() {
-        return "Coins/Tower +3 [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
-    }
-
-    @Override
-    public String getRangeUpgradeLabel() {
-        return "Range +25 [Lv." + rangeUpgradeLevel + "]  $" + getRangeUpgradeCost();
-    }
-
-    @Override
-    public String getCooldownUpgradeLabel() {
-        return "Speed +15% [Lv." + cooldownUpgradeLevel + "]  $" + getCooldownUpgradeCost();
+        return "Coins/Tower +" + COINS + " [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
     }
 }

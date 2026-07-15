@@ -10,6 +10,8 @@ import com.brainrots.engine.ProjectileManager;
 
 public class TowerBoost extends Tower {
 
+    private final int BOOST = 5;
+
     private int boostAmount;
 
     public TowerBoost(Texture texture,Texture synergyTexture ,Vector2 position, String displayName,
@@ -42,22 +44,12 @@ public class TowerBoost extends Tower {
 
     @Override
     public void upgradeDamage() {
-        this.boostAmount += 5;
+        this.boostAmount += BOOST;
         this.damageUpgradeLevel++;
     }
 
     @Override
     public String getDamageUpgradeLabel() {
-        return "Boost +5 [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
-    }
-
-    @Override
-    public String getRangeUpgradeLabel() {
-        return "Range +25 [Lv." + rangeUpgradeLevel + "]  $" + getRangeUpgradeCost();
-    }
-
-    @Override
-    public String getCooldownUpgradeLabel() {
-        return "Speed +15% [Lv." + cooldownUpgradeLevel + "]  $" + getCooldownUpgradeCost();
+        return "Boost +" + BOOST + " [Lv." + damageUpgradeLevel + "]  $" + getDamageUpgradeCost();
     }
 }

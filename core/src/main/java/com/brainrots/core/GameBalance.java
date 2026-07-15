@@ -62,6 +62,20 @@ public final class GameBalance {
     public static final float TOWER_BOOST_COOLDOWN = 2.0f;
     public static final int TOWER_BOOST_AMOUNT = 7;
 
+    // ==================== TORRES (upgrades) ===========================
+
+    public static final int UPGRADE_DAMAGE = 30;
+    public static final int UPGRADE_RANGE = 50;
+    public static final float UPGRADE_COOLDOWN = 0.85f;
+
+    // ==================== TORRES (posicionamento) =====================
+
+    public static final float DRAG_THRESHOLD = 20f;
+    public static final int TOWER_SIZE = 150;
+    public static final int SAMPLE_GRID = 5;
+    public static final float VALID_THRESHOLD = 0.67f;
+    public static final float PATH_THRESHOLD = 20f;
+
     // ==================== EFEITOS ====================
 
     public static final int FIRE_DAMAGE_PER_TICK = 7;
