@@ -1,5 +1,6 @@
 package com.brainrots.enemy;
 
+/** Timer de spawn. Controla delay inicial e intervalo entre spawns de um grupo de inimigos. */
 public final class EnemySpawner {
 
     private String type;
@@ -34,7 +35,7 @@ public final class EnemySpawner {
         return false;
     }
     
-    /* Aguarda spawnTime inicial, depois spawna a cada spawnInterval até count chegar a 0 */
+    /** Aguarda spawnTime inicial, depois spawna a cada spawnInterval. */
     public boolean shouldSpawn(float delta){
         timer += delta;
 

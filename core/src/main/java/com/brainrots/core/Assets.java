@@ -1,8 +1,6 @@
 package com.brainrots.core;
 
-/**
- * Classe com o caminho dos assets.
- */
+/** Constantes de caminhos para todos os assets do jogo (texturas, mapas, sons, UI). */
 public final class Assets {
 
     /* MAPS */

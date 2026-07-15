@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/** Tela de loja global. Permite desbloquear torres permanentemente com moedas. */
 public class GlobalShopScreen extends GameScreen {
     private GlobalShop globalShop;
     private PlayerProfile playerProfile;

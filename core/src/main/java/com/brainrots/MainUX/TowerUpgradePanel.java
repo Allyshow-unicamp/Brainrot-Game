@@ -22,6 +22,7 @@ import com.brainrots.core.GameResourceManager;
 import com.brainrots.engine.CoinManager;
 import com.brainrots.tower.Tower;
 
+/** Painel de upgrade e venda de torres. 3 eixos de upgrade + botão de venda. */
 public class TowerUpgradePanel extends Table {
 
     private Tower currentTower;

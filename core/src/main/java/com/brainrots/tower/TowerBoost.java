@@ -9,6 +9,7 @@ import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
 import com.brainrots.core.GameBalance;
 
+/** Torre de suporte. Aumenta o dano de torres aliadas no alcance. */
 public class TowerBoost extends Tower {
 
     private int boostAmount;

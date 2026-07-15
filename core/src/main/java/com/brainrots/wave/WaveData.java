@@ -2,16 +2,7 @@ package com.brainrots.wave;
 
 import com.badlogic.gdx.utils.Array;
 
-/**
- * Encapsula os dados de uma wave: lista de grupos de inimigos a spawnar.
- *
- * Usado como valor de retorno (Value Object) das estratégias de geração
- * de waves (WaveGenerationStrategy). Desacopla o WaveManager do formato
- * de origem dos dados (JSON para FiniteWaveStrategy).
- *
- * SpawnGroup é uma classe interna pública que representa um tipo de
- * inimigo com sua quantidade, intervalo entre spawns e delay inicial.
- */
+/** Value Object que encapsula os dados de uma onda: lista de grupos de inimigos a spawnar. */
 public class WaveData {
 
     private Array<SpawnGroup> groups;
@@ -32,10 +23,7 @@ public class WaveData {
         return groups;
     }
 
-    /**
-     * Representa um grupo de inimigos do mesmo tipo a serem spawnados
-     * em uma wave.
-     */
+    /** Grupo de inimigos do mesmo tipo a serem spawnados em uma onda. */
     public static class SpawnGroup {
         public final String type;
         public final int count;

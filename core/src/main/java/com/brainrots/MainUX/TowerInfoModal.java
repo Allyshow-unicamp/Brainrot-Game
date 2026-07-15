@@ -18,6 +18,7 @@ import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.tower.BrainrotTower;
 
+/** Modal de informações da torre. Exibe stats, descrição e detalhes de upgrades. */
 public class TowerInfoModal extends Table {
 
     private Runnable onCloseCallback;

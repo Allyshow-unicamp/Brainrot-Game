@@ -3,11 +3,6 @@ package com.brainrots.enemy;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-/**
- * Testes para a EnemyFactory, verificando se os templates
- * de inimigos são criados corretamente com os valores
- * definidos no balanceamento.
- */
 class EnemyFactoryTest {
 
     @Test
@@ -15,16 +10,6 @@ class EnemyFactoryTest {
         EnemyFactory instance1 = EnemyFactory.getEnemyFactory();
         EnemyFactory instance2 = EnemyFactory.getEnemyFactory();
         assertSame(instance1, instance2, "EnemyFactory should be a singleton");
-    }
-
-    @Test
-    void factoryHasAllEnemyTypes() {
-        EnemyFactory factory = EnemyFactory.getEnemyFactory();
-        // Testamos que o método spawnEnemy não lança exceção para tipos conhecidos
-        assertDoesNotThrow(() -> {
-            // Nota: spawnEnemy requer um Array<Vector2> path e texturas carregadas,
-            // então testamos apenas a existência dos templates no mapa.
-        });
     }
 
     @Test

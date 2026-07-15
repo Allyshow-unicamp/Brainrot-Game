@@ -6,6 +6,7 @@ import com.brainrots.effect.FireEffect;
 import com.brainrots.effect.StatusEffect;
 import com.brainrots.synergy.SynergyGroup;
 
+/** Enum que define os 5 tipos de torre com seus stats, texturas, grupo de sinergia e efeito. */
 public enum BrainrotTower {
 
     TUNG_TUNG("tung_tung", "Tung Tung Tung Sahur", Assets.TOWER_TUNG, Assets.TUNG_SYNERGY , GameBalance.TOWER_TUNG_DAMAGE, GameBalance.TOWER_TUNG_PROJ_SPEED, GameBalance.TOWER_TUNG_RANGE, GameBalance.TOWER_TUNG_COOLDOWN, 150, 150, GameBalance.TOWER_TUNG_COST, 0, 0f,

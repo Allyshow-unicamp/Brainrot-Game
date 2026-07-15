@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
 
+/** Modal de confirmação reutilizável (Yes/No). */
 public class ConfirmModal extends Table {
 
     private Runnable onConfirm;

@@ -9,6 +9,7 @@ import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
 import com.brainrots.core.GameBalance;
 
+/** Torre econômica. Gera moedas com base no número de torres aliadas no alcance. */
 public class TowerCoin extends Tower {
 
     private int coinsPerTower;

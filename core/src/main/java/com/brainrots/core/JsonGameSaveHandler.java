@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.JsonWriter.OutputType;
 import com.brainrots.exception.PersistanceException;
 import com.brainrots.interfaces.GameSaveHandler;
 
+/** Persistência JSON. Serializa/deserializa perfil, loja e dados de níveis. */
 public class JsonGameSaveHandler implements GameSaveHandler {
     private String profileSaveFileName;
     private String shopSaveFileName;

@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.brainrots.core.Assets;
 import com.brainrots.core.GameResourceManager;
 
+/** Carrega um mapa TiledMap (.tmx) extraindo o caminho dos inimigos (Polyline) e barreiras (Polygons). */
 public class Map {
     private final Array<Vector2> enemyPath = new Array<>();
     private final Array<Polygon> barrier = new Array<>();

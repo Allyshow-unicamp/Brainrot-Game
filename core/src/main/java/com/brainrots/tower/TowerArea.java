@@ -9,6 +9,7 @@ import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
 import com.brainrots.core.GameBalance;
 
+/** Torre de dano instantâneo em área. Danifica todos os inimigos no alcance sem projétil. */
 public class TowerArea extends Tower {
 
     public TowerArea(Texture texture, Texture synergyTexture,Vector2 position, String displayName, int damage,

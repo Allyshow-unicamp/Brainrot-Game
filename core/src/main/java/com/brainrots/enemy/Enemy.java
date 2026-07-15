@@ -43,7 +43,7 @@ public class Enemy extends GameObject {
         this.activeEffects = new Array<>();
     }
 
-    /* Processa efeitos antes do movimento para que stun trave no mesmo frame */
+    /** Processa efeitos antes do movimento (stun impede movimento no mesmo frame). */
     public void update(float delta) {
         processEffects(delta);
         if (!stunned) {
@@ -67,7 +67,7 @@ public class Enemy extends GameObject {
         }
     }
 
-    /* Itera ao contrário para remoção segura durante iteração */
+    /** Itera ao contrário para remoção segura durante iteração. */
     private void processEffects(float delta) {
         for (int i = activeEffects.size - 1; i >= 0; i--) {
             StatusEffect effect = activeEffects.get(i);
@@ -87,7 +87,7 @@ public class Enemy extends GameObject {
         this.stunned = stunned;
     }
 
-    /* Usa slowStack para garantir que restore só ocorra quando o último efeito expirar */
+    /** Aplica slow. Usa slowStack para restaurar velocidade só quando o último efeito expirar. */
     public void applySlow(float factor) {
         if (slowStack == 0) {
             this.speed = Math.max(1, Math.round(this.speed * factor));

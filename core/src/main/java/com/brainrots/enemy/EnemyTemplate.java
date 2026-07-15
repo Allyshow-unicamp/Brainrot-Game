@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.core.GameResourceManager;
 
+/** Template protótipo para criação de inimigos. Armazena stats e textura, cria instâncias via spawn(). */
 public class EnemyTemplate implements Spawnable {
 
     private String texturePath;

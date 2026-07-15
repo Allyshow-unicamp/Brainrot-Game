@@ -31,6 +31,10 @@ import com.brainrots.tower.Tower;
 import com.brainrots.tower.TowerCoin;
 import com.brainrots.wave.WaveManager;
 
+/**
+ * Orquestrador central do game loop (Facade). Coordena mapa, base, ondas,
+ * sinergias, torres, projéteis, moedas e input do jogador a cada frame.
+ */
 public class LevelManager {
 
     private float gameTime;
@@ -80,14 +84,14 @@ public class LevelManager {
         createRangeCircleTexture();
         mainUX.setCoinManager(coinManager);
 
-        // Inicializa o gerenciador de sinergias com regras padrão
+        // Inicializa sinergias com regras padrão
         this.synergyManager = new SynergyManager();
         synergyManager.addRule(new ElementalSynergy(SynergyGroup.FIRE, GameBalance.FIRE_SYNERGY_THRESHOLD, new SynergyBoost(GameBalance.FIRE_SYNERGY_DAMAGE_MULT)));
         synergyManager.addRule(new ElementalSynergy(SynergyGroup.ICE, GameBalance.ICE_SYNERGY_THRESHOLD, new SynergyBoost(GameBalance.ICE_SYNERGY_DAMAGE_MULT)));
         synergyManager.addRule(new ElementalSynergy(SynergyGroup.PHYSICAL, GameBalance.PHYSICAL_SYNERGY_THRESHOLD, new SynergyBoost(GameBalance.PHYSICAL_SYNERGY_DAMAGE_MULT)));
         synergyManager.addRule(new ElementalSynergy(SynergyGroup.SUPPORT, GameBalance.SUPPORT_SYNERGY_THRESHOLD, new SynergyBoost(GameBalance.SUPPORT_SYNERGY_DAMAGE_MULT, GameBalance.SUPPORT_SYNERGY_RANGE_MULT, GameBalance.SUPPORT_SYNERGY_COOLDOWN_MULT)));
 
-        // Modo de jogo padrão (State Pattern)
+        // Modo padrão
         this.gameMode = new StandardMode();
     }
 
@@ -160,7 +164,7 @@ public class LevelManager {
 
         gameTime += delta;
 
-        // Atualiza torres (pula TowerCoin se pausado, comportamento original)
+        // Atualiza torres (pula TowerCoin se pausado)
         for (Tower tower : activeTowers) {
             if (tower instanceof TowerCoin && waveManager.isPausedWave()) {
                 continue;
@@ -177,14 +181,14 @@ public class LevelManager {
             tower.update(gameTime, activeEnemies, activeTowers, coinManager, projectileManager, projectileTexture);
         }
 
-        // Reavalia sinergias após atualização das torres
+        // Reavalia sinergias
         synergyManager.evaluate(activeTowers);
 
         projectileManager.update(delta, activeEnemies);
 
         waveManager.update(delta, activeEnemies);
 
-        // Processa inimigos: movimento, morte, dano à base
+        // Processa inimigos
         ArrayIterator<Enemy> enemyIterator = activeEnemies.iterator();
 
         while (enemyIterator.hasNext()) {
@@ -207,7 +211,7 @@ public class LevelManager {
             }
         }
 
-        // Delega avaliação de vitória/derrota ao GameMode atual (State Pattern)
+        // Avalia vitória/derrota via GameMode
         GameOutcome outcome = gameMode.evaluate(this, base, waveManager, activeEnemies);
 
         if (outcome == GameOutcome.VICTORY) {
@@ -338,7 +342,7 @@ public class LevelManager {
     public SynergyManager getSynergyManager() {
         return synergyManager;
     }
-    /* Estrelas baseadas na % de HP restante: <33%=1, <66%=2, >=66%=3 */
+    /** Calcula estrelas: <33%=1, <66%=2, >=66%=3. */
     private int levelStars(int hp, int maxHp) {
         float ratio = (float) hp / maxHp;
         if (ratio < GameBalance.STAR_THRESHOLD_1) return 1;

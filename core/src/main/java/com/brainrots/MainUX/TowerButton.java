@@ -11,6 +11,7 @@ import com.brainrots.tower.BrainrotTower;
 
 import com.badlogic.gdx.graphics.Color;
 
+/** Botão de seleção de torre na sidebar. Mostra textura e desabilita quando inacessível. */
 public class TowerButton extends ImageButton{
 
     private BrainrotTower towerType;

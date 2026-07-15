@@ -8,6 +8,7 @@ import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
 
+/** Torre de projétil AOE. Dispara projétil com raio de dano explosivo. */
 public class TowerProjArea extends Tower {
 
     private float aoeRadius;

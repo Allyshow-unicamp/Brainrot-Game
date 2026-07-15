@@ -23,6 +23,7 @@ import com.brainrots.interfaces.ScreenManager.ScreenType;
 import com.brainrots.core.PlayerProfile;
 import com.brainrots.exception.PersistanceException;
 
+/** Tela de seleção de nível. Lista scrollável com estrelas e desbloqueio sequencial. */
 public class LevelSelectionScreen extends GameScreen {
     private PlayerProfile playerProfile;
     private HashMap<String, String> levelHashMap;

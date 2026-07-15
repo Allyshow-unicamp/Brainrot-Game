@@ -21,6 +21,7 @@ import com.brainrots.tower.BrainrotTower;
 import com.brainrots.tower.Tower;
 
 
+/** HUD in-game: sidebar de torres, painel de upgrade, modais de info e confirmação. */
 public class MainUX {
 
     private TowerUpgradePanel towerUpgradePanel;

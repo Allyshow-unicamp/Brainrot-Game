@@ -3,6 +3,7 @@ package com.brainrots.engine;
 import com.badlogic.gdx.math.Vector2;
 import com.brainrots.core.GameBalance;
 
+/** Base do jogador. Recebe dano quando inimigos chegam ao fim do caminho. Calcula estrelas pelo HP restante. */
 public class Base {
     private int health;
     private int maxHealth;

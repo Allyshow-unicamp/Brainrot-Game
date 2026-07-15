@@ -1,26 +1,14 @@
-package com.brainrots.engine.mode;
+package com.brainrots.mode;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.engine.Base;
-import com.brainrots.mode.GameOutcome;
-import com.brainrots.mode.StandardMode;
 import com.brainrots.wave.WaveManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * Testes para StandardMode.
- * Usam WaveManager e Base reais para testar a lógica de avaliação,
- * sem depender de mocking de libGDX.
- *
- * WaveManager é instanciado com um nome de mapa inválido que
- * fará o JsonReader lançar exceção, mas o construtor original
- * lida com isso. Criamos um WaveManager substituindo a estratégia
- * para evitar dependência de arquivos.
- */
 class GameModeTest {
 
     private StandardMode standardMode;
@@ -40,7 +28,6 @@ class GameModeTest {
     @Test
     void standardModeVictoryWhenAllWavesCleared() {
         Base aliveBase = new Base(100, null);
-        // Avançamos todas as waves manualmente para que currentWave >= maxWaves
         WaveManager wm = createWaveManager(5, 5);
         for (int i = 0; i < 5; i++) {
             wm.startNextWave();
@@ -81,10 +68,6 @@ class GameModeTest {
         assertEquals("", standardMode.getHudSuffix());
     }
 
-    /**
-     * Cria um WaveManager com estratégia controlada para teste.
-     * Usa o construtor de teste que não depende de Gdx.files.
-     */
     private WaveManager createWaveManager(int currentWave, int maxWaves) {
         Array<com.badlogic.gdx.math.Vector2> emptyPath = new Array<>();
         WaveManager wm = new WaveManager(emptyPath,
@@ -101,10 +84,6 @@ class GameModeTest {
         return wm;
     }
 
-    /**
-     * Test double para Enemy — usa path com 1 elemento para evitar
-     * IndexOutOfBoundsException no construtor.
-     */
     private static class EnemyStub extends com.brainrots.enemy.Enemy {
         EnemyStub() {
             super(createSinglePointPath(), null, 100, 100, 50, 50, 100);

@@ -18,6 +18,7 @@ import com.brainrots.core.BrainRotGame;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.interfaces.StageHelper;
 
+/** Classe abstrata base para todas as telas. Template Method: render() limpa e chama drawScreen(). */
 public abstract class GameScreen extends ScreenAdapter {
 
     protected final SpriteBatch batch;

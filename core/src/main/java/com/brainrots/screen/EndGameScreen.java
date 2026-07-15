@@ -17,6 +17,7 @@ import com.brainrots.interfaces.ScreenManager.ScreenType;
 import com.brainrots.core.PlayerProfile;
 import com.brainrots.exception.PersistanceException;
 
+/** Tela de fim de jogo. Exibe estrelas, recompensa e botão de retorno. */
 public class EndGameScreen extends GameScreen {
 
     private boolean won;

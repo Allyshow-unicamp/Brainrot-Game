@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+/** Entidade abstrata com posição, textura e detecção de colisão/clique. */
 public abstract class GameObject implements Collidable {
     protected Vector2 position;
     protected TextureRegion textureRegion;
@@ -45,25 +46,13 @@ public abstract class GameObject implements Collidable {
         onYRange(initialYCoord, finalYCoord, mouseYCoord));
     }
 
-    /**
-     * Metodo ocmplementar de wasClicked, determina 
-     * se a coordenada do mouse foi dentro do intervalo
-     */
     private boolean onXRange(float initialXCoord, float finalXCoord, float currentXCoord)
     {
-        if(currentXCoord < finalXCoord && currentXCoord > initialXCoord)
-            return true;
-        return false;
+        return(currentXCoord < finalXCoord && currentXCoord > initialXCoord);
     }
 
-    /**
-     * Metodo ocmplementar de wasClicked, determina 
-     * se a coordenada do mouse foi dentro do intervalo
-     */
     private boolean onYRange(float initialYCoord, float finalYCoord, float currentYCoord)
     {
-        if(currentYCoord < finalYCoord && currentYCoord > initialYCoord)
-            return true;
-        return false;
+        return(currentYCoord < finalYCoord && currentYCoord > initialYCoord);
     }  
 }

@@ -1,5 +1,6 @@
 package com.brainrots.core;
 
+/** DTO com dados de uma torre na loja global. */
 public class ShopTowerData {
     private String id;
     private String name;

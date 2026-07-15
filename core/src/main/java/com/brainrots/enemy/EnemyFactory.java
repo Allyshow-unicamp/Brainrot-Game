@@ -7,6 +7,7 @@ import com.brainrots.core.GameBalance;
 
 import java.util.HashMap;
 
+/** Singleton Factory. Cria inimigos a partir de templates protótipo por tipo ("red", "blue", etc.). */
 public class EnemyFactory {
 
     private static EnemyFactory enemyFactory;
@@ -19,7 +20,6 @@ public class EnemyFactory {
         newMap.put("orange", new EnemyTemplate(Assets.ENEMY_ORANGE, GameBalance.ENEMY_ORANGE_HP, GameBalance.ENEMY_ORANGE_SPEED, 100, 100, GameBalance.ENEMY_ORANGE_REWARD));
         newMap.put("white", new EnemyTemplate(Assets.ENEMY_WHITE, GameBalance.ENEMY_WHITE_HP, GameBalance.ENEMY_WHITE_SPEED, 100, 100, GameBalance.ENEMY_WHITE_REWARD));
         newMap.put("green", new EnemyTemplate(Assets.ENEMY_GREEN, GameBalance.ENEMY_GREEN_HP, GameBalance.ENEMY_GREEN_SPEED, 100, 100, GameBalance.ENEMY_GREEN_REWARD));
-
 
         this.mapOfEnemies = newMap;
     }

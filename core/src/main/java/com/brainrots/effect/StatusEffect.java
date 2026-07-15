@@ -2,12 +2,7 @@ package com.brainrots.effect;
 
 import com.brainrots.enemy.Enemy;
 
-/**
- * Efeito de status aplicável a inimigos (Strategy + Template Method + Prototype).
- * Strategy: cada efeito encapsula seu comportamento via hooks polimórficos.
- * Template Method: update() define o fluxo (tick → decrementa → onExpire).
- * Prototype: copy() cria instâncias independentes por inimigo.
- */
+/** Efeito de status abstrato para inimigos. Template Method: update() orquestra tick → decremento → onExpire. */
 public abstract class StatusEffect {
 
     protected float duration;

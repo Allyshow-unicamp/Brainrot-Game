@@ -1,5 +1,6 @@
 package com.brainrots.core;
 
+/** Constantes de balanceamento centralizadas: stats de jogador, torres, inimigos, upgrades e sinergias. */
 public final class GameBalance {
 
     private GameBalance() {}

@@ -16,7 +16,10 @@ import com.brainrots.screen.GlobalShopScreen;
 import com.brainrots.screen.LevelSelectionScreen;
 import com.brainrots.screen.MainMenuScreen;
 
-/** Gerencia o jogo (ponto de entrada principal). */
+/**
+ * Ponto de entrada do jogo. Gerencia telas, perfil do jogador e ciclo de vida da aplicação.
+ * Implementa ScreenManager para navegação entre Menu, Loja, Seleção de Nível, Gameplay e Fim.
+ */
 public class BrainRotGame extends Game implements ScreenManager {
 
     private SpriteBatch batch;

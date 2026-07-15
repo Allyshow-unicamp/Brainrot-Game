@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.brainrots.core.BrainRotGame;
 import com.brainrots.interfaces.ScreenManager.ScreenType;
 
+/** Tela principal: botões Jogar, Loja e Sair. */
 public class MainMenuScreen extends GameScreen {
 
     public MainMenuScreen(SpriteBatch batch, BrainRotGame screenManager,

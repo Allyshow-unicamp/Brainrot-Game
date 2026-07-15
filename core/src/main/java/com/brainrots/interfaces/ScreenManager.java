@@ -1,5 +1,6 @@
 package com.brainrots.interfaces;
 
+/** Interface para navegação entre telas do jogo. */
 public interface ScreenManager {
     enum ScreenType{
         MAIN_MENU,

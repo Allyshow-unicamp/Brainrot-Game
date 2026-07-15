@@ -6,6 +6,7 @@ import com.brainrots.exception.InvalidGameActionException;
 import com.brainrots.exception.PersistanceException;
 import com.brainrots.interfaces.GameSaveHandler;
 
+/** Loja meta-progression. Desbloqueia torres permanentemente com moedas globais. */
 public class GlobalShop {
     private HashMap<String, ShopTowerData> shopData;
 

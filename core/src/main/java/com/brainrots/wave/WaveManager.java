@@ -12,7 +12,7 @@ import com.brainrots.enemy.Enemy;
 import com.brainrots.enemy.EnemyFactory;
 import com.brainrots.enemy.EnemySpawner;
 
-/** Gerencia progressão de waves. Delega geração de dados para WaveGenerationStrategy. */
+/** Gerencia a progressão de ondas, delegando geração de dados para WaveGenerationStrategy. */
 public class WaveManager {
 
     private int currentWave;
@@ -37,7 +37,6 @@ public class WaveManager {
         this.pausedWave = true;
         this.strategy = strategy;
 
-        // Calcula maxWaves a partir do JSON para compatibilidade com o HUD
         String jsonPath = Paths.get(LEVELS_DIR, levelName, "waves.json").toString();
         try {
             JsonValue allWaves = new JsonReader().parse(Gdx.files.internal(jsonPath));
@@ -47,7 +46,7 @@ public class WaveManager {
         }
     }
 
-    /* Para testes: evita dependência de Gdx.files */
+    /** Construtor para testes: evita dependência de Gdx.files. */
     public WaveManager(Array<Vector2> path, WaveGenerationStrategy strategy, int maxWaves) {
         this.currentWave = 0;
         this.isWaveActive = false;
@@ -72,7 +71,7 @@ public class WaveManager {
 
     public void startNextWave() {
         if (!strategy.hasNextWave(currentWave)) {
-            return; // Não há mais waves (modo finito, já completou)
+            return;
         }
 
         currentWave++;
@@ -103,14 +102,13 @@ public class WaveManager {
         return isWaveActive;
     }
 
-    /* Inicia próxima wave automaticamente se não há wave ativa e o jogo não está pausado */
+    /** Atualiza spawners, inicia próxima wave automaticamente e detecta fim da wave. */
     public void update(float delta, Array<Enemy> activeEnemies) {
         if (!isWaveActive && strategy.hasNextWave(currentWave) && !pausedWave) {
             startNextWave();
             return;
         }
 
-        /* Wave concluída quando todos os spawners terminaram e não há inimigos vivos */
         if (activeSpawners.isEmpty() && activeEnemies.isEmpty()) {
             if (isWaveActive) {
                 pausedWave = true;

@@ -17,6 +17,10 @@ import com.brainrots.entity.GameObject;
 import com.brainrots.synergy.SynergyBoost;
 import com.brainrots.synergy.SynergyGroup;
 
+/**
+ * Classe abstrata base para todas as torres. Gerencia stats, upgrades,
+ * efeitos de sinergia e cálculo de dano total (base + bonus) * multiplicadores.
+ */
 public abstract class Tower extends GameObject {
 
     private String displayName;
@@ -114,7 +118,7 @@ public abstract class Tower extends GameObject {
         }
     }
 
-    /* Dano base + bônus de upgrades/boost * multiplicadores de sinergia (compostos) */
+    /** Dano total = (base + bonus) * multiplicadores de sinergia (compostos). */
     public int getTotalDamage() {
         float base = damage + bonusDamage;
         float multiplier = 1f;
@@ -216,7 +220,7 @@ public abstract class Tower extends GameObject {
         return "Speed +" + GameBalance.UPGRADE_COOLDOWN + "% [Lv." + cooldownUpgradeLevel + "]  $" + getCooldownUpgradeCost();
     }
 
-    /* Torres sem dano (TowerCoin, TowerBoost) sobrescrevem retornando null */
+    /** Cria efeito de status via Prototype. Retorna null para torres sem dano. */
     public StatusEffect createEffect() {
         return towerType != null ? towerType.createEffectPrototype() : null;
     }

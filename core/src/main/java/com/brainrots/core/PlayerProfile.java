@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Classe que armazenas os dados do jogador.
- */
+/** Dados do jogador: moedas globais, estrelas por nível e torres desbloqueadas. */
 public class PlayerProfile {
     private int globalCoins;
     private HashMap<String, Integer> levelStars;

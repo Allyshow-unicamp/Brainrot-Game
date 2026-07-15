@@ -7,17 +7,6 @@ import com.badlogic.gdx.utils.Array;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-/**
- * Testes para o sistema de sinergias.
- *
- * Os testes de SynergyManager.evaluate() precisam de Tower real,
- * que depende de Texture (libGDX com native libraries). Portanto,
- * testamos apenas a lógica isolada de ElementalSynergy.isActivated()
- * e a estrutura do SynergyManager, sem instanciar TowerWrapper.
- *
- * Para testar o fluxo completo com SynergyManager + Tower real,
- * é necessário um ambiente com libGDX natives (headless).
- */
 class SynergyManagerTest {
 
     private SynergyManager manager;

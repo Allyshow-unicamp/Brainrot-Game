@@ -28,6 +28,7 @@ import com.brainrots.interfaces.ScreenManager;
 import com.brainrots.tower.BrainrotTower;
 
 
+/** Tela de gameplay principal. Cria LevelManager e configura HUD, input e UI. */
 public class GameplayScreen extends GameScreen {
 
     private LevelManager levelManager;

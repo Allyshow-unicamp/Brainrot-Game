@@ -7,6 +7,7 @@ import com.brainrots.effect.StatusEffect;
 import com.brainrots.enemy.Enemy;
 import com.brainrots.tower.Projectile;
 
+/** Gerencia ciclo de vida dos projéteis: spawn, movimento, dano splash AOE e remoção. */
 public class ProjectileManager {
 
     private Array<Projectile> activeProjectiles;
@@ -41,7 +42,7 @@ public class ProjectileManager {
     }
 }
 
-    /* Dano splash: atinge inimigos próximos ao impacto, exceto o alvo primário */
+    /** Dano splash AOE: atinge inimigos no raio, exceto o alvo primário. */
     private void applyAreaDamage(Projectile projectile, Array<Enemy> activeEnemies) {
         int damage = projectile.getParent().getTotalDamage();
         float radius = projectile.getAoeRadius();

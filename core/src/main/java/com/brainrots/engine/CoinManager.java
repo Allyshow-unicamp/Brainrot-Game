@@ -1,5 +1,6 @@
 package com.brainrots.engine;
 
+/** Gerencia moedas da partida. Valida saldo e impede subtração abaixo de zero. */
 public class CoinManager {
 
     private int coins;

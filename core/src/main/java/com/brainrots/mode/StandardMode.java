@@ -6,16 +6,7 @@ import com.brainrots.engine.LevelManager;
 import com.brainrots.wave.WaveManager;
 import com.brainrots.enemy.Enemy;
 
-/**
- * Modo de jogo padrão (State concreto).
- *
- * Regras:
- * - Vitória: base com HP > 0, wave atual >= max waves, nenhum inimigo vivo
- * - Derrota: base com HP <= 0
- *
- * Comportamento idêntico ao jogo original (BrainRotGame v1).
- * Este modo é o default do LevelManager.
- */
+/** Modo padrão: vitória ao limpar todas as ondas com base intacta, derrota se a base for destruída. */
 public class StandardMode implements GameMode {
 
     @Override
@@ -31,7 +22,6 @@ public class StandardMode implements GameMode {
 
     @Override
     public void onEnter(LevelManager context) {
-        // Modo padrão não requer configuração especial.
     }
 
     @Override

@@ -22,6 +22,7 @@ import com.brainrots.tower.TowerProjArea;
 import com.brainrots.tower.TowerProjSingle;
 import com.brainrots.core.GameBalance;
 
+/** Controla posicionamento de torres: drag/click, ghost preview, validação de área e criação. */
 public class TowerPlacementController {
     private BrainrotTower selectedTowerType;
     private Texture towerGhostTexture;
@@ -267,6 +268,7 @@ public class TowerPlacementController {
         return tower;
     }
 
+    /** Verifica se o clique não foi em ator UI (evita conflito stage/game). */
     private boolean isCursorOverUI() {
         Vector2 stageCoords = stage.screenToStageCoordinates(
             new Vector2(Gdx.input.getX(), Gdx.input.getY()));

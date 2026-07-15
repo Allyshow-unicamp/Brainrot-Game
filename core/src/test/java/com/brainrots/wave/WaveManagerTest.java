@@ -5,9 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.brainrots.enemy.Enemy;
-import com.brainrots.enemy.EnemySpawner;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class WaveManagerTest {

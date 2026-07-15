@@ -6,6 +6,7 @@ import com.brainrots.core.PlayerProfile;
 import com.brainrots.core.ShopTowerData;
 import com.brainrots.exception.PersistanceException;
 
+/** Interface de persistência para salvar/carregar perfil, loja e níveis. */
 public interface GameSaveHandler {
     public void saveProfile(PlayerProfile playerProfile) throws PersistanceException;
     public PlayerProfile loadProfile() throws PersistanceException;

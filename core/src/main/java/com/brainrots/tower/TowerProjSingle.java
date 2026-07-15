@@ -8,6 +8,7 @@ import com.brainrots.enemy.Enemy;
 import com.brainrots.engine.CoinManager;
 import com.brainrots.engine.ProjectileManager;
 
+/** Torre de projétil individual. Dispara no inimigo mais próximo dentro do alcance. */
 public class TowerProjSingle extends Tower {
 
     public TowerProjSingle(Texture texture,Texture synergyTexture ,Vector2 position, String displayName, int damage, int attackSpeed,
