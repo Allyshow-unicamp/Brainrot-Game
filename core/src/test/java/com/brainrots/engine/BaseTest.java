@@ -29,30 +29,23 @@ class BaseTest {
     }
 
     @Test
-    void calculateStarsReturns3WhenAbove60Percent() {
+    void calculateStarsReturns3WhenAbove66Percent() {
         Base base = new Base(1000, new Vector2(0, 0));
-        base.takeDamage(300); // 700/1000 = 70% > 60%
+        base.takeDamage(300); // 700/1000 = 70% > 66%
         assertEquals(3, base.calculateStars());
     }
 
     @Test
-    void calculateStarsReturns2WhenBetween35And60Percent() {
+    void calculateStarsReturns2WhenBetween33And66Percent() {
         Base base = new Base(1000, new Vector2(0, 0));
         base.takeDamage(500); // 500/1000 = 50%
         assertEquals(2, base.calculateStars());
     }
 
     @Test
-    void calculateStarsReturns1WhenBetween15And35Percent() {
+    void calculateStarsReturns1WhenBelow33Percent() {
         Base base = new Base(1000, new Vector2(0, 0));
         base.takeDamage(800); // 200/1000 = 20%
         assertEquals(1, base.calculateStars());
-    }
-
-    @Test
-    void calculateStarsReturns0WhenBelow15Percent() {
-        Base base = new Base(1000, new Vector2(0, 0));
-        base.takeDamage(950); // 50/1000 = 5%
-        assertEquals(0, base.calculateStars());
     }
 }

@@ -14,7 +14,7 @@ class BrainrotTowerTest {
     }
 
     @Test
-    void otherTowersHaveNoSynergyTexture() {
-        assertNull(BrainrotTower.TUNG_TUNG.getSynergyTexture());
+    void tungTungHasSynergyTexture() {
+        assertEquals(Assets.TUNG_SYNERGY, BrainrotTower.TUNG_TUNG.getSynergyTexture());
     }
 }
