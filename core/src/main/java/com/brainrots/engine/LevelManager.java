@@ -124,6 +124,10 @@ public class LevelManager {
         return activeEnemies;
     }
 
+    public Array<Tower> getActiveTowers() {
+        return activeTowers;
+    }
+
     public int getBaseHealth() {
         return base.getHealth();
     }

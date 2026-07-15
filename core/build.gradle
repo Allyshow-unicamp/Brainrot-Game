@@ -1,5 +1,16 @@
+plugins {
+    // Aplica o plugin do JaCoCo (e o java/eclipse caso não estejam aplicados no root)
+    id 'jacoco'
+    id 'java'
+}
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = appName + '-core'
+
+// 1. Configuração da versão do JaCoCo
+jacoco {
+    toolVersion = "0.8.13"
+}
 
 dependencies {
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -8,18 +19,50 @@ dependencies {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
 
+  // JUnit 5
   testImplementation "org.junit.jupiter:junit-jupiter:5.10.0"
   testImplementation "org.junit.platform:junit-platform-launcher:1.10.0"
   testRuntimeOnly "org.junit.platform:junit-platform-launcher"
-  testImplementation "org.mockito:mockito-core:5.11.0"
+  
+  // Mockito Core + Extensão para JUnit 5 (com suporte experimental a Java 25+)
+  testImplementation "org.mockito:mockito-core:5.14.2"
+  testImplementation "org.mockito:mockito-junit-jupiter:5.14.2"
+  testImplementation "net.bytebuddy:byte-buddy:1.15.10" 
+
+  // Headless backend para testes do LibGDX
   testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
   testImplementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 }
 
+// 2. Vincula a geração do relatório ao final da execução dos testes
 test {
   useJUnitPlatform()
+  finalizedBy jacocoTestReport // Garante que o relatório rode logo após os testes
+  systemProperty 'net.bytebuddy.experimental', 'true'
+  jvmArgs += '-Dnet.bytebuddy.experimental=true'
 }
 
 jar {
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+// 3. Configuração da task que gera o relatório de Coverage (Versão Groovy)
+jacocoTestReport {
+    executionData.setFrom(fileTree(layout.buildDirectory.dir("jacoco")) {
+        include "**/*.exec"
+    })
+
+    classDirectories.setFrom(fileTree(layout.buildDirectory.dir("classes/java/main")) {
+        // Exclui a UI e a pasta screen do relatório de cobertura do JaCoCo
+        exclude "**/brainrots/screen/**" 
+    })
+    
+    sourceDirectories.setFrom(files("src/main/java"))
+
+    reports {
+        html.required = true
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir("reports/jacoco/test/html")
+    }
 }
