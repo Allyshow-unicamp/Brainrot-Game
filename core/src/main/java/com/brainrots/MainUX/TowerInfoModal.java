@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.brainrots.core.Assets;
+import com.brainrots.core.GameBalance;
 import com.brainrots.core.GameResourceManager;
 import com.brainrots.tower.BrainrotTower;
 
@@ -113,7 +114,7 @@ public class TowerInfoModal extends Table {
         contentTable.row();
         contentTable.add(cooldownUpgradeLabel).padLeft(10).left();
         contentTable.row();
-        contentTable.add(new Label("Base cost: $50 (Damage), $40 (Range), $60 (Speed)", new Label.LabelStyle(upgradeFont, Color.GOLD))).padTop(8).center();
+        contentTable.add(new Label("Base cost: $" + GameBalance.UPGRADE_BASE_DAMAGE_COST + " (Damage), $" + GameBalance.UPGRADE_BASE_RANGE_COST + " (Range), $" + GameBalance.UPGRADE_BASE_COOLDOWN_COST + " (Cooldown)", new Label.LabelStyle(upgradeFont, Color.GOLD))).padTop(8).center();
 
         contentTable.pack();
 
@@ -145,17 +146,17 @@ public class TowerInfoModal extends Table {
 
         switch (towerType) {
             case CAPPUCCINO_ASSASSINO:
-                damageUpgradeLabel.setText("Coins/Tower: +3 per level");
+                damageUpgradeLabel.setText("Coins/Tower: +" + GameBalance.TOWER_COIN_UPGRADE_AMOUNT + " per level");
                 break;
             case BALLERINA_CAPPUCCINA:
-                damageUpgradeLabel.setText("Boost: +5 per level");
+                damageUpgradeLabel.setText("Boost: +" + GameBalance.TOWER_BOOST_UPGRADE_AMOUNT + " per level");
                 break;
             default:
-                damageUpgradeLabel.setText("Damage: +10 per level");
+                damageUpgradeLabel.setText("Damage: +" + GameBalance.UPGRADE_DAMAGE + " per level");
                 break;
         }
-        rangeUpgradeLabel.setText("Range: +25 per level");
-        cooldownUpgradeLabel.setText("Speed: -15% per level");
+        rangeUpgradeLabel.setText("Range: +" + GameBalance.UPGRADE_RANGE + " per level");
+        cooldownUpgradeLabel.setText("Cooldown: x" + GameBalance.UPGRADE_COOLDOWN + " per level");
 
         setVisible(true);
     }
