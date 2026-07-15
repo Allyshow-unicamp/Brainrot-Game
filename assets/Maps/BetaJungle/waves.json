@@ -23,7 +23,6 @@
 
   "4": {
     "enemies": [
-      { "type": "orange", "count": 1, "spawnInterval": 0.5, "spawnTime": 2 },
       { "type": "green", "count": 25, "spawnInterval": 0.08, "spawnTime": 5 }
     ]
   },
@@ -38,7 +37,7 @@
 
   "6": {
     "enemies": [
-      { "type": "orange", "count": 3, "spawnInterval": 0.8, "spawnTime": 2 },
+      { "type": "orange", "count": 3, "spawnInterval": 2, "spawnTime": 0 },
       { "type": "blue", "count": 8, "spawnInterval": 0.6, "spawnTime": 6 }
     ]
   },

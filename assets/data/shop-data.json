@@ -10,27 +10,27 @@
 	"name": "Bombardiro Crocodilo",
 	"description": "Fires an explosive projectile that damages multiple enemies in an area",
 	"behaviorDescription": "Area projectile damage",
-	"price": 400
+	"price": 200
 },
 "3_cappuccino_assassino": {
 	"id": "3_cappuccino_assassino",
 	"name": "Cappuccino Assassino",
 	"description": "Generates coins each turn based on nearby allied towers",
 	"behaviorDescription": "Coin generator",
-	"price": 750
+	"price": 600
 },
 "4_ballerina_cappuccina": {
 	"id": "4_ballerina_cappuccina",
 	"name": "Ballerina Cappuccina",
 	"description": "Boosts the damage of nearby allied towers",
 	"behaviorDescription": "Tower support",
-	"price": 1000
+	"price": 1400
 },
 "5_nuclearo_dinosauro": {
 	"id": "5_nuclearo_dinosauro",
 	"name": "Nuclearo Dinosauro",
 	"description": "Deals instant area damage to all enemies within range",
 	"behaviorDescription": "Instant area damage",
-	"price": 1500
+	"price": 2000
 }
 }

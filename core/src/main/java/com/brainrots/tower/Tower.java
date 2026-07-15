@@ -217,7 +217,7 @@ public abstract class Tower extends GameObject {
     }
 
     public String getCooldownUpgradeLabel() {
-        return "Speed +" + GameBalance.UPGRADE_COOLDOWN + "% [Lv." + cooldownUpgradeLevel + "]  $" + getCooldownUpgradeCost();
+        return "Cooldown x" + GameBalance.UPGRADE_COOLDOWN + "% [Lv." + cooldownUpgradeLevel + "]  $" + getCooldownUpgradeCost();
     }
 
     /** Cria efeito de status via Prototype. Retorna null para torres sem dano. */
