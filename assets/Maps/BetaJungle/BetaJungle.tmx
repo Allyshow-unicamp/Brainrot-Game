@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="1920" height="1080" tilewidth="1" tileheight="1" infinite="0" nextlayerid="5" nextobjectid="6">
+ <imagelayer id="2" name="Background">
+  <image source="BetaJungle.png" width="1920" height="1080"/>
+ </imagelayer>
+ <objectgroup id="3" name="Path">
+  <object id="1" x="-1.33333" y="558.667">
+   <polyline points="0,0 529.333,-5.33333 605.333,-56 665.333,-182.667 721.333,-242.667 885.333,-246.667 1004,-276 1107.33,-254.667 1282.33,-249.667 1351.33,-189.667 1394.33,-77.6667 1470.33,-13.6667 1919.33,-6.66667"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Barrier">
+  <object id="2" x="-3.0303" y="484.848">
+   <polygon points="0,0 515.152,-9.09091 560.606,-54.5455 600,-169.697 733.333,-257.576 1260.61,-260.606 1393.94,-184.848 1460.61,-33.3333 1496.97,-6.06061 1915.15,-9.09091 1918.18,127.273 1493.94,136.364 1387.88,90.9091 1315.15,-6.06061 1272.73,-106.061 748.485,-112.121 687.879,-15.1515 651.515,75.7576 527.273,142.424 6.06061,142.424"/>
+  </object>
+  <object id="3" x="-3.0303" y="800">
+   <polygon points="0,0 600,-3.0303 596.97,275.758 3.0303,278.788"/>
+  </object>
+  <object id="4" x="1666.67" y="0">
+   <polygon points="0,0 9.09091,221.212 251.515,224.242 245.455,-9.09091"/>
+  </object>
+  <object id="5" x="1736.36" y="860.606">
+   <polygon points="0,0 6.06061,206.061 169.697,206.061 178.788,-18.1818"/>
+  </object>
+ </objectgroup>
+</map>

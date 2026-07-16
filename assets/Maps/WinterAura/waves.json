@@ -1,0 +1,74 @@
+{
+  "1": {
+    "enemies": [
+      { "type": "red", "count": 10, "spawnInterval": 0.5, "spawnTime": 2 }
+    ]
+  },
+
+  "2": {
+    "enemies": [
+      { "type": "red", "count": 12, "spawnInterval": 0.4, "spawnTime": 2 },
+      { "type": "green", "count": 6, "spawnInterval": 0.25, "spawnTime": 7 }
+    ]
+  },
+
+  "3": {
+    "enemies": [
+      { "type": "red", "count": 15, "spawnInterval": 0.3, "spawnTime": 2 },
+      { "type": "blue", "count": 3, "spawnInterval": 1.25, "spawnTime": 6 }
+    ]
+  },
+
+  "4": {
+    "enemies": [
+      { "type": "green", "count": 20, "spawnInterval": 0.125, "spawnTime": 2 }
+    ]
+  },
+
+  "5": {
+    "enemies": [
+      { "type": "blue", "count": 6, "spawnInterval": 1.0, "spawnTime": 2 },
+      { "type": "red", "count": 15, "spawnInterval": 0.25, "spawnTime": 5 },
+      { "type": "green", "count": 8, "spawnInterval": 0.15, "spawnTime": 10 }
+    ]
+  },
+
+  "6": {
+    "enemies": [
+      { "type": "red", "count": 40, "spawnInterval": 0.20, "spawnTime": 0 }
+    ]
+  },
+
+  "7": {
+    "enemies": [
+      { "type": "blue", "count": 6, "spawnInterval": 0.75, "spawnTime": 2 },
+      { "type": "green", "count": 15, "spawnInterval": 0.15, "spawnTime": 6 },
+      { "type": "orange", "count": 1, "spawnInterval": 0.5, "spawnTime": 10 }
+    ]
+  },
+
+  "8": {
+    "enemies": [
+      { "type": "blue", "count": 9, "spawnInterval": 0.1, "spawnTime": 1 },
+      { "type": "blue", "count": 12, "spawnInterval": 0.1, "spawnTime": 4 },
+      { "type": "blue", "count": 9, "spawnInterval": 0.1, "spawnTime": 8 }
+    ]
+  },
+
+  "9": {
+    "enemies": [
+      { "type": "red", "count": 15, "spawnInterval": 0.1, "spawnTime": 0 },
+      { "type": "green", "count": 15, "spawnInterval": 0.1, "spawnTime": 5 },
+      { "type": "red", "count": 15, "spawnInterval": 0.2, "spawnTime": 10 }
+    ]
+  },
+
+  "10": {
+    "enemies": [
+      { "type": "orange", "count": 1, "spawnInterval": 1.5, "spawnTime": 2 },
+      { "type": "blue", "count": 10, "spawnInterval": 0.75, "spawnTime": 6 },
+      { "type": "red", "count": 20, "spawnInterval": 0.15, "spawnTime": 16 },
+      { "type": "green", "count": 25, "spawnInterval": 0.075, "spawnTime": 20 }
+    ]
+  }
+}

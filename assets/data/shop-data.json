@@ -1,0 +1,36 @@
+{
+"1_tung_tung": {
+	"id": "1_tung_tung",
+	"name": "Tung Tung Tung Sahur",
+	"description": "Basic tower that fires projectiles at a single enemy",
+	"behaviorDescription": "Projectile damage"
+},
+"2_bombardiro_crocodilo": {
+	"id": "2_bombardiro_crocodilo",
+	"name": "Bombardiro Crocodilo",
+	"description": "Fires an explosive projectile that damages multiple enemies in an area",
+	"behaviorDescription": "Area projectile damage",
+	"price": 200
+},
+"3_cappuccino_assassino": {
+	"id": "3_cappuccino_assassino",
+	"name": "Cappuccino Assassino",
+	"description": "Generates coins each turn based on nearby allied towers",
+	"behaviorDescription": "Coin generator",
+	"price": 600
+},
+"4_ballerina_cappuccina": {
+	"id": "4_ballerina_cappuccina",
+	"name": "Ballerina Cappuccina",
+	"description": "Boosts the damage of nearby allied towers",
+	"behaviorDescription": "Tower support",
+	"price": 1400
+},
+"5_nuclearo_dinosauro": {
+	"id": "5_nuclearo_dinosauro",
+	"name": "Nuclearo Dinosauro",
+	"description": "Deals instant area damage to all enemies within range",
+	"behaviorDescription": "Instant area damage",
+	"price": 2000
+}
+}
