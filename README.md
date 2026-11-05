@@ -395,9 +395,6 @@ IA generativa foi utilizada ao longo do desenvolvimento nas seguintes áreas:
 
 ## 8. Autores
 
-| Nome | Matrícula |
-|------|-----------|
-| Allyson Gomes De Souza | 278372 |
-| Gabriel Prado Faraco | 220597 |
-| Geraldo De Souza Filho | 273938 |
-| Marcos Godinho Filho | 283549 |
+|          Nome          |       User        |
+|------------------------|-------------------|
+| Allyson Gomes De Souza | @Allyshow-unicamp |
